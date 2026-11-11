@@ -4,6 +4,8 @@ A visual mapper for JSON. Show a source and a target side by side, then map one 
 
 **[Documentation](https://crosswalkjs.github.io/crosswalk/)** · **[Playground](https://crosswalkjs.github.io/crosswalk/playground)** · [Changelog](CHANGELOG.md)
 
+![The Crosswalk editor: a person's fields on the left, a profile's on the right, and operators between them that join the name, work out the age and total the phone calls.](website/static/img/editor.png)
+
 ## What's in it
 
 | Package | What it does |
