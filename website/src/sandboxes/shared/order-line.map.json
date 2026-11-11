@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "source": { "type": "object", "title": "Line", "properties": { "Price": { "type": "number" }, "Quantity": { "type": "number" } } },
+  "target": { "type": "object", "title": "Invoice line", "properties": { "Total": { "type": "number" } } },
+  "nodes": [{ "id": "total", "operator": "math.multiply", "position": { "x": 120, "y": 60 } }],
+  "links": [
+    { "from": { "source": "Price" }, "to": { "node": "total", "input": 0 } },
+    { "from": { "source": "Quantity" }, "to": { "node": "total", "input": 1 } },
+    { "from": { "node": "total" }, "to": { "target": "Total" } }
+  ]
+}

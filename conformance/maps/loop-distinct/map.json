@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "source": {
+    "type": "object",
+    "properties": {
+      "Lines": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "Sku": {
+              "type": "string"
+            },
+            "Qty": {
+              "type": "number"
+            },
+            "Date": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "properties": {
+      "Skus": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "loops": [
+    {
+      "source": "Lines[]",
+      "target": "Skus[]",
+      "distinct": true
+    }
+  ],
+  "nodes": [],
+  "links": [
+    {
+      "from": {
+        "source": "Lines[].Sku"
+      },
+      "to": {
+        "target": "Skus[]"
+      }
+    }
+  ]
+}

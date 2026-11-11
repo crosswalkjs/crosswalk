@@ -1,0 +1,199 @@
+.panel {
+  display: grid;
+  gap: 0.9rem;
+  margin-bottom: 0.9rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 12px;
+  background: var(--ifm-color-emphasis-100);
+}
+
+.panelFlat {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 5rem minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: start;
+}
+
+.rowLabel {
+  padding-top: 0.35rem;
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 640px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.35rem;
+  }
+
+  .rowLabel {
+    padding-top: 0;
+  }
+}
+
+/* Two-way switch */
+.segmented {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 9px;
+  background: var(--ifm-color-emphasis-200);
+}
+
+.segment,
+.segmentChosen {
+  padding: 0.3rem 0.8rem;
+  border: 0;
+  border-radius: 7px;
+  background: none;
+  color: var(--ifm-color-emphasis-700);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.segmentChosen {
+  background: var(--ifm-background-surface-color, var(--ifm-background-color));
+  color: var(--ifm-font-color-base);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+/* Every theme as a button, a row to each group */
+.themeSwitcher {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.themeGroup {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr);
+  align-items: start;
+  gap: 0.75rem;
+}
+
+.themeGroupLabel {
+  padding-top: 0.45rem;
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.themeChoices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  justify-self: start;
+  padding: 3px;
+  border-radius: 9px;
+  background: var(--ifm-color-emphasis-200);
+}
+
+@media (max-width: 760px) {
+  .themeGroup {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.25rem;
+  }
+}
+
+/* On/off pills */
+.toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.toggle,
+.toggleOn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.55rem 0.25rem 0.35rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 999px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-color-emphasis-700);
+  font: inherit;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+
+.toggleOn {
+  border-color: var(--ifm-color-primary);
+  background: color-mix(in srgb, var(--ifm-color-primary) 10%, var(--ifm-background-color));
+  color: var(--ifm-font-color-base);
+}
+
+.toggle:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.knob {
+  position: relative;
+  width: 1.3rem;
+  height: 0.8rem;
+  border-radius: 999px;
+  background: var(--ifm-color-emphasis-300);
+  transition: background 0.12s;
+}
+
+.knob::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: calc(0.8rem - 4px);
+  height: calc(0.8rem - 4px);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  transition: transform 0.12s;
+}
+
+.toggleOn .knob {
+  background: var(--ifm-color-primary);
+}
+
+.toggleOn .knob::after {
+  transform: translateX(0.5rem);
+}
+
+.reason {
+  margin: 0.4rem 0 0;
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.78rem;
+}
+
+/* Theme dropdown */
+.select {
+  min-width: 13rem;
+  padding: 0.35rem 2rem 0.35rem 0.65rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  background: var(--ifm-background-color)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23888' stroke-width='1.5'/%3E%3C/svg%3E")
+    no-repeat right 0.7rem center;
+  color: var(--ifm-font-color-base);
+  font: inherit;
+  font-size: 0.85rem;
+  appearance: none;
+  cursor: pointer;
+}
+
+.select:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 1px;
+}

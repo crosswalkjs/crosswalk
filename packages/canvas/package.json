@@ -1,0 +1,55 @@
+{
+  "name": "@crosswalkjs/canvas",
+  "version": "0.1.0",
+  "description": "The Crosswalk editor: source and target trees with operators and links between them. Framework-agnostic.",
+  "keywords": [
+    "json",
+    "mapping",
+    "visual-editor",
+    "data-mapper",
+    "schema-mapping",
+    "no-code"
+  ],
+  "license": "MIT",
+  "author": "James Mann",
+  "homepage": "https://crosswalkjs.github.io/crosswalk/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crosswalkjs/crosswalk.git",
+    "directory": "packages/canvas"
+  },
+  "bugs": {
+    "url": "https://github.com/crosswalkjs/crosswalk/issues"
+  },
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "dependencies": {
+    "@crosswalkjs/core": "^0.1.0"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean --external @crosswalkjs/core",
+    "prepublishOnly": "npm run build"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

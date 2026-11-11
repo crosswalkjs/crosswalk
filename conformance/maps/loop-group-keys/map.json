@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "source": {
+    "type": "object",
+    "properties": {
+      "Items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "K": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "properties": {
+      "Groups": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "K": {
+              "type": "string"
+            },
+            "N": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    }
+  },
+  "loops": [
+    {
+      "source": "Items[]",
+      "target": "Groups[]",
+      "groupBy": "Items[].K"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "n",
+      "operator": "aggregate.count",
+      "scope": "Items[]"
+    }
+  ],
+  "links": [
+    {
+      "from": {
+        "source": "Items[].K"
+      },
+      "to": {
+        "target": "Groups[].K"
+      }
+    },
+    {
+      "from": {
+        "source": "Items[].K"
+      },
+      "to": {
+        "node": "n",
+        "input": 0
+      }
+    },
+    {
+      "from": {
+        "node": "n"
+      },
+      "to": {
+        "target": "Groups[].N"
+      }
+    }
+  ]
+}

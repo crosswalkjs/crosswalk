@@ -1,0 +1,7 @@
+[
+  {
+    "severity": "error",
+    "code": "unbound-scope",
+    "path": "PhoneBilling.TotalNational"
+  }
+]

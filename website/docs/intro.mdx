@@ -1,0 +1,37 @@
+---
+slug: /
+title: Introduction
+description: What Crosswalk is and how its pieces fit together.
+---
+
+import LiveMapper from '@site/src/components/LiveMapper';
+import {personInput, personMap} from '@site/src/examples/person';
+
+# Crosswalk
+
+Crosswalk maps one JSON shape onto another. The shape you have goes on the left, the shape you want goes on the right, and you draw the lines between them. A line straight across copies a field. A line through an **operator** changes it on the way, such as joining two names, comparing a value or adding up a list.
+
+<LiveMapper map={personMap} input={personInput} height={460} open={{options: false}} />
+
+This map takes a person and their phone calls and builds a profile. It joins the first and last name, works out an age, only copies the zip code when it's a number, and totals the calls into national and international.
+
+## The packages
+
+| Package | What it does |
+|---|---|
+| [`@crosswalkjs/core`](https://www.npmjs.com/package/@crosswalkjs/core) | Holds the map format and the operators, checks maps and runs them. No UI and no dependencies, so it runs in Node or the browser. |
+| [`@crosswalkjs/canvas`](https://www.npmjs.com/package/@crosswalkjs/canvas) | The editor above. Plain DOM, so it works with any framework or none. |
+| [`Crosswalk.Core`](https://www.nuget.org/packages/Crosswalk.Core) | Runs maps in .NET 8 and later, with the same behaviour as the JavaScript core. See [Running maps in .NET](./dotnet.md). |
+
+The editor saves a map as plain JSON. You can keep it in git, load it on a server and run it there with only the core package, in JavaScript or .NET.
+
+## What it doesn't do
+
+Crosswalk is at 0.1. The map format is versioned (`"version": 1`), but the JavaScript API may still change before 1.0. It reads JSON Schema for shape (`type`, `properties`, `items`, `required` and local `$ref`s), not for validation, so rules such as `pattern` or `minimum` are ignored, and a `$ref` to another file isn't followed.
+
+## Where to go next
+
+- [Getting started](./getting-started.md) installs the packages and runs a first map.
+- [The map document](./maps/map-document.md) and [How a map runs](./maps/how-maps-run.md) cover the format and its rules.
+- [Frameworks](./frameworks/overview.md) has a ready-made editor component for each major framework.
+- The [playground](/playground) has the editor on its own page, with every theme.

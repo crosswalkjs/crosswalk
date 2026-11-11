@@ -1,0 +1,3 @@
+{
+  "description": "An operator that can't handle its input stops the run, with an error naming the node."
+}

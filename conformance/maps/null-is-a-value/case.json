@@ -1,0 +1,3 @@
+{
+  "description": "A source value of null is copied as null. Only a missing value leaves the target field out."
+}

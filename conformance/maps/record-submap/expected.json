@@ -1,0 +1,11 @@
+{
+  "Name": "Ana Silva",
+  "BillTo": {
+    "Line": "12 Rua das Flores, Porto",
+    "Postcode": "4050-123"
+  },
+  "ShipTo": {
+    "Line": "3 High St, Leeds",
+    "Postcode": "LS1 4AP"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "source": {
+    "type": "object",
+    "title": "Team",
+    "properties": {
+      "Team": { "type": "string" },
+      "People": { "type": "array", "items": { "type": "object", "properties": { "Name": { "type": "string" } } } }
+    }
+  },
+  "target": { "type": "object", "title": "Summary", "properties": { "Team": { "type": "string" }, "LongestName": { "type": "string" } } },
+  "nodes": [{ "id": "longest", "operator": "acme.longest", "scope": "People[]", "position": { "x": 120, "y": 70 } }],
+  "links": [
+    { "from": { "source": "Team" }, "to": { "target": "Team" } },
+    { "from": { "source": "People[].Name" }, "to": { "node": "longest", "input": 0 } },
+    { "from": { "node": "longest" }, "to": { "target": "LongestName" } }
+  ]
+}

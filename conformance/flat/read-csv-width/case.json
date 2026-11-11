@@ -1,0 +1,3 @@
+{
+  "description": "A CSV column with a width is trimmed when reading, as fixed-width values are; a blank one is left out."
+}

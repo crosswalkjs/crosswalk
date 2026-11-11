@@ -1,0 +1,45 @@
+{
+  "type": "object",
+  "flat": {
+    "format": "fixed",
+    "header": true,
+    "lineEnding": "\r\n"
+  },
+  "properties": {
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "flat": {
+              "width": 6
+            }
+          },
+          "amount": {
+            "type": "number",
+            "flat": {
+              "width": 10,
+              "pad": "0",
+              "decimals": 2
+            }
+          },
+          "memo": {
+            "type": "string",
+            "flat": {
+              "width": 12
+            }
+          },
+          "count": {
+            "type": "integer",
+            "flat": {
+              "width": 4,
+              "name": "cnt"
+            }
+          }
+        }
+      }
+    }
+  }
+}

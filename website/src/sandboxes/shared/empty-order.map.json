@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "source": {
+    "type": "object",
+    "title": "Order",
+    "properties": {
+      "Number": {
+        "type": "string"
+      },
+      "Status": {
+        "type": "string"
+      },
+      "Billing": {
+        "type": "object",
+        "properties": {
+          "Street": {
+            "type": "string"
+          },
+          "City": {
+            "type": "string"
+          },
+          "Postcode": {
+            "type": "string"
+          }
+        }
+      },
+      "Shipping": {
+        "type": "object",
+        "properties": {
+          "Street": {
+            "type": "string"
+          },
+          "City": {
+            "type": "string"
+          },
+          "Postcode": {
+            "type": "string"
+          }
+        }
+      },
+      "Lines": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "Sku": {
+              "type": "string"
+            },
+            "Date": {
+              "type": "string"
+            },
+            "Qty": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "title": "Invoice",
+    "properties": {
+      "Reference": {
+        "type": "string"
+      },
+      "Status": {
+        "type": "string"
+      },
+      "BillTo": {
+        "type": "object",
+        "properties": {
+          "Line1": {
+            "type": "string"
+          },
+          "Town": {
+            "type": "string"
+          },
+          "Postcode": {
+            "type": "string"
+          }
+        }
+      },
+      "ShipTo": {
+        "type": "object",
+        "properties": {
+          "Line1": {
+            "type": "string"
+          },
+          "Town": {
+            "type": "string"
+          },
+          "Postcode": {
+            "type": "string"
+          }
+        }
+      },
+      "Products": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "Sku": {
+              "type": "string"
+            },
+            "Units": {
+              "type": "number"
+            },
+            "FirstOrdered": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "nodes": [],
+  "links": []
+}

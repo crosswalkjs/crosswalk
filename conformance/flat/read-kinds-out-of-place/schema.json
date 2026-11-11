@@ -1,0 +1,57 @@
+{
+  "type": "object",
+  "flat": {
+    "format": "csv",
+    "delimiter": "|"
+  },
+  "properties": {
+    "header": {
+      "type": "object",
+      "flat": {
+        "tag": "H"
+      },
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "account": {
+          "type": "string"
+        }
+      }
+    },
+    "payments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "flat": {
+          "tag": "D"
+        },
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "trailer": {
+      "type": "object",
+      "flat": {
+        "tag": "T"
+      },
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "total": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

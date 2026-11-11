@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "flat": {
+    "format": "csv",
+    "delimiter": "|",
+    "header": false,
+    "skip": 1
+  },
+  "properties": {
+    "lines": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "sku": {
+            "type": "string"
+          },
+          "qty": {
+            "type": "integer"
+          },
+          "price": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  }
+}

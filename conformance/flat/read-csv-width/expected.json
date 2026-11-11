@@ -1,0 +1,7 @@
+{
+  "envelope": {
+    "qualifier": "00",
+    "sender": "SENDER",
+    "control": 42
+  }
+}

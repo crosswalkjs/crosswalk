@@ -1,0 +1,3 @@
+{
+  "description": "A sub-map must fit the records it joins: here it reads a field the source record doesn't have."
+}

@@ -1,0 +1,3 @@
+{
+  "description": "Several kinds of line in CSV: each told apart by its first field, a record for one and a list for many, blank lines dropped."
+}

@@ -1,0 +1,35 @@
+---
+title: Fixed-width
+description: "Make a schema for a fixed-width file from a sample: name its columns, and lists within a line."
+---
+
+import FlatFileWizard from '@site/src/components/FlatFileWizard';
+
+# Fixed-width
+
+A fixed-width file has no delimiters: each column is a set number of characters. A line can also hold a list of its own, such as an order's items one after another, each item with sizes of its own:
+
+```text
+ORD001A100003SMB200001L
+```
+
+That's order `ORD001`, then item `A100`, quantity `003`, sizes `S` and `M`, then item `B200`, quantity `001`, size `L`.
+
+## Tell Crosswalk how to read it
+
+To read a file, Crosswalk needs its schema: the name and type of each field, and which ones are lists. The builder below makes one from an example, and shows the JSON it reads as you go. When it reads the example the way you want, the **Schema** tab has the schema to use in a map.
+
+1. **Name the columns.** Drag across `ORD001` on the first line, type `id` and choose **Name it**. Do the same for the first item's code, `A100`, and quantity, `003`.
+2. **Make a list of the items.** Drag across the whole first item, `A100003SM`. The bar shows what each line would hold as a list of items like it; name it `items` and choose **Make a list**.
+3. **A list inside it.** Double-click the first size, `S`, name it `sizes` and choose **Make a list**: each item now has a list of sizes. Click the `S` again to name the size itself.
+4. Click any character to see its field, rename it or change its type. **What it reads** marks where it is. Where a list's columns are already named, you can click the first and shift-click the last, instead of dragging.
+
+<FlatFileWizard example="fixed" />
+
+## With headers and trailers
+
+Many fixed-width files have several kinds of line, each starting with a tag: a file header, a batch header, entries, trailers. Click a line's tag to work on that kind of line: name it above the lines, and say what it goes inside. The dropdown beside each tag says whether that kind reads as one record or a list.
+
+<FlatFileWizard example="fixed-kinds" />
+
+Every setting is in the [flat files reference](../flat-files.mdx).

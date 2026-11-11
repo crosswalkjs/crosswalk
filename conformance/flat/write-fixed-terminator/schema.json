@@ -1,0 +1,30 @@
+{
+  "type": "object",
+  "flat": {
+    "format": "fixed",
+    "terminator": "|"
+  },
+  "properties": {
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "flat": {
+              "width": 3
+            }
+          },
+          "qty": {
+            "type": "integer",
+            "flat": {
+              "width": 2,
+              "pad": "0"
+            }
+          }
+        }
+      }
+    }
+  }
+}

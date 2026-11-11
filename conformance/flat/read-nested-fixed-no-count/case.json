@@ -1,0 +1,3 @@
+{
+  "description": "A fixed-width group inside another value needs a count: only a column can take the rest of the line."
+}

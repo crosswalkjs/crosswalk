@@ -1,0 +1,3 @@
+{
+  "description": "A record column in CSV is one field split into its parts by its delimiter, as HL7 splits a name with ^; empty parts are left out, and an empty field leaves the record out."
+}

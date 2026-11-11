@@ -1,0 +1,268 @@
+/* The whole page: a bar of controls, then the editor with the panel beside it, filling the window under the navbar. */
+.page,
+.loading {
+  display: flex;
+  flex-direction: column;
+  height: calc(100dvh - var(--ifm-navbar-height));
+  border-top: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.loading {
+  justify-content: center;
+  align-items: center;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.bar {
+  /* Above the editor, so the boxes the bar opens aren't drawn under it. */
+  position: relative;
+  z-index: 30;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+}
+
+/* The last thing in the bar sits at its right-hand end. */
+.bar > :last-child {
+  margin-left: auto;
+}
+
+.barButton {
+  display: inline-block;
+  padding: 0.3rem 0.75rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 7px;
+  background: none;
+  color: var(--ifm-font-color-base);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+.barButton::-webkit-details-marker {
+  display: none;
+}
+
+.barButton:hover,
+.popover[open] > .barButton {
+  background: var(--ifm-color-emphasis-200);
+}
+
+.popover[open] > .barButton {
+  font-weight: 700;
+}
+
+.popover {
+  position: relative;
+}
+
+.popoverBody {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 20;
+  width: max-content;
+  max-width: min(34rem, calc(100vw - 2rem));
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 10px;
+  background: var(--ifm-background-color);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+  font-size: 0.9rem;
+}
+
+.popoverBody > p:last-child {
+  margin-bottom: 0;
+}
+
+.select {
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 7px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Fit content and the view's own sizing can make the map taller than the room, so it scrolls. */
+.editor {
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+}
+
+.editor :global(.cw-root) {
+  border: 0;
+  border-radius: 0;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  width: clamp(20rem, 32vw, 30rem);
+  border-left: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.tabs {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.sideBody {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.pane,
+.sideBody > :global(.theme-code-block) {
+  min-height: 100%;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  font-size: 0.78rem;
+}
+
+.failed {
+  color: var(--ifm-color-danger-dark);
+}
+
+/* A note, some buttons, then a box that takes what height is left. */
+.stack {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.note {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.6rem 1rem 0;
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.8rem;
+}
+
+.link {
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ifm-font-color-base);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding: 0.6rem 1rem 0;
+}
+
+.problem {
+  margin: 0.6rem 1rem 0;
+  color: var(--ifm-color-danger-dark);
+  font-size: 0.8rem;
+}
+
+.text {
+  flex: 1;
+  min-height: 12rem;
+  margin: 0.6rem 0 0;
+  padding: 0.75rem 1rem;
+  border: 0;
+  border-top: 1px solid var(--ifm-color-emphasis-300);
+  background: var(--ifm-pre-background);
+  color: var(--ifm-font-color-base);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  resize: none;
+}
+
+.text:focus {
+  outline: none;
+}
+
+/* The Events tab: what to listen to and call, then the log under it. */
+.listen {
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.label {
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.methods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.method {
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 6px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.method:hover {
+  background: var(--ifm-color-emphasis-200);
+}
+
+/* A phone has no room beside the editor, so the panel goes under it and the page scrolls. */
+@media (max-width: 760px) {
+  .page {
+    height: auto;
+  }
+
+  .body {
+    flex-direction: column;
+  }
+
+  .editor {
+    flex: none;
+    height: 70vh;
+  }
+
+  .side {
+    width: auto;
+    border-left: 0;
+    border-top: 1px solid var(--ifm-color-emphasis-300);
+  }
+
+  .sideBody {
+    height: 60vh;
+  }
+
+  .bar > :last-child {
+    margin-left: 0;
+  }
+}

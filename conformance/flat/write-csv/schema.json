@@ -1,0 +1,31 @@
+{
+  "type": "object",
+  "flat": {
+    "format": "csv"
+  },
+  "properties": {
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "flat": {
+              "name": "Payment ID"
+            }
+          },
+          "amount": {
+            "type": "number"
+          },
+          "paid": {
+            "type": "boolean"
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "Address": "Rua das Flores 12, Porto",
+  "ZipCode": "4050",
+  "FullName": "Ana Silva",
+  "PhoneBilling": {
+    "TotalInternational": 7.1,
+    "TotalNational": 3.75
+  }
+}

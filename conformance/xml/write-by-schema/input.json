@@ -1,0 +1,21 @@
+{
+  "Line": [
+    {
+      "Qty": 2,
+      "Sku": "TEA",
+      "Price": 0.1
+    },
+    {
+      "Sku": "M<&>",
+      "Price": 1e+21,
+      "Qty": 1
+    }
+  ],
+  "number": "SO \"1\"",
+  "Customer": {
+    "name": "Ana <& Co>",
+    "vip": false
+  },
+  "Discount": null,
+  "Extra": "kept"
+}

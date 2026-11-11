@@ -1,0 +1,3 @@
+{
+  "description": "A node using an operator that isn't registered is reported once."
+}

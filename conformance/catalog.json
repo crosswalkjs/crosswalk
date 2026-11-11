@@ -1,0 +1,634 @@
+{
+  "categories": [
+    {
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "id": "math",
+      "label": "Math"
+    },
+    {
+      "id": "logic",
+      "label": "Logic"
+    },
+    {
+      "id": "date",
+      "label": "Date"
+    },
+    {
+      "id": "convert",
+      "label": "Convert"
+    },
+    {
+      "id": "flow",
+      "label": "Flow"
+    },
+    {
+      "id": "aggregate",
+      "label": "Aggregate"
+    }
+  ],
+  "operators": [
+    {
+      "id": "text.concat",
+      "kind": "value",
+      "label": "Concatenate",
+      "category": "text",
+      "inputs": {
+        "min": 1
+      },
+      "glyph": "ab+"
+    },
+    {
+      "id": "text.upper",
+      "kind": "value",
+      "label": "Uppercase",
+      "category": "text",
+      "inputs": {
+        "min": 1,
+        "max": 1
+      },
+      "glyph": "AB"
+    },
+    {
+      "id": "text.lower",
+      "kind": "value",
+      "label": "Lowercase",
+      "category": "text",
+      "inputs": {
+        "min": 1,
+        "max": 1
+      },
+      "glyph": "ab"
+    },
+    {
+      "id": "text.trim",
+      "kind": "value",
+      "label": "Trim",
+      "category": "text",
+      "inputs": {
+        "min": 1,
+        "max": 1
+      },
+      "glyph": "⎵"
+    },
+    {
+      "id": "text.length",
+      "kind": "value",
+      "label": "Length",
+      "category": "text",
+      "inputs": {
+        "min": 1,
+        "max": 1
+      },
+      "glyph": "len"
+    },
+    {
+      "id": "text.left",
+      "kind": "value",
+      "label": "Left",
+      "category": "text",
+      "inputs": {
+        "min": 2,
+        "max": 2,
+        "labels": [
+          "text",
+          "count"
+        ]
+      },
+      "glyph": "◧",
+      "description": "The first `count` characters."
+    },
+    {
+      "id": "text.right",
+      "kind": "value",
+      "label": "Right",
+      "category": "text",
+      "inputs": {
+        "min": 2,
+        "max": 2,
+        "labels": [
+          "text",
+          "count"
+        ]
+      },
+      "glyph": "◨",
+      "description": "The last `count` characters."
+    },
+    {
+      "id": "text.substring",
+      "kind": "value",
+      "label": "Substring",
+      "category": "text",
+      "inputs": {
+        "min": 2,
+        "max": 3,
+        "labels": [
+          "text",
+          "start",
+          "length"
+        ]
+      },
+      "glyph": "sub",
+      "description": "Takes `length` characters from a 0-based `start`, or the rest of the text when `length` is left out."
+    },
+    {
+      "id": "text.replace",
+      "kind": "value",
+      "label": "Replace",
+      "category": "text",
+      "inputs": {
+        "min": 3,
+        "max": 3,
+        "labels": [
+          "text",
+          "find",
+          "replace with"
+        ]
+      },
+      "glyph": "⇄",
+      "description": "Replaces every occurrence of `find` with `replace with`. An empty `find` leaves the text as it is."
+    },
+    {
+      "id": "math.add",
+      "kind": "value",
+      "label": "Add",
+      "category": "math",
+      "inputs": {
+        "min": 2
+      },
+      "glyph": "+"
+    },
+    {
+      "id": "math.subtract",
+      "kind": "value",
+      "label": "Subtract",
+      "category": "math",
+      "inputs": {
+        "min": 2,
+        "max": 2
+      },
+      "glyph": "−"
+    },
+    {
+      "id": "math.multiply",
+      "kind": "value",
+      "label": "Multiply",
+      "category": "math",
+      "inputs": {
+        "min": 2
+      },
+      "glyph": "×"
+    },
+    {
+      "id": "math.divide",
+      "kind": "value",
+      "label": "Divide",
+      "category": "math",
+      "inputs": {
+        "min": 2,
+        "max": 2
+      },
+      "glyph": "÷"
+    },
+    {
+      "id": "math.modulo",
+      "kind": "value",
+      "label": "Remainder",
+      "category": "math",
+      "inputs": {
+        "min": 2,
+        "max": 2
+      },
+      "glyph": "%"
+    },
+    {
+      "id": "math.round",
+      "kind": "value",
+      "label": "Round",
+      "category": "math",
+      "inputs": {
+        "min": 1,
+        "max": 2,
+        "labels": [
+          "value",
+          "decimals"
+        ]
+      },
+      "glyph": "≈",
+      "description": "Rounds to `decimals` places (0 if left out), with halves rounded away from zero: 2.5 gives 3 and -2.5 gives -3."
+    },
+    {
+      "id": "math.abs",
+      "kind": "value",
+      "label": "Absolute",
+      "category": "math",
+      "inputs": {
+        "min": 1,
+        "max": 1
+      },
+      "glyph": "|x|"
+    },
+    {
+      "id": "math.min",
+      "kind": "value",
+      "label": "Smallest",
+      "category": "math",
+      "inputs": {
+        "min": 2
+      },
+      "glyph": "min"
+    },
+    {
+      "id": "math.max",
+      "kind": "value",
+      "label": "Largest",
+      "category": "math",
+      "inputs": {
+        "min": 2
+      },
+      "glyph": "max"
+    },
+    {
+      "id": "logic.equal",
+      "kind": "value",
+      "label": "Equals",
+      "category": "logic",
+      "inputs": {
+        "min": 2,
+        "max": 2
+      },
+      "glyph": "="
+    },
+    {
+      "id": "logic.notEqual",
+      "kind": "value",
+      "label": "Not equal",
+      "category": "logic",
+      "inputs": {
+        "min": 2,
+        "max": 2
+      },
+      "glyph": "≠"
+    },
+    {
+      "id": "logic.greaterThan",
+      "kind": "value",
+      "label": "Greater than",
+      "category": "logic",
+      "inputs": {
+        "min": 2,
+        "max": 2
+      },
+      "glyph": ">"
+    },
+    {
+      "id": "logic.greaterOrEqual",
+      "kind": "value",
+      "label": "At least",
+      "category": "logic",
+      "inputs": {
+        "min": 2,
+        "max": 2
+      },
+      "glyph": "≥"
+    },
+    {
+      "id": "logic.lessThan",
+      "kind": "value",
+      "label": "Less than",
+      "category": "logic",
+      "inputs": {
+        "min": 2,
+        "max": 2
+      },
+      "glyph": "<"
+    },
+    {
+      "id": "logic.lessOrEqual",
+      "kind": "value",
+      "label": "At most",
+      "category": "logic",
+      "inputs": {
+        "min": 2,
+        "max": 2
+      },
+      "glyph": "≤"
+    },
+    {
+      "id": "logic.and",
+      "kind": "value",
+      "label": "And",
+      "category": "logic",
+      "inputs": {
+        "min": 2
+      },
+      "glyph": "∧"
+    },
+    {
+      "id": "logic.or",
+      "kind": "value",
+      "label": "Or",
+      "category": "logic",
+      "inputs": {
+        "min": 2
+      },
+      "glyph": "∨"
+    },
+    {
+      "id": "logic.not",
+      "kind": "value",
+      "label": "Not",
+      "category": "logic",
+      "inputs": {
+        "min": 1,
+        "max": 1
+      },
+      "glyph": "!"
+    },
+    {
+      "id": "logic.isNumber",
+      "kind": "value",
+      "label": "Is a number",
+      "category": "logic",
+      "inputs": {
+        "min": 1,
+        "max": 1
+      },
+      "glyph": "1?"
+    },
+    {
+      "id": "logic.exists",
+      "kind": "value",
+      "label": "Exists",
+      "category": "logic",
+      "inputs": {
+        "min": 1,
+        "max": 1
+      },
+      "handlesAbsent": true,
+      "glyph": "∃",
+      "description": "True when the input has a value. `null` counts as a value."
+    },
+    {
+      "id": "date.today",
+      "kind": "value",
+      "label": "Today",
+      "category": "date",
+      "inputs": {
+        "min": 0,
+        "max": 0
+      },
+      "glyph": "now",
+      "description": "Today's date, in UTC, such as `2026-03-04`."
+    },
+    {
+      "id": "date.parse",
+      "kind": "value",
+      "label": "Read date",
+      "category": "date",
+      "inputs": {
+        "min": 2,
+        "max": 2,
+        "labels": [
+          "text",
+          "pattern"
+        ]
+      },
+      "glyph": "rd",
+      "description": "Reads a date written another way, such as `04/03/2026` with the pattern `dd/MM/yyyy`, as `2026-03-04`. The pattern uses `yyyy`, `yy`, `MMM`, `MM`, `M`, `dd`, `d`, `HH`, `mm` and `ss`; anything else must match exactly."
+    },
+    {
+      "id": "date.format",
+      "kind": "value",
+      "label": "Format date",
+      "category": "date",
+      "inputs": {
+        "min": 2,
+        "max": 2,
+        "labels": [
+          "date",
+          "pattern"
+        ]
+      },
+      "glyph": "fmt",
+      "description": "Writes a date with a pattern, such as `dd MMM yyyy` for `04 Mar 2026`. The pattern uses `yyyy`, `yy`, `MMM`, `MM`, `M`, `dd`, `d`, `HH`, `mm` and `ss`."
+    },
+    {
+      "id": "date.add",
+      "kind": "value",
+      "label": "Add to date",
+      "category": "date",
+      "inputs": {
+        "min": 3,
+        "max": 3,
+        "labels": [
+          "date",
+          "amount",
+          "unit"
+        ]
+      },
+      "glyph": "+dt",
+      "description": "Adds whole days, months or years to a date; a negative amount goes back. The 31st plus a month stops at the end of a shorter month."
+    },
+    {
+      "id": "date.diff",
+      "kind": "value",
+      "label": "Date difference",
+      "category": "date",
+      "inputs": {
+        "min": 3,
+        "max": 3,
+        "labels": [
+          "from",
+          "to",
+          "unit"
+        ]
+      },
+      "glyph": "Δdt",
+      "description": "Whole days, months or years from one date to another, such as an age in years from a date of birth to today."
+    },
+    {
+      "id": "date.part",
+      "kind": "value",
+      "label": "Part of date",
+      "category": "date",
+      "inputs": {
+        "min": 2,
+        "max": 2,
+        "labels": [
+          "date",
+          "part"
+        ]
+      },
+      "glyph": "dt.",
+      "description": "One part of a date as a number: year, month, day, weekday (Monday is 1), hour, minute or second."
+    },
+    {
+      "id": "convert.toNumber",
+      "kind": "value",
+      "label": "To number",
+      "category": "convert",
+      "inputs": {
+        "min": 1,
+        "max": 1
+      },
+      "glyph": "→1"
+    },
+    {
+      "id": "convert.toText",
+      "kind": "value",
+      "label": "To text",
+      "category": "convert",
+      "inputs": {
+        "min": 1,
+        "max": 1
+      },
+      "glyph": "→a"
+    },
+    {
+      "id": "convert.toBoolean",
+      "kind": "value",
+      "label": "To true/false",
+      "category": "convert",
+      "inputs": {
+        "min": 1,
+        "max": 1
+      },
+      "glyph": "→?"
+    },
+    {
+      "id": "convert.lookup",
+      "kind": "value",
+      "label": "Look up",
+      "category": "convert",
+      "inputs": {
+        "min": 2,
+        "max": 3,
+        "labels": [
+          "value",
+          "table",
+          "if not found"
+        ],
+        "tables": [
+          1
+        ]
+      },
+      "handlesAbsent": true,
+      "glyph": "tbl",
+      "description": "Finds the value in a table, such as `{ \"M\": \"Male\" }`, and gives what it maps to. With no match it gives `if not found`, or leaves the field out."
+    },
+    {
+      "id": "flow.onlyIf",
+      "kind": "value",
+      "label": "Only if",
+      "category": "flow",
+      "inputs": {
+        "min": 2,
+        "max": 2,
+        "labels": [
+          "condition",
+          "value"
+        ]
+      },
+      "glyph": "⇥",
+      "description": "Passes the value through when the condition is true; otherwise the output is left out."
+    },
+    {
+      "id": "flow.ifElse",
+      "kind": "value",
+      "label": "If / else",
+      "category": "flow",
+      "inputs": {
+        "min": 3,
+        "max": 3,
+        "labels": [
+          "condition",
+          "then",
+          "else"
+        ]
+      },
+      "handlesAbsent": true,
+      "glyph": "?:"
+    },
+    {
+      "id": "flow.firstOf",
+      "kind": "value",
+      "label": "First of",
+      "category": "flow",
+      "inputs": {
+        "min": 1
+      },
+      "handlesAbsent": true,
+      "glyph": "??",
+      "description": "The first input that has a value and isn't `null`."
+    },
+    {
+      "id": "aggregate.sum",
+      "kind": "aggregate",
+      "label": "Sum",
+      "category": "aggregate",
+      "inputs": {
+        "min": 1,
+        "max": 1
+      },
+      "glyph": "Σ"
+    },
+    {
+      "id": "aggregate.count",
+      "kind": "aggregate",
+      "label": "Count",
+      "category": "aggregate",
+      "inputs": {
+        "min": 1,
+        "max": 1
+      },
+      "glyph": "#"
+    },
+    {
+      "id": "aggregate.average",
+      "kind": "aggregate",
+      "label": "Average",
+      "category": "aggregate",
+      "inputs": {
+        "min": 1,
+        "max": 1
+      },
+      "glyph": "x̄"
+    },
+    {
+      "id": "aggregate.min",
+      "kind": "aggregate",
+      "label": "Minimum",
+      "category": "aggregate",
+      "inputs": {
+        "min": 1,
+        "max": 1
+      },
+      "glyph": "↓"
+    },
+    {
+      "id": "aggregate.max",
+      "kind": "aggregate",
+      "label": "Maximum",
+      "category": "aggregate",
+      "inputs": {
+        "min": 1,
+        "max": 1
+      },
+      "glyph": "↑"
+    },
+    {
+      "id": "aggregate.join",
+      "kind": "aggregate",
+      "label": "Join",
+      "category": "aggregate",
+      "inputs": {
+        "min": 1,
+        "max": 1
+      },
+      "glyph": "Σab"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "type": "object",
+  "flat": {
+    "format": "csv"
+  },
+  "properties": {
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "codes": {
+            "type": "array",
+            "flat": {
+              "count": 2
+            },
+            "items": {
+              "type": "string"
+            }
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "sku": {
+                  "type": "string"
+                },
+                "qty": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

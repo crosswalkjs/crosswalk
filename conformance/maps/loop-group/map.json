@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "source": {
+    "type": "object",
+    "properties": {
+      "Lines": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "Sku": {
+              "type": "string"
+            },
+            "Qty": {
+              "type": "number"
+            },
+            "Date": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "properties": {
+      "Products": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "Sku": {
+              "type": "string"
+            },
+            "Total": {
+              "type": "number"
+            },
+            "Lines": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    }
+  },
+  "loops": [
+    {
+      "source": "Lines[]",
+      "target": "Products[]",
+      "groupBy": "Lines[].Sku"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "total",
+      "operator": "aggregate.sum",
+      "scope": "Lines[]"
+    },
+    {
+      "id": "count",
+      "operator": "aggregate.count",
+      "scope": "Lines[]"
+    }
+  ],
+  "links": [
+    {
+      "from": {
+        "source": "Lines[].Sku"
+      },
+      "to": {
+        "target": "Products[].Sku"
+      }
+    },
+    {
+      "from": {
+        "source": "Lines[].Qty"
+      },
+      "to": {
+        "node": "total",
+        "input": 0
+      }
+    },
+    {
+      "from": {
+        "node": "total"
+      },
+      "to": {
+        "target": "Products[].Total"
+      }
+    },
+    {
+      "from": {
+        "source": "Lines[].Sku"
+      },
+      "to": {
+        "node": "count",
+        "input": 0
+      }
+    },
+    {
+      "from": {
+        "node": "count"
+      },
+      "to": {
+        "target": "Products[].Lines"
+      }
+    }
+  ]
+}

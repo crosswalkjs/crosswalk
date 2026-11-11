@@ -1,0 +1,22 @@
+{
+  "number": "SO-1042",
+  "priority": 2,
+  "Customer": {
+    "vip": true,
+    "name": "Ana & Co"
+  },
+  "Line": [
+    {
+      "Sku": "TEA-12",
+      "Qty": 2,
+      "Price": 4.5
+    },
+    {
+      "Sku": "MUG-01",
+      "Qty": "one",
+      "Price": 8
+    }
+  ],
+  "Note": "Leave at <reception>",
+  "Discount": null
+}

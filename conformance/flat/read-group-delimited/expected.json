@@ -1,0 +1,24 @@
+{
+  "header": {
+    "encoding": "ENC",
+    "sender": "ACME"
+  },
+  "patient": {
+    "set": 1,
+    "identifiers": [
+      {
+        "id": "123",
+        "authority": "HOSP"
+      },
+      {
+        "id": "456",
+        "authority": "LAB"
+      }
+    ],
+    "name": "SMITH",
+    "aliases": [
+      "SMYTHE",
+      "SMITHE"
+    ]
+  }
+}

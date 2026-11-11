@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- An order from the old system -->
+<ord:Order xmlns:ord="urn:example:orders" number="SO-1042" priority=" 2 ">
+  <ord:Customer vip="1">Ana &amp; Co</ord:Customer>
+  <ord:Line><ord:Sku>TEA-12</ord:Sku><ord:Qty>2</ord:Qty><ord:Price>4.50</ord:Price></ord:Line>
+  <ord:Line><ord:Sku>MUG-01</ord:Sku><ord:Qty>one</ord:Qty><ord:Price>8</ord:Price></ord:Line>
+  <ord:Note><![CDATA[Leave at <reception>]]></ord:Note>
+  <ord:Discount xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+  <ord:Unknown>skipped</ord:Unknown>
+</ord:Order>

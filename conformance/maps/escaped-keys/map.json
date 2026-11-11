@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": {
+    "type": "object",
+    "properties": {
+      "first.name": { "type": "string" },
+      "tags[]": { "type": "string" },
+      "order.lines": {
+        "type": "array",
+        "items": { "type": "object", "properties": { "unit.price": { "type": "number" }, "qty": { "type": "number" } } }
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "properties": {
+      "name.full": { "type": "string" },
+      "labels[]": { "type": "string" },
+      "lines.out": {
+        "type": "array",
+        "items": { "type": "object", "properties": { "line.total": { "type": "number" } } }
+      }
+    }
+  },
+  "loops": [{ "source": "order\\.lines[]", "target": "lines\\.out[]" }],
+  "nodes": [{ "id": "total", "operator": "math.multiply" }],
+  "links": [
+    { "from": { "source": "first\\.name" }, "to": { "target": "name\\.full" } },
+    { "from": { "source": "tags\\[\\]" }, "to": { "target": "labels\\[\\]" } },
+    { "from": { "source": "order\\.lines[].unit\\.price" }, "to": { "node": "total", "input": 0 } },
+    { "from": { "source": "order\\.lines[].qty" }, "to": { "node": "total", "input": 1 } },
+    { "from": { "node": "total" }, "to": { "target": "lines\\.out[].line\\.total" } }
+  ]
+}

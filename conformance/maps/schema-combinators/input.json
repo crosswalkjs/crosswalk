@@ -1,0 +1,25 @@
+{
+  "Customer": {
+    "Name": "Ana Silva",
+    "Street": "12 Rua das Flores",
+    "City": "Porto"
+  },
+  "Payment": {
+    "Method": "card",
+    "Card": "4242",
+    "Kind": "card"
+  },
+  "Nickname": "Ana",
+  "Discount": 2.5,
+  "Lines": [
+    {
+      "Sku": "TEA-12",
+      "Qty": 2
+    },
+    {
+      "Sku": "MUG-01",
+      "Qty": 1
+    }
+  ],
+  "Priority": 2
+}

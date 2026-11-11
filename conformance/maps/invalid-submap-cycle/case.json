@@ -1,0 +1,3 @@
+{
+  "description": "Sub-maps can use each other, but not in a cycle. Records can't nest the same way forever, so the sub-maps also don't fit their records."
+}

@@ -1,0 +1,96 @@
+/* What the editor said, newest first. */
+.logHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 1rem;
+  border-top: 1px solid var(--ifm-color-emphasis-300);
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.clear {
+  border: 0;
+  background: none;
+  color: var(--ifm-color-emphasis-700);
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+}
+
+.log {
+  height: 12rem;
+  margin: 0;
+  padding: 0 1rem 0.5rem;
+  overflow: auto;
+  list-style: none;
+}
+
+.entry {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.2rem 0;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  font-size: 0.8rem;
+}
+
+.eventName,
+.callName {
+  flex: none;
+  font-size: 0.75rem;
+}
+
+/* A method's result, told apart from an event by its fill. */
+.callName {
+  background: var(--ifm-color-emphasis-200);
+}
+
+.detail {
+  min-width: 0;
+  overflow: hidden;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.75rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ifm-color-emphasis-800);
+}
+
+.count {
+  flex: none;
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.75rem;
+}
+
+.empty {
+  padding: 0.5rem 0;
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.8rem;
+}
+
+/* In a panel, the log takes whatever height is left. */
+.fill {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.fill .logHead {
+  border-top: 0;
+}
+
+.logFill {
+  flex: 1;
+  height: auto;
+  min-height: 0;
+}
+
+/* A panel is narrow, so what an event was given wraps rather than being cut off. */
+.fill .detail {
+  overflow-wrap: anywhere;
+  white-space: normal;
+}

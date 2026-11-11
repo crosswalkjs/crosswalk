@@ -1,0 +1,120 @@
+{
+  "version": 1,
+  "source": {
+    "type": "object",
+    "$defs": {
+      "Address": {
+        "type": "object",
+        "properties": {
+          "street": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          }
+        }
+      },
+      "Category": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Category"
+            }
+          }
+        }
+      }
+    },
+    "properties": {
+      "billing": {
+        "$ref": "#/$defs/Address"
+      },
+      "category": {
+        "$ref": "#/$defs/Category"
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "definitions": {
+      "Place": {
+        "type": "object",
+        "properties": {
+          "line1": {
+            "type": "string"
+          },
+          "town": {
+            "type": "string"
+          }
+        }
+      },
+      "Node": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/Node"
+            }
+          }
+        }
+      }
+    },
+    "properties": {
+      "billTo": {
+        "$ref": "#/definitions/Place"
+      },
+      "tree": {
+        "$ref": "#/definitions/Node"
+      }
+    }
+  },
+  "loops": [
+    {
+      "source": "category.children[]",
+      "target": "tree.children[]"
+    }
+  ],
+  "nodes": [],
+  "links": [
+    {
+      "from": {
+        "source": "billing.street"
+      },
+      "to": {
+        "target": "billTo.line1"
+      }
+    },
+    {
+      "from": {
+        "source": "billing.city"
+      },
+      "to": {
+        "target": "billTo.town"
+      }
+    },
+    {
+      "from": {
+        "source": "category.name"
+      },
+      "to": {
+        "target": "tree.label"
+      }
+    },
+    {
+      "from": {
+        "source": "category.children[]"
+      },
+      "to": {
+        "target": "tree.children[]"
+      }
+    }
+  ]
+}

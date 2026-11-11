@@ -1,0 +1,3 @@
+{
+  "description": "A value too wide for its column is an error, rather than cut short."
+}

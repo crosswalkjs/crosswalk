@@ -1,0 +1,7 @@
+[
+  {
+    "severity": "error",
+    "code": "constant-and-link",
+    "node": "up"
+  }
+]

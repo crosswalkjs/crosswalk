@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "source": {
+    "type": "object",
+    "properties": {
+      "R": {
+        "type": "object",
+        "properties": {
+          "Inner": {
+            "type": "object",
+            "properties": {
+              "X": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "properties": {
+      "R": {
+        "type": "object",
+        "properties": {
+          "Inner": {
+            "type": "object",
+            "properties": {
+              "X": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "nodes": [],
+  "links": [
+    {
+      "from": {
+        "source": "R"
+      },
+      "to": {
+        "target": "R"
+      },
+      "submap": "a"
+    }
+  ],
+  "submaps": {
+    "a": {
+      "source": {
+        "type": "object",
+        "properties": {
+          "Inner": {
+            "type": "object",
+            "properties": {
+              "X": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "target": {
+        "type": "object",
+        "properties": {
+          "Inner": {
+            "type": "object",
+            "properties": {
+              "X": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "nodes": [],
+      "links": [
+        {
+          "from": {
+            "source": "Inner"
+          },
+          "to": {
+            "target": "Inner"
+          },
+          "submap": "b"
+        }
+      ]
+    },
+    "b": {
+      "source": {
+        "type": "object",
+        "properties": {
+          "Inner": {
+            "type": "object",
+            "properties": {
+              "X": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "target": {
+        "type": "object",
+        "properties": {
+          "Inner": {
+            "type": "object",
+            "properties": {
+              "X": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "nodes": [],
+      "links": [
+        {
+          "from": {
+            "source": "Inner"
+          },
+          "to": {
+            "target": "Inner"
+          },
+          "submap": "a"
+        }
+      ]
+    }
+  }
+}

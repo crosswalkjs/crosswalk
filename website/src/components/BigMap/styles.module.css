@@ -1,0 +1,78 @@
+/* The big map's frame: the size picker, the editor, and the readout under it. */
+.frame {
+  margin: 1.5rem 0 2rem;
+  overflow: hidden;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 12px;
+  background: var(--ifm-background-color);
+}
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+  background: var(--ifm-color-emphasis-100);
+}
+
+.hint {
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.8rem;
+}
+
+.editor {
+  height: 640px;
+}
+
+/* The frame draws the edges, so the editor doesn't draw its own. */
+.editor :global(.cw-root) {
+  border: 0;
+  border-radius: 0;
+}
+
+.readout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  margin: 0;
+  border-top: 1px solid var(--ifm-color-emphasis-300);
+  background: var(--ifm-color-emphasis-100);
+}
+
+.readout > div {
+  padding: 0.6rem 1rem;
+  border-right: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.readout dt {
+  margin: 0;
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.readout dd {
+  margin: 0.15rem 0 0;
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.aside {
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+.loading {
+  display: grid;
+  place-items: center;
+  height: 720px;
+  margin: 1.5rem 0 2rem;
+  border: 1px dashed var(--ifm-color-emphasis-300);
+  border-radius: 12px;
+  color: var(--ifm-color-emphasis-600);
+}

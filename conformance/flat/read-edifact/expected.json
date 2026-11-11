@@ -1,0 +1,21 @@
+{
+  "header": {
+    "reference": "1",
+    "type": {
+      "name": "ORDERS",
+      "version": "D",
+      "release": "96A"
+    }
+  },
+  "names": [
+    {
+      "role": "BY",
+      "name": "ACME+CO'S \"BEST\""
+    },
+    {
+      "role": "SU",
+      "id": "5412345000013",
+      "name": "50% OFF?"
+    }
+  ]
+}

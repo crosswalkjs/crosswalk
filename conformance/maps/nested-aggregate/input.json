@@ -1,0 +1,23 @@
+{
+  "Orders": [
+    {
+      "Id": "A",
+      "Lines": [
+        {
+          "Amount": 1
+        },
+        {
+          "Amount": 2
+        }
+      ]
+    },
+    {
+      "Id": "B",
+      "Lines": [
+        {
+          "Amount": 10
+        }
+      ]
+    }
+  ]
+}

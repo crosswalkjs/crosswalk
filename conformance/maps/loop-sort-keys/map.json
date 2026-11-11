@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "source": {
+    "type": "object",
+    "properties": {
+      "Lines": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "Sku": {
+              "type": "string"
+            },
+            "Qty": {
+              "type": "number"
+            },
+            "Date": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "properties": {
+      "Rows": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "Sku": {
+              "type": "string"
+            },
+            "Qty": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    }
+  },
+  "loops": [
+    {
+      "source": "Lines[]",
+      "target": "Rows[]",
+      "sortBy": [
+        {
+          "path": "Lines[].Sku"
+        },
+        {
+          "path": "Lines[].Qty",
+          "descending": true
+        }
+      ]
+    }
+  ],
+  "nodes": [],
+  "links": [
+    {
+      "from": {
+        "source": "Lines[].Sku"
+      },
+      "to": {
+        "target": "Rows[].Sku"
+      }
+    },
+    {
+      "from": {
+        "source": "Lines[].Qty"
+      },
+      "to": {
+        "target": "Rows[].Qty"
+      }
+    }
+  ]
+}

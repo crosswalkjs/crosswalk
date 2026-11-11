@@ -1,0 +1,123 @@
+/* One frame: the options, the editor, the code, and the input and output. */
+.live {
+  margin: 1.5rem 0 2rem;
+  overflow: hidden;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 12px;
+  background: var(--ifm-background-color);
+}
+
+.editor {
+  width: 100%;
+}
+
+/* Every theme, above the editor, on the themes page. */
+.switcher {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+  background: var(--ifm-color-emphasis-100);
+}
+
+/* The frame draws the edges, so the editor doesn't draw its own. */
+.editor :global(.cw-root) {
+  border: 0;
+  border-radius: 0;
+}
+
+.loading {
+  display: grid;
+  place-items: center;
+  margin: 1.5rem 0 2rem;
+  border: 1px dashed var(--ifm-color-emphasis-300);
+  border-radius: 12px;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.section {
+  background: var(--ifm-color-emphasis-100);
+}
+
+.section:first-child {
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.section:not(:first-child) {
+  border-top: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.55rem 1rem;
+  border: 0;
+  background: none;
+  color: var(--ifm-color-emphasis-700);
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-align: left;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.sectionHead:hover {
+  color: var(--ifm-font-color-base);
+}
+
+.chevron {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 0.12s;
+}
+
+.sectionHead[aria-expanded='true'] .chevron {
+  transform: rotate(45deg);
+}
+
+.sectionBody {
+  padding: 0 1rem 1rem;
+}
+
+/* The code fills its section edge to edge. */
+.sectionBody :global(.theme-code-block) {
+  margin: 0;
+  box-shadow: none;
+}
+
+.data {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.label {
+  margin-bottom: 0.35rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.pane {
+  height: 240px;
+  margin: 0;
+  overflow: auto;
+  font-size: 0.78rem;
+}
+
+.failed {
+  color: var(--ifm-color-danger-dark);
+}
+
+@media (max-width: 760px) {
+  .data {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

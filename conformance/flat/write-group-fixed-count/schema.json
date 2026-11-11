@@ -1,0 +1,53 @@
+{
+  "type": "object",
+  "flat": {
+    "format": "fixed"
+  },
+  "properties": {
+    "orders": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "flat": {
+              "width": 6
+            }
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "sku": {
+                  "type": "string",
+                  "flat": {
+                    "width": 4
+                  }
+                },
+                "qty": {
+                  "type": "integer",
+                  "flat": {
+                    "width": 3,
+                    "pad": "0"
+                  }
+                }
+              }
+            },
+            "flat": {
+              "count": 3
+            }
+          },
+          "total": {
+            "type": "integer",
+            "flat": {
+              "width": 4,
+              "pad": "0"
+            }
+          }
+        }
+      }
+    }
+  }
+}

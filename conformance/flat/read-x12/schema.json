@@ -1,0 +1,34 @@
+{
+  "type": "object",
+  "flat": {
+    "format": "csv",
+    "delimiter": "*",
+    "terminator": "~",
+    "lineEnding": "\n"
+  },
+  "properties": {
+    "lines": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "flat": {
+          "tag": "PO1"
+        },
+        "properties": {
+          "line": {
+            "type": "integer"
+          },
+          "qty": {
+            "type": "integer"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

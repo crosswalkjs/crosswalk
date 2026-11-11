@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "paths": {
+      "@crosswalkjs/core": ["../packages/core/src/index.ts"],
+      "@crosswalkjs/canvas": ["../packages/canvas/src/index.ts"]
+    },
+    "resolveJsonModule": true,
+    "types": ["node"]
+  },
+  "include": ["*.ts", "fixture/*.ts", "../playwright.config.ts"]
+}

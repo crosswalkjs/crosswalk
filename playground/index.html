@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Crosswalk playground</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <span class="mark" aria-hidden="true">{&#8202;}→</span>
+        <h1>Crosswalk <span>playground</span></h1>
+      </div>
+      <label class="field">
+        <span>Example</span>
+        <select id="example"></select>
+      </label>
+      <label class="field">
+        <span>Theme</span>
+        <select id="theme"></select>
+      </label>
+      <label class="field">
+        <span>View</span>
+        <select id="view">
+          <option value="editor">Editor</option>
+          <option value="summary">Read-only summary</option>
+        </select>
+      </label>
+      <button id="infer" type="button" title="Replace the map's source schema with one inferred from the input JSON">Infer source from input</button>
+      <span id="status" role="status"></span>
+    </header>
+    <div id="canvas"></div>
+    <section id="drawer" class="open">
+      <button id="drawer-toggle" type="button" aria-expanded="true" aria-controls="drawer-body">
+        <span class="chevron" aria-hidden="true"></span>
+        <span class="drawer-title">Map JSON, input &amp; output</span>
+        <span id="drawer-summary"></span>
+      </button>
+      <div id="drawer-body">
+        <div class="pane">
+          <h2>Map</h2>
+          <textarea id="map" spellcheck="false" aria-label="Map document"></textarea>
+        </div>
+        <div class="pane">
+          <h2>Input</h2>
+          <textarea id="input" spellcheck="false" aria-label="Input document"></textarea>
+        </div>
+        <div class="pane">
+          <h2>Output</h2>
+          <pre id="output"></pre>
+          <h2>Issues</h2>
+          <ul id="issues"></ul>
+        </div>
+      </div>
+    </section>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

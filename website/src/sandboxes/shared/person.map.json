@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "source": { "type": "object", "title": "Person", "properties": { "Name": { "type": "string" } } },
+  "target": { "type": "object", "title": "Badge", "properties": { "Name": { "type": "string" }, "Initials": { "type": "string" } } },
+  "nodes": [{ "id": "initials1", "operator": "acme.initials", "position": { "x": 120, "y": 60 } }],
+  "links": [
+    { "from": { "source": "Name" }, "to": { "target": "Name" } },
+    { "from": { "source": "Name" }, "to": { "node": "initials1", "input": 0 } },
+    { "from": { "node": "initials1" }, "to": { "target": "Initials" } }
+  ]
+}

@@ -1,0 +1,443 @@
+/* The flat file schema builder, on one page: the sample, its lines, then the fields beside what they read. */
+.frame {
+  margin: 1.5rem 0 2rem;
+  overflow: hidden;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 12px;
+  background: var(--ifm-background-color);
+}
+
+.steps {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 9px;
+  background: var(--ifm-color-emphasis-200);
+}
+
+.option,
+.chosen {
+  padding: 0.25rem 0.7rem;
+  border: 0;
+  border-radius: 7px;
+  background: none;
+  color: var(--ifm-color-emphasis-700);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+/* The step or choice that's on: a neutral fill and bold, no accent. */
+.chosen {
+  background: var(--ifm-background-surface-color, var(--ifm-background-color));
+  color: var(--ifm-font-color-base);
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+.panel {
+  min-height: 20rem;
+  padding: 0.75rem 1rem;
+}
+
+.hint {
+  margin: 0 0 0.75rem;
+  color: var(--ifm-color-emphasis-800);
+  font-size: 0.85rem;
+}
+
+.link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ifm-font-color-base);
+  font: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--ifm-color-emphasis-500);
+  cursor: pointer;
+}
+
+.sample {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  white-space: pre;
+  resize: vertical;
+}
+
+.settings {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1.5rem;
+  margin-top: 0.75rem;
+}
+
+.choiceRow,
+.check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+}
+
+.name {
+  color: var(--ifm-color-emphasis-800);
+  font-size: 0.82rem;
+}
+
+.input,
+.select,
+.small {
+  padding: 0.15rem 0.4rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 6px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font: inherit;
+  font-size: 0.8rem;
+}
+
+.input {
+  width: 9rem;
+}
+
+.small {
+  width: 3.5rem;
+}
+
+.small:disabled {
+  opacity: 0.4;
+}
+
+.value {
+  white-space: pre;
+}
+
+@media (max-width: 900px) {
+  .split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.space {
+  color: var(--ifm-color-emphasis-400);
+}
+
+.code {
+  min-width: 0;
+}
+
+.code :global(.theme-code-block) {
+  max-height: 26rem;
+  margin: 0;
+}
+
+.button {
+  padding: 0.3rem 0.8rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 7px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font: inherit;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.tiny {
+  width: 2.5rem;
+  padding: 0.15rem 0.4rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 6px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+/* The sample's lines, in a box that scrolls sideways when they're long. */
+.fixedArea {
+  margin-bottom: 0.75rem;
+  padding: 0.6rem 0.75rem 0.75rem;
+  overflow-x: auto;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+}
+
+.fixedInner {
+  position: relative;
+  width: max-content;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.9rem;
+}
+
+.fixedLine {
+  display: flex;
+  white-space: pre;
+  line-height: 1.75;
+}
+
+/* Nested rows, marked as such. */
+.rowsBadge {
+  padding: 0 0.45rem;
+  border: 1px solid var(--ifm-color-emphasis-400);
+  border-radius: 10px;
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.72rem;
+}
+
+/* One page: the sample folds away, then the lines, then the fields beside the result. */
+.sampleSection {
+  padding: 0.6rem 1rem 0.75rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+  background: var(--ifm-color-emphasis-100);
+}
+
+.sampleSection > summary {
+  cursor: pointer;
+}
+
+.sampleSection[open] > summary {
+  margin-bottom: 0.5rem;
+}
+
+.sectionTitle {
+  margin: 0 0 0.4rem;
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* The lines, a character at a time: drag to select, click for a field. */
+.selectable {
+  user-select: none;
+  touch-action: none;
+}
+
+.ch {
+  width: 1ch;
+  cursor: text;
+}
+
+.chEdge {
+  box-shadow: inset 1px 0 0 var(--ifm-color-emphasis-500);
+}
+
+.chRowEdge {
+  box-shadow: inset 2px 0 0 var(--ifm-color-emphasis-700);
+}
+
+/* The selected field, and the characters being selected, over any list shading. */
+.ch.chField {
+  background: var(--ifm-color-emphasis-600);
+  color: var(--ifm-color-emphasis-0);
+}
+
+.ch.chRange {
+  background: var(--ifm-color-emphasis-800);
+  color: var(--ifm-color-emphasis-0);
+}
+
+/* What can be done with what's selected. */
+.bar2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  min-height: 2.75rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  background: var(--ifm-color-emphasis-100);
+  font-size: 0.82rem;
+}
+
+.problem {
+  color: var(--ifm-color-danger-dark);
+  font-size: 0.82rem;
+}
+
+.kindSettings {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.6rem;
+  font-size: 0.82rem;
+}
+
+.resultHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.75rem;
+  margin-bottom: 0.4rem;
+}
+
+/* Lists on the lines: items alternate in shade, deeper lists darker. */
+.list1a {
+  background: var(--ifm-color-emphasis-100);
+}
+
+.list1b {
+  background: var(--ifm-color-emphasis-200);
+}
+
+.list2a {
+  background: var(--ifm-color-emphasis-200);
+}
+
+.list2b {
+  background: var(--ifm-color-emphasis-300);
+}
+
+.list3a {
+  background: var(--ifm-color-emphasis-300);
+}
+
+.list3b {
+  background: var(--ifm-color-emphasis-400);
+}
+
+/* A selection: naming on one row, a list and its preview on the next. */
+.bar2Range {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.barRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.6rem;
+}
+
+.previewLine {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  padding: 2px 6px;
+  border-left: 2px solid var(--ifm-color-emphasis-400);
+}
+
+.previewItem {
+  padding: 0 4px;
+  border-radius: 3px;
+  background: var(--ifm-color-emphasis-200);
+  white-space: pre;
+}
+
+.summaryNote {
+  margin-left: 0.4rem;
+  color: var(--ifm-color-emphasis-600);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* What's read, with a selected field's keys marked. */
+.json {
+  position: relative;
+  max-height: 26rem;
+  overflow: auto;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  background: var(--ifm-color-emphasis-100);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  white-space: pre;
+}
+
+.jsonKey {
+  color: var(--ifm-color-emphasis-800);
+}
+
+.jsonValue {
+  color: var(--ifm-color-emphasis-700);
+}
+
+.jsonMarked {
+  margin: 0 -0.8rem;
+  padding: 0 0.8rem;
+  background: var(--ifm-color-emphasis-300);
+  font-weight: 600;
+}
+
+/* A line's tag on the left: whether its kind reads as a record or a list, and the tag to pick that kind. */
+.lineTag {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
+  margin-right: 6px;
+}
+
+.tagSelect {
+  padding: 0 2px;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 4px;
+  background: var(--ifm-background-surface-color, var(--ifm-background-color));
+  color: var(--ifm-color-emphasis-700);
+  font-family: var(--ifm-font-family-base);
+  font-size: 0.7rem;
+}
+
+.tagButton {
+  padding: 0 4px;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: var(--ifm-color-emphasis-600);
+  font: inherit;
+  cursor: pointer;
+}
+
+.tagButton:hover {
+  background: var(--ifm-color-emphasis-200);
+}
+
+.tagCurrent {
+  background: var(--ifm-color-emphasis-200);
+  color: var(--ifm-font-color-base);
+  font-weight: 600;
+}
+
+/* A CSV file's fields and parts, each a target to click. */
+.csvPiece {
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.csvPiece:hover {
+  box-shadow: inset 0 -2px 0 var(--ifm-color-emphasis-600);
+}
+
+/* A field or part with nothing in it, so it can still be clicked. */
+.csvEmpty {
+  color: var(--ifm-color-emphasis-400);
+}
+
+/* A header line names the columns; it isn't data. */
+.headerLine {
+  color: var(--ifm-color-emphasis-600);
+  font-style: italic;
+}
+

@@ -1,0 +1,190 @@
+/* The theme builder: settings, then the editor showing them, then the code for them. */
+.frame {
+  margin: 1.5rem 0 2rem;
+  overflow: hidden;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 12px;
+  background: var(--ifm-background-color);
+}
+
+.controls {
+  padding: 0.75rem 1rem 0.5rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+  background: var(--ifm-color-emphasis-100);
+}
+
+.sections,
+.choices {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 9px;
+  background: var(--ifm-color-emphasis-200);
+}
+
+.option,
+.chosen {
+  padding: 0.25rem 0.7rem;
+  border: 0;
+  border-radius: 7px;
+  background: none;
+  color: var(--ifm-color-emphasis-700);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.chosen {
+  background: var(--ifm-background-surface-color, var(--ifm-background-color));
+  color: var(--ifm-font-color-base);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+.panel {
+  min-height: 11.5rem;
+  padding: 0.75rem 0 0.25rem;
+}
+
+/* Two columns of colours where there's room. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 0 1.5rem;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2rem;
+}
+
+.name {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.3rem;
+  width: 7.5rem;
+  color: var(--ifm-color-emphasis-800);
+  font-size: 0.82rem;
+}
+
+/* A setting changed from the theme it starts from. */
+.changed {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ifm-color-emphasis-700);
+}
+
+.swatch {
+  flex: none;
+  width: 1.8rem;
+  height: 1.5rem;
+  padding: 0;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 5px;
+  background: none;
+  cursor: pointer;
+}
+
+.swatch:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.text,
+.select {
+  min-width: 0;
+  height: 1.7rem;
+  padding: 0 0.45rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 6px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font: inherit;
+  font-size: 0.8rem;
+}
+
+.text {
+  flex: 1;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.75rem;
+}
+
+.slider {
+  flex: 1;
+  max-width: 14rem;
+  /* Neutral, not the browser's blue. */
+  accent-color: var(--ifm-color-emphasis-700);
+}
+
+.value {
+  min-width: 4.5rem;
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.reset,
+.resetAll {
+  border: 0;
+  background: none;
+  color: var(--ifm-color-emphasis-700);
+  cursor: pointer;
+}
+
+.reset:hover,
+.resetAll:hover {
+  color: var(--ifm-font-color-base);
+}
+
+.resetAll {
+  padding: 0;
+  font: inherit;
+  font-size: 0.8rem;
+  text-decoration: underline;
+}
+
+.hint {
+  max-width: 34rem;
+  margin: 0.5rem 0;
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.8rem;
+}
+
+.problem {
+  margin: 0.25rem 0 0.5rem;
+  color: var(--ifm-color-danger-dark);
+  font-size: 0.8rem;
+}
+
+.editor {
+  height: 440px;
+}
+
+.editor :global(.cw-root) {
+  border: 0;
+  border-radius: 0;
+}
+
+.code {
+  border-top: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.code :global(.theme-code-block) {
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.loading {
+  display: grid;
+  place-items: center;
+  height: 700px;
+  margin: 1.5rem 0 2rem;
+  border: 1px dashed var(--ifm-color-emphasis-300);
+  border-radius: 12px;
+  color: var(--ifm-color-emphasis-600);
+}

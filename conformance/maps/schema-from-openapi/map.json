@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "source": {
+    "$ref": "#/$defs/Order",
+    "$defs": {
+      "Order": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "customer": {
+            "$ref": "#/$defs/Customer"
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Line"
+            }
+          }
+        }
+      },
+      "Customer": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "Line": {
+        "type": "object",
+        "properties": {
+          "sku": {
+            "type": "string"
+          },
+          "qty": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "properties": {
+      "Reference": {
+        "type": "string"
+      },
+      "Buyer": {
+        "type": "string"
+      },
+      "Skus": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "Sku": {
+              "type": "string"
+            },
+            "Units": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    }
+  },
+  "nodes": [],
+  "links": [
+    {
+      "from": {
+        "source": "id"
+      },
+      "to": {
+        "target": "Reference"
+      }
+    },
+    {
+      "from": {
+        "source": "customer.name"
+      },
+      "to": {
+        "target": "Buyer"
+      }
+    },
+    {
+      "from": {
+        "source": "lines[].sku"
+      },
+      "to": {
+        "target": "Skus[].Sku"
+      }
+    },
+    {
+      "from": {
+        "source": "lines[].qty"
+      },
+      "to": {
+        "target": "Skus[].Units"
+      }
+    }
+  ],
+  "loops": [
+    {
+      "source": "lines[]",
+      "target": "Skus[]"
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "version": 1,
+  "source": {
+    "type": "object",
+    "title": "Person",
+    "properties": {
+      "FirstName": {
+        "type": "string"
+      },
+      "LastName": {
+        "type": "string"
+      },
+      "DateOfBirth": {
+        "type": "string",
+        "format": "date"
+      },
+      "Address": {
+        "type": "string"
+      },
+      "ZipCode": {
+        "type": "string"
+      },
+      "PhoneCalls": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "PhoneNumber": {
+              "type": "string"
+            },
+            "Cost": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "properties": {
+      "Calls": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "Number": {
+              "type": "string"
+            },
+            "Cost": {
+              "type": "number"
+            },
+            "Kind": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "loops": [
+    {
+      "source": "PhoneCalls[]",
+      "target": "Calls[]",
+      "page": "calls"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "prefix",
+      "operator": "text.left",
+      "constants": {
+        "1": 4
+      }
+    },
+    {
+      "id": "isNational",
+      "operator": "logic.equal",
+      "constants": {
+        "1": "+351"
+      }
+    },
+    {
+      "id": "kind",
+      "operator": "flow.ifElse",
+      "constants": {
+        "1": "national",
+        "2": "international"
+      }
+    }
+  ],
+  "links": [
+    {
+      "from": {
+        "source": "PhoneCalls[].PhoneNumber"
+      },
+      "to": {
+        "target": "Calls[].Number"
+      }
+    },
+    {
+      "from": {
+        "source": "PhoneCalls[].Cost"
+      },
+      "to": {
+        "target": "Calls[].Cost"
+      }
+    },
+    {
+      "from": {
+        "source": "PhoneCalls[].PhoneNumber"
+      },
+      "to": {
+        "node": "prefix",
+        "input": 0
+      }
+    },
+    {
+      "from": {
+        "node": "prefix"
+      },
+      "to": {
+        "node": "isNational",
+        "input": 0
+      }
+    },
+    {
+      "from": {
+        "node": "isNational"
+      },
+      "to": {
+        "node": "kind",
+        "input": 0
+      }
+    },
+    {
+      "from": {
+        "node": "kind"
+      },
+      "to": {
+        "target": "Calls[].Kind"
+      }
+    }
+  ]
+}

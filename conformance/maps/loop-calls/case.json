@@ -1,0 +1,3 @@
+{
+  "description": "A loop repeats the target array once per source item, and operators inside it see the current item."
+}

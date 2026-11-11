@@ -1,0 +1,30 @@
+{
+  "type": "object",
+  "xml": {
+    "name": "Basket"
+  },
+  "properties": {
+    "owner": {
+      "type": "string",
+      "xml": {
+        "attribute": true,
+        "name": "owner-id"
+      }
+    },
+    "items": {
+      "type": "array",
+      "xml": {
+        "wrapped": true
+      },
+      "items": {
+        "type": "string",
+        "xml": {
+          "name": "item"
+        }
+      }
+    },
+    "total": {
+      "type": "number"
+    }
+  }
+}

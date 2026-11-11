@@ -1,0 +1,38 @@
+{
+  "file": {
+    "bank": "BANK01"
+  },
+  "batches": [
+    {
+      "name": "PAYROLL",
+      "entries": [
+        {
+          "payee": "ANA",
+          "pence": 12.5
+        },
+        {
+          "payee": "BEN",
+          "pence": 0.99
+        }
+      ],
+      "control": {
+        "count": 2
+      }
+    },
+    {
+      "name": "SUPPLY",
+      "entries": [
+        {
+          "payee": "ACME",
+          "pence": 100
+        }
+      ],
+      "control": {
+        "count": 1
+      }
+    }
+  ],
+  "end": {
+    "batches": 2
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "source": {
+    "type": "object",
+    "properties": {
+      "Lines": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "Sku": {
+              "type": "string"
+            },
+            "Qty": {
+              "type": "number"
+            },
+            "Date": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "properties": {
+      "Products": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "Sku": {
+              "type": "string"
+            },
+            "FirstDate": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "loops": [
+    {
+      "source": "Lines[]",
+      "target": "Products[]",
+      "sortBy": [
+        {
+          "path": "Lines[].Date"
+        }
+      ],
+      "groupBy": "Lines[].Sku"
+    }
+  ],
+  "nodes": [],
+  "links": [
+    {
+      "from": {
+        "source": "Lines[].Sku"
+      },
+      "to": {
+        "target": "Products[].Sku"
+      }
+    },
+    {
+      "from": {
+        "source": "Lines[].Date"
+      },
+      "to": {
+        "target": "Products[].FirstDate"
+      }
+    }
+  ]
+}

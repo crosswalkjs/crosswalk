@@ -1,0 +1,62 @@
+---
+title: Big maps
+description: A real-sized map in the editor, with live timings, and how to find your way round one.
+hide_table_of_contents: true
+---
+
+import BigMap from '@site/src/components/BigMap';
+
+# Big maps
+
+Real integrations get big. This is a web shop's order mapped to an ERP sales order, the kind of map one ends up with: about 120 fields in the order and 140 in the sales order, nested records and lists inside lists, look-up tables, dates, totals checked against each other, an address sub-map used three times, and 208 operators split across seven pages.
+
+Pick more orders to put several side by side, as a batch, up to 1,664 operators and over 2,000 fields. The numbers under the editor are its own timings, from your browser, as you use it.
+
+<BigMap />
+
+## What the numbers mean
+
+- **Frames a second** counts what your screen managed over the last second. Around 60 is smooth.
+- **Redraw** is how long the editor took to draw its lines again, which it does on every frame something moves: dragging, hovering, scrolling, zooming. Under about 16 ms keeps 60 frames a second.
+- **Last edit** is rebuilding the editor after a change, including the browser laying it out. An edit happens once, when you let go, so a tenth of a second here is barely noticed.
+- **Running the map** is the transform itself, on the sample order, as your server would run it.
+
+Measured in Chrome on a recent laptop, and again with the processor slowed four times in the developer tools to stand in for an ordinary office laptop:
+
+| | Redraw | Edit | Running the map |
+|---|---|---|---|
+| 1 order | under 1 ms | 5 ms | 1 ms |
+| 8 orders | 7 ms | 45 ms | 4 ms |
+| 1 order, slowed down | 2 ms | 15 ms | 3 ms |
+| 8 orders, slowed down | 30 ms | 150 ms | 15 ms |
+
+So one order is smooth everywhere. Eight orders on a slow machine drop to 30 or 40 frames a second while you drag, which is usable but no longer smooth.
+
+The browser tests check a map of 1,200 operators stays quick to drag and zoom, so this doesn't quietly get worse.
+
+## Finding your way round
+
+A map this size is only usable if you can see one part of it at a time. The editor has a few ways to do that:
+
+- **Pages.** The tabs along the bottom of the grid split the operators into Header, Parties, Items and so on. Opening one scrolls the trees to its fields and fades the rest. A line from an operator on another page shows as a short stub; click its label to go there.
+- **Lines out of view.** A line to a field scrolled out of its tree is faded, so the lines you can follow stand out.
+- **The trees follow the grid.** Scroll the grid down to other operators and, once it stops, each tree scrolls to the fields most of them use. With eight orders, scrolling down the Header page takes the trees from the first order to the second.
+- **Search.** The magnifier in each tree's heading narrows the whole map to the paths from the fields you type: their operators, laid out together, and the fields they reach in the other tree. Search the order for `ordernumber` and you're left with each order's number and the two sales order fields it fills.
+- **Folding.** The arrow beside a record folds its fields away. Lines into them end on the record.
+- **Hovering.** Hover over a field or an operator and everything else fades.
+- **Tracing.** Click a target field, such as Pricing's **Balanced**, to pick out everything its value is made from. The trace follows you between pages, and each tab shows how many of its operators are there.
+- **Zoom.** The buttons in the grid's corner zoom out to see a whole page; **⤢** fits it in view.
+
+## Timing your own
+
+The editor reports its own timings to `onPerformance`, which is how the numbers above are made:
+
+```ts
+createMapper(element, {
+  document: map,
+  onPerformance: ({ kind, ms }) => {
+    // kind is "render" after an edit, and "redraw" each time the lines are drawn again.
+    console.log(kind, ms.toFixed(1));
+  },
+});
+```

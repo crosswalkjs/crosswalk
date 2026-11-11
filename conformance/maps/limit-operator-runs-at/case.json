@@ -1,0 +1,3 @@
+{
+  "description": "Exactly at the operator-run limit: 3 operators for each of 4 calls is 12 runs, each operator once per item."
+}

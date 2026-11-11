@@ -1,0 +1,33 @@
+{
+  "rows": [
+    {
+      "id": "P-1",
+      "ids": [
+        {
+          "id": "123",
+          "authority": {
+            "name": "HOSP",
+            "oid": "1.2.3",
+            "kind": "ISO"
+          }
+        },
+        {
+          "id": "456",
+          "authority": {
+            "name": "LAB"
+          }
+        }
+      ]
+    },
+    {
+      "id": "P-2",
+      "ids": [
+        {
+          "authority": {
+            "oid": "9.9"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+---
+title: Read-only view
+description: Show which fields map to which, in the editor's look, without editing.
+---
+
+import LiveMapper from '@site/src/components/LiveMapper';
+import {orderInput, orderMap} from '@site/src/examples/order';
+import {personInput, personMap} from '@site/src/examples/person';
+
+# Read-only view
+
+Sometimes you only need to show a mapping, such as on a summary page or in a review form, rather than let someone change it. `createMapView` draws a map read-only, in the same theme as the editor:
+
+```ts
+import { createMapView } from "@crosswalkjs/canvas";
+
+const view = createMapView(element, { document: map, theme: "ink" });
+```
+
+Here it is with an order mapped to an invoice. Flip the switches to try the [options](#options), and the code underneath changes to match:
+
+<LiveMapper
+  view
+  examples={{order: {label: 'Order to invoice', map: orderMap, input: orderInput}, person: {label: 'Person', map: personMap, input: personInput}}}
+  open={{code: true, data: false}}
+/>
+
+Compared with the editor:
+
+- **Only mapped fields show.** A field appears when something maps to or from it, along with the records it sits in, including the fields a record link fills through a sub-map. Fields nothing uses are left out.
+- **Operators are laid out for you,** in columns between the fields they connect, ignoring where they were placed in the editor. Their captions say what they do ("Concatenate"), not their ids.
+- **It sizes itself to fit,** so it sits in a page without a fixed height. The element doesn't need a height.
+- **Nothing can change.** There's no toolbox, inspector, dragging or editing keys. Hovering a field or operator still picks out its lines, and clicking an operator keeps them picked out.
+
+## Options
+
+| Option | What it does |
+|---|---|
+| `document` | The map to show. Required. |
+| `registry` | Needed to label your own operators. Defaults to the built-ins. |
+| `theme` | A theme id or definition, as for the editor. |
+| `showUnmapped` | Show every field, not only mapped ones. |
+| `savedLayout` | Keep operators where they were placed in the editor. |
+| `hideOperators` | Draw each target field's line straight from the source fields it comes from. A line that went through operators is finely dashed, so it doesn't read as a plain copy. |
+| `hideGrid` | Close up the space between the trees to just the lines. Hides operators and notes too. |
+| `hideTypes` | Hide the type badges beside field names. |
+| `hideNotes` | Hide the map's notes. |
+| `hidePages` | Show a map split into pages all at once, without its tabs. |
+| `hideSearch` | Hide the magnifier in each tree's heading that finds a field. |
+| `preview` | `{ input }`: show each target field's value for a sample input, as the editor's [live preview](./server.md#live-preview) does. |
+| `fillContainer` | Fill the element's height, rather than sizing to the content. |
+
+Notes show in the view too. A note pinned to something stays beside it as the operators are laid out. Loose notes line up beneath the operators, since the operators have moved away from where the notes were left, and so do notes pinned to operators while operators are hidden. A map with sub-maps gets the same **Showing** bar as the editor, so readers can look inside them. A map split into pages gets its tabs too, with each page laid out on its own.
+
+The view returns `getDocument`, `setDocument`, `setTheme`, `getIssues` and `destroy`. Call `setDocument` to show a different map in the same place.
+
+## In a framework
+
+Use the component on [your framework's page](../frameworks/overview.md) and swap `createMapper` for `createMapView`. Drop the height, since the view sizes itself, and `onChange`, since nothing changes.
+
+The same options are on `createMapper` itself (`readOnly`, `mappedOnly`, `autoLayout`, `fitContent`, and the `hide` ones) for combinations `createMapView` doesn't cover, such as the full editor sized to its content. Hiding operators or the grid only works with `readOnly`, since an editor needs them.

@@ -1,0 +1,28 @@
+---
+title: HL7
+description: "Make a schema for HL7 v2 messages from a sample: segments, fields, parts and repeats."
+---
+
+import FlatFileWizard from '@site/src/components/FlatFileWizard';
+
+# HL7
+
+An HL7 v2 message is a line per segment, named by its first field: `MSH`, `PID`, `OBX`. Fields are split by `|`, and a field can hold parts split by `^`, repeats split by `~`, and sub-parts split by `&`:
+
+```text
+PID|1||123^^^HOSP~456^^^LAB||SMITH^JOHN^Q
+```
+
+There, the identifiers field holds two repeats, and the name has three parts. The `MSH` segment says which separators a message uses, so the builder reads them from there.
+
+## Tell Crosswalk how to read it
+
+To read a file, Crosswalk needs its schema: the name and type of each field, and which ones are lists. The builder below makes one from an example, and shows the JSON it reads as you go. When it reads the example the way you want, the **Schema** tab has the schema to use in a map.
+
+1. **Pick a segment** by clicking its tag at the start of any of its lines.
+2. **Name its fields.** Click a field on any of its lines and name it in the bar under the lines. A field with parts, such as `SMITH^JOHN^Q`, shows each part on its own: click one to name it. Sub-parts, split by `&`, work the same way. A field that's a list, such as the identifiers split by `~`, has its items shaded in turn.
+3. Name the segment above the lines. The dropdown beside each tag says whether it reads as one record or a list: one `PID` is a record, and the `OBX` segments are a list.
+
+<FlatFileWizard example="hl7" />
+
+Every setting is in the [flat files reference](../flat-files.mdx#repeats-within-a-line).

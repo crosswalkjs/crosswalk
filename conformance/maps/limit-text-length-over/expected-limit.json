@@ -1,0 +1,4 @@
+{
+  "limit": "maxTextLength",
+  "node": "fullName"
+}

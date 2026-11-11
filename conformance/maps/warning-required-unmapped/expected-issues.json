@@ -1,0 +1,12 @@
+[
+  {
+    "severity": "warning",
+    "code": "required-unmapped",
+    "path": "email"
+  },
+  {
+    "severity": "warning",
+    "code": "required-unmapped",
+    "path": "address.line1"
+  }
+]

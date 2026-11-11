@@ -1,0 +1,3 @@
+{
+  "description": "Schemas written with allOf, oneOf, anyOf and type lists read as one plain shape: allOf merged in, oneOf and anyOf as one record with every alternative's fields, a type list as its type that isn't null. Output follows that shape's field order. A schema with only const or enum takes its type from the values."
+}

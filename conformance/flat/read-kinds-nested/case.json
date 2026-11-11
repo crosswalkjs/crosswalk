@@ -1,0 +1,3 @@
+{
+  "description": "Nested kinds of line in fixed-width: each batch's entries and trailer belong to the batch header above them; columns start after the tag."
+}

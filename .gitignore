@@ -1,0 +1,11 @@
+node_modules
+dist
+*.tsbuildinfo
+.DS_Store
+.claude/
+bin/
+obj/
+*.nupkg
+TestResults/
+test-results/
+playwright-report/

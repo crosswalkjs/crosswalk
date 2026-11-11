@@ -1,0 +1,7 @@
+{
+  "id": "customer",
+  "label": "Customer",
+  "extends": "solarized-light",
+  "colors": { "accent": "#2aa198" },
+  "links": "elbow"
+}

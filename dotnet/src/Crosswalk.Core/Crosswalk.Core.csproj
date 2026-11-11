@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>Crosswalk</RootNamespace>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- Members whose names say it all, such as Id, are left without a comment. -->
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <IsAotCompatible>true</IsAotCompatible>
+
+    <PackageId>Crosswalk.Core</PackageId>
+    <Title>Crosswalk</Title>
+    <Description>Runs Crosswalk maps in .NET: JSON-to-JSON mappings drawn in the Crosswalk editor. Validates maps, runs them synchronously or asynchronously, and lets you add your own operators in C#.</Description>
+    <Authors>James Mann</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://crosswalkjs.github.io/crosswalk/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/crosswalkjs/crosswalk</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>json;mapping;transform;data-mapping;schema;etl</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>

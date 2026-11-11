@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": {
+    "type": "object",
+    "properties": {
+      "billing": {
+        "$ref": "#/$defs/Address"
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string"
+      }
+    }
+  },
+  "nodes": [],
+  "links": []
+}

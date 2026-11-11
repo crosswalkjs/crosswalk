@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "source": {
+    "type": "object",
+    "properties": {
+      "Orders": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "Id": {
+              "type": "string"
+            },
+            "Lines": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "Amount": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "properties": {
+      "Totals": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "Id": {
+              "type": "string"
+            },
+            "Total": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    }
+  },
+  "loops": [
+    {
+      "source": "Orders[]",
+      "target": "Totals[]"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "total",
+      "operator": "aggregate.sum",
+      "scope": "Orders[].Lines[]"
+    }
+  ],
+  "links": [
+    {
+      "from": {
+        "source": "Orders[].Id"
+      },
+      "to": {
+        "target": "Totals[].Id"
+      }
+    },
+    {
+      "from": {
+        "source": "Orders[].Lines[].Amount"
+      },
+      "to": {
+        "node": "total",
+        "input": 0
+      }
+    },
+    {
+      "from": {
+        "node": "total"
+      },
+      "to": {
+        "target": "Totals[].Total"
+      }
+    }
+  ]
+}

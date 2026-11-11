@@ -1,0 +1,26 @@
+{
+  "Name": "Ana Silva",
+  "Billing": {
+    "Street": "12 Rua das Flores",
+    "City": "Porto",
+    "Postcode": "4050-123"
+  },
+  "Shipping": {
+    "Street": "3 High St",
+    "City": "Leeds",
+    "Postcode": "ls1 4ap",
+    "Notes": "Leave with neighbour"
+  },
+  "Addresses": [
+    {
+      "Street": "1 A St",
+      "City": "York",
+      "Postcode": "yo1 1aa"
+    },
+    {
+      "Street": "2 B Rd",
+      "City": "Bath",
+      "Postcode": "ba1 1bb"
+    }
+  ]
+}

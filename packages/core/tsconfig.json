@@ -1,0 +1,8 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    // The docs' big map, which a test checks, imports the package by name; it means this source.
+    "paths": { "@crosswalkjs/core": ["./src/index.ts"] }
+  },
+  "include": ["src", "test", "test/**/*.json"]
+}

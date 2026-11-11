@@ -1,0 +1,61 @@
+{
+  "type": "object",
+  "xml": {
+    "name": "Order",
+    "namespace": "urn:example:orders"
+  },
+  "properties": {
+    "number": {
+      "type": "string",
+      "xml": {
+        "attribute": true
+      }
+    },
+    "priority": {
+      "type": "integer",
+      "xml": {
+        "attribute": true
+      }
+    },
+    "Customer": {
+      "type": "object",
+      "properties": {
+        "vip": {
+          "type": "boolean",
+          "xml": {
+            "attribute": true
+          }
+        },
+        "name": {
+          "type": "string",
+          "xml": {
+            "nodeType": "text"
+          }
+        }
+      }
+    },
+    "Line": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Sku": {
+            "type": "string"
+          },
+          "Qty": {
+            "type": "integer"
+          },
+          "Price": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "Note": {
+      "type": "string"
+    },
+    "Discount": {
+      "type": "number"
+    }
+  }
+}

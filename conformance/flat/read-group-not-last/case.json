@@ -1,0 +1,3 @@
+{
+  "description": "A group with no count takes the rest of the line, so a column after it refuses the schema."
+}

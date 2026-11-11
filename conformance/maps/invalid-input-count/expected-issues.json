@@ -1,0 +1,7 @@
+[
+  {
+    "severity": "error",
+    "code": "input-count",
+    "node": "gate"
+  }
+]

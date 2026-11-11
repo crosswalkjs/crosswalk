@@ -1,0 +1,19 @@
+{
+  "Products": [
+    {
+      "Sku": "B",
+      "Total": 5,
+      "Lines": 2
+    },
+    {
+      "Sku": "A",
+      "Total": 5,
+      "Lines": 2
+    },
+    {
+      "Sku": "C",
+      "Total": 0,
+      "Lines": 1
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+{
+  "description": "Grouping makes one item per key, in the order keys first appear. A field reads from the group's first item, and an aggregate over the loop's array covers the group."
+}

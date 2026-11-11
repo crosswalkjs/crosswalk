@@ -1,0 +1,95 @@
+{
+  "type": "object",
+  "flat": {
+    "format": "fixed",
+    "lineEnding": "\r\n"
+  },
+  "properties": {
+    "file": {
+      "type": "object",
+      "flat": {
+        "tag": "FH"
+      },
+      "properties": {
+        "bank": {
+          "type": "string",
+          "flat": {
+            "width": 6
+          }
+        }
+      }
+    },
+    "batches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "flat": {
+          "tag": "BH"
+        },
+        "properties": {
+          "name": {
+            "type": "string",
+            "flat": {
+              "width": 8
+            }
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "flat": {
+                "tag": "EN"
+              },
+              "properties": {
+                "payee": {
+                  "type": "string",
+                  "flat": {
+                    "width": 6
+                  }
+                },
+                "pence": {
+                  "type": "number",
+                  "flat": {
+                    "width": 6,
+                    "pad": "0",
+                    "decimals": 2
+                  }
+                }
+              }
+            }
+          },
+          "control": {
+            "type": "object",
+            "flat": {
+              "tag": "BT"
+            },
+            "properties": {
+              "count": {
+                "type": "integer",
+                "flat": {
+                  "width": 3,
+                  "pad": "0"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "end": {
+      "type": "object",
+      "flat": {
+        "tag": "FT"
+      },
+      "properties": {
+        "batches": {
+          "type": "integer",
+          "flat": {
+            "width": 3,
+            "pad": "0"
+          }
+        }
+      }
+    }
+  }
+}

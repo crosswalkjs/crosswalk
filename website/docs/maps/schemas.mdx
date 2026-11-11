@@ -1,0 +1,83 @@
+---
+title: Schemas
+description: "The shapes a map maps between, and where they can come from: JSON Schema, OpenAPI, files that refer to each other, or a sample."
+---
+
+import Sandbox from '@site/src/components/Sandbox';
+
+# Schemas
+
+A map's `source` and `target` are JSON Schemas: they say what fields there are to map, which repeat, and which are required. The editor draws them as its two trees, and the runtimes build the output in the target's field order.
+
+Real schemas come from all sorts of places, so Crosswalk reads them in a few ways. Each ends up as a plain JSON Schema in the map, so a map always stands alone and runs the same in [JavaScript](../getting-started.md) and [.NET](../dotnet.md).
+
+## What it reads in a JSON Schema
+
+Crosswalk reads the parts of JSON Schema that describe shape, and ignores rules about values, such as `pattern` or `minimum`.
+
+| Keyword | Read as |
+|---|---|
+| `type` | `object`, `array`, `string`, `number`, `integer`, `boolean` or `null`. A list, such as `["string", "null"]`, is its first type that isn't `null`. Left out, it's a record if there are `properties`, an array if there are `items`, the type of the values for `const` or `enum`, and otherwise a record. |
+| `properties`, `items`, `required` | The fields, what an array holds, and which fields a record must have. A required target field with nothing mapped to it is a warning. |
+| `title`, `description`, `format` | Kept, for showing. |
+| `$ref` | To the schema's own `$defs` or `definitions`: what it points at, with anything beside it added. A schema that refers back to one it's inside, such as a category of categories, is followed once. For other files, see [below](#schemas-in-several-files). |
+| `allOf` | Merged in: the schema's own fields, then each part's in turn, with `required` everything any part requires. The usual way of saying "an Order is a NewOrder with an id". |
+| `oneOf`, `anyOf` | One of several shapes. Crosswalk reads them as one record with every alternative's fields, each required only if every alternative requires it, so you can map whichever the data turns out to be; a field that isn't there is left out. `null` alternatives are dropped, so `anyOf: [X, { type: "null" }]` is X. |
+
+## From an OpenAPI document
+
+Most APIs publish an OpenAPI document rather than separate schemas. `openApiSchemas` lists every schema one describes: each operation's JSON request and response bodies, named like `POST /orders request` or `GET /invoices/{id} response 200`, then the named component schemas. Each comes with the document's other schemas in `$defs`, so it stands alone. OpenAPI 3.0 and 3.1 are read, and Swagger 2.0.
+
+```ts
+import { openApiSchemas } from "@crosswalkjs/core";
+
+const schemas = openApiSchemas(api);
+const map = {
+  version: 1,
+  source: schemas.find((s) => s.name === "POST /orders request")!.schema,
+  target: schemas.find((s) => s.name === "GET /invoices/{id} response 200")!.schema,
+  nodes: [],
+  links: [],
+};
+```
+
+Here, pick any two of the API's schemas to map between:
+
+<Sandbox example="schemas-openapi" height={460} />
+
+## Schemas in several files
+
+A big schema is often split into files that refer to each other, such as `{ "$ref": "common/types.json#/$defs/Address" }`. `bundleSchema` follows those references and brings what they point at into `$defs`, so the result stands alone. You give it a `load` function that fetches a document by its address, so it works with URLs, files on disk or anything else; each document is loaded once, and references inside it are followed relative to it.
+
+```ts
+import { bundleSchema } from "@crosswalkjs/core";
+
+const load = (address: string) => fetch(address).then((response) => response.json());
+const order = await bundleSchema(await load(url), load, url);
+```
+
+On a server, read files instead: `(path) => JSON.parse(readFileSync(path, "utf8"))`. Bundle once, when the schema comes in, and keep the result in the map.
+
+<Sandbox example="schemas-bundle" height={460} />
+
+## From XSD
+
+An XSD gives a schema for each element it declares, ready for reading and writing XML. See [XML](./xml.mdx).
+
+## From a CSV sample
+
+A few lines of a CSV file give a schema too. See [Flat files](./flat-files.mdx#a-schema-from-a-sample).
+
+## From a sample
+
+With an example of the data and no schema, `inferSchema` makes one: every field it sees, with arrays' items merged, so fields that only some items have are included.
+
+```ts
+import { inferSchema } from "@crosswalkjs/core";
+
+const source = inferSchema(sampleOrder);
+```
+
+## In the editor
+
+With `editSchemas: true`, each tree's heading has a button to replace its schema: from a sample, a JSON Schema, or one picked from an OpenAPI document, pasted in. It's an edit like any other, so undo puts the old schema back, and links to fields the new schema doesn't have show as issues to fix. It's off unless you turn it on, since many apps own their schemas. The OpenAPI example above has it on: try the buttons beside each tree's magnifier.

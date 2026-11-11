@@ -1,0 +1,59 @@
+{
+  "type": "object",
+  "flat": {
+    "format": "csv",
+    "delimiter": "+",
+    "terminator": "'",
+    "release": "?"
+  },
+  "properties": {
+    "header": {
+      "type": "object",
+      "flat": {
+        "tag": "UNH"
+      },
+      "properties": {
+        "reference": {
+          "type": "string"
+        },
+        "type": {
+          "type": "object",
+          "flat": {
+            "delimiter": ":"
+          },
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            },
+            "release": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "names": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "flat": {
+          "tag": "NAD"
+        },
+        "properties": {
+          "role": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

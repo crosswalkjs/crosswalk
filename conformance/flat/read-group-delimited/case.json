@@ -1,0 +1,3 @@
+{
+  "description": "A repeating group within one CSV field: items split by the group's delimiter, each split into its parts by its items' delimiter, as HL7 repeats a field with ~ and splits it with ^. Single values too."
+}

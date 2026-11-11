@@ -1,0 +1,75 @@
+{
+  "type": "object",
+  "flat": {
+    "format": "csv",
+    "delimiter": "|"
+  },
+  "properties": {
+    "header": {
+      "type": "object",
+      "flat": {
+        "tag": "MSH"
+      },
+      "properties": {
+        "encoding": {
+          "type": "string"
+        },
+        "sender": {
+          "type": "string"
+        }
+      }
+    },
+    "patient": {
+      "type": "object",
+      "flat": {
+        "tag": "PID"
+      },
+      "properties": {
+        "set": {
+          "type": "integer"
+        },
+        "external": {
+          "type": "string"
+        },
+        "identifiers": {
+          "type": "array",
+          "flat": {
+            "delimiter": "~"
+          },
+          "items": {
+            "type": "object",
+            "flat": {
+              "delimiter": "^"
+            },
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "check": {
+                "type": "string"
+              },
+              "scheme": {
+                "type": "string"
+              },
+              "authority": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "aliases": {
+          "type": "array",
+          "flat": {
+            "delimiter": "~"
+          },
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

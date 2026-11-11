@@ -1,0 +1,24 @@
+{
+  "Calls": [
+    {
+      "Number": "+351917777777",
+      "Cost": 2.5,
+      "Kind": "national"
+    },
+    {
+      "Number": "+441234567890",
+      "Cost": 4,
+      "Kind": "international"
+    },
+    {
+      "Number": "+351225555555",
+      "Cost": 1.25,
+      "Kind": "national"
+    },
+    {
+      "Number": "+15550001111",
+      "Cost": 3.1,
+      "Kind": "international"
+    }
+  ]
+}

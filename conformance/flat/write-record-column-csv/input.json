@@ -1,0 +1,22 @@
+{
+  "rows": [
+    {
+      "id": "P-1",
+      "name": {
+        "family": "SMITH",
+        "given": "JOHN"
+      },
+      "born": "19800101"
+    },
+    {
+      "id": "P-2",
+      "born": "19900101"
+    },
+    {
+      "id": "P-3",
+      "name": {
+        "middle": "Q"
+      }
+    }
+  ]
+}

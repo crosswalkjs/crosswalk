@@ -1,0 +1,52 @@
+name: Release
+
+# Publishing a GitHub release publishes the npm packages, at the versions in their
+# package.json files, and Crosswalk.Core to NuGet, at the version in
+# dotnet/Directory.Build.props. Keep the three versions the same.
+#
+# npm uses trusted publishing, so no npm token is stored here: each package needs
+# this repo and workflow added as a trusted publisher on npmjs.com, which can only
+# be done once the package exists. NuGet needs a NUGET_API_KEY secret.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      # Trusted publishing needs a recent npm.
+      - run: npm install -g npm@latest
+      - run: npm ci
+      - run: npm test
+      # Core first: the canvas depends on it.
+      - run: npm publish --workspace @crosswalkjs/core --provenance --access public
+      - run: npm publish --workspace @crosswalkjs/canvas --provenance --access public
+
+  nuget:
+    needs: publish
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: dotnet
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+      - run: dotnet test
+      - run: dotnet pack src/Crosswalk.Core -c Release -o ../artifacts
+      - run: dotnet nuget push ../artifacts/*.nupkg --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate

@@ -1,0 +1,64 @@
+---
+title: XML
+description: "Map XML documents: read them into the JSON a map takes, write the output back as XML, and take schemas from XSD."
+---
+
+import Sandbox from '@site/src/components/Sandbox';
+
+# XML
+
+Maps work on JSON, so XML is converted at the edges: read into JSON before the map runs, and written back out after. The map, the editor and the runtimes don't change, and the same map can take JSON one day and XML the next.
+
+Here an order is read from XML, mapped, and written as an invoice. Both schemas come from XSDs. Change the map and the XML underneath follows:
+
+<Sandbox example="xml-roundtrip" height={520} />
+
+## Reading and writing
+
+`xmlToJson` reads a document by the map's source schema, and `jsonToXml` writes the output by its target schema:
+
+```ts
+import { createTransform, jsonToXml, xmlToJson } from "@crosswalkjs/core";
+
+const transform = createTransform(map);
+const invoiceXml = jsonToXml(transform(xmlToJson(orderXml, map.source)), map.target);
+```
+
+The schema decides how each field sits in XML, using the `xml` keyword OpenAPI defines:
+
+| In XML | As JSON | In the schema |
+|---|---|---|
+| The root element | The root record | `xml: { name, namespace }` on the root, for writing it back |
+| A child element | A field, by its name without a prefix | Nothing extra |
+| An element that repeats | An array | `type: "array"`, with the element's own schema as `items` |
+| Repeated elements inside one of their own, such as `<Items><Item/>…</Items>` | An array | `xml: { wrapped: true }`, and `xml: { name: "Item" }` on the items |
+| An attribute | A field | `xml: { attribute: true }` |
+| Text beside attributes, such as `<Price currency="GBP">4.50</Price>` | A `#text` field | `xml: { nodeType: "text" }` |
+| A name that isn't a field's, such as `order-id` | A field of another name | `xml: { name: "order-id" }` |
+| `xsi:nil="true"` | `null` | Nothing extra |
+
+Values take the schema's type, since everything in XML is text: `"4.50"` is `4.5` for a `number`, and `"1"` is `true` for a `boolean`. A value that doesn't read as its type stays text. Without a schema, every field is text and an element that repeats is an array.
+
+Writing follows the target schema's order, attributes first, and leaves out fields that are missing or `null`. `jsonToXml` takes `{ indent, declaration, root }` to change the layout.
+
+A DOCTYPE is skipped and never expanded, so a document from anywhere can't make the reader fetch files or blow up in memory. A document that relies on its own entities is refused.
+
+## Schemas from XSD
+
+`xsdSchemas` gives a schema for each element an XSD declares at the top level, with the `xml` hints filled in:
+
+```ts
+import { xsdSchemas } from "@crosswalkjs/core";
+
+const order = xsdSchemas(orderXsd).find((s) => s.name === "Order")!.schema;
+```
+
+It reads sequences, choices (whose elements are all optional), `all`, attributes and attribute groups, element groups, extensions of other types, simple content, `minOccurs` and `maxOccurs`, enumerations and the built-in types: `xs:int` is an integer, `xs:decimal` a number, `xs:dateTime` text with a `date-time` format. Named complex types become `$defs`, so recursive types work. Other XSD files it includes or imports aren't followed yet.
+
+With only a sample document, `inferXmlSchema` makes a schema from it: every attribute and element it sees, with elements that repeat as arrays. Every value is text, since XML doesn't say otherwise.
+
+The editor's [schema form](./schemas.mdx#in-the-editor) takes an XML sample or an XSD too.
+
+## On .NET
+
+`XmlJson.Read` and `XmlJson.Write` in `Crosswalk.Core` read and write exactly as the JavaScript functions do, by the same schema, so a map authored here can take and produce XML on a .NET server. See [.NET](../dotnet.md#xml).

@@ -1,0 +1,416 @@
+/*
+ * Ink and paper, from Little Office: ink on paper, ruled lines instead of boxes, one highlighter, and no accent
+ * colour. Every colour comes from these tokens. The fonts are Atkinson Hyperlegible, served from the site itself.
+ */
+
+@font-face {
+  font-family: 'Atkinson Hyperlegible Next';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./fonts/atkinson-hyperlegible-next-latin-400-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Atkinson Hyperlegible Next';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('./fonts/atkinson-hyperlegible-next-latin-500-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Atkinson Hyperlegible Next';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('./fonts/atkinson-hyperlegible-next-latin-700-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Atkinson Hyperlegible Next';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('./fonts/atkinson-hyperlegible-next-latin-800-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Atkinson Hyperlegible Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./fonts/atkinson-hyperlegible-mono-latin-400-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Atkinson Hyperlegible Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('./fonts/atkinson-hyperlegible-mono-latin-500-normal.woff2') format('woff2');
+}
+
+:root {
+  --paper: #fafaf8;
+  --ink: #15171c;
+  --ink-2: #4a4d55;
+  --rule: #deddd8;
+  --rule-soft: #ecebe6;
+  --hover: #f2f1ec;
+  --highlight: #ffe066;
+  --shade: #f5f5f3;
+  --shade-2: #ececea;
+
+  --ifm-background-color: var(--paper);
+  --ifm-background-surface-color: var(--paper);
+  --ifm-font-color-base: var(--ink);
+  --ifm-heading-color: var(--ink);
+  --ifm-font-family-base: 'Atkinson Hyperlegible Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --ifm-heading-font-family: var(--ifm-font-family-base);
+  --ifm-font-family-monospace: 'Atkinson Hyperlegible Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --ifm-font-size-base: 17px;
+  --ifm-line-height-base: 1.6;
+  --ifm-heading-font-weight: 800;
+
+  /* No accent colour: the "primary" colour is ink. */
+  --ifm-color-primary: #15171c;
+  --ifm-color-primary-dark: #15171c;
+  --ifm-color-primary-darker: #15171c;
+  --ifm-color-primary-darkest: #000000;
+  --ifm-color-primary-light: #2a2d35;
+  --ifm-color-primary-lighter: #383b44;
+  --ifm-color-primary-lightest: #4a4d55;
+  --ifm-link-color: var(--ink);
+  --ifm-link-hover-color: var(--ink);
+  --ifm-link-decoration: none;
+  --ifm-link-hover-decoration: none;
+
+  --ifm-global-radius: 4px;
+  --ifm-code-border-radius: 3px;
+  --ifm-code-background: var(--shade-2);
+  --ifm-code-font-size: 92%;
+  --ifm-navbar-height: 4rem;
+  --ifm-navbar-shadow: none;
+  --ifm-toc-border-color: var(--rule);
+  --ifm-hr-border-color: var(--rule);
+  --ifm-table-border-color: var(--rule);
+  --ifm-table-head-background: transparent;
+  --ifm-table-stripe-background: transparent;
+  /* Large areas stay on the paper, as in Little Office: these shades are barely off it, and not warm, so panels
+     and bars read as paper with rules rather than as beige. */
+  --ifm-color-emphasis-100: var(--shade);
+  --ifm-color-emphasis-200: var(--shade-2);
+  --ifm-color-emphasis-300: var(--rule);
+  --ifm-menu-color: var(--ink-2);
+  --ifm-menu-color-active: var(--ink);
+  --ifm-menu-color-background-active: transparent;
+  --ifm-menu-color-background-hover: var(--hover);
+  --ifm-footer-background-color: var(--paper);
+  --ifm-footer-color: var(--ink-2);
+  --ifm-footer-link-color: var(--ink);
+  --ifm-footer-title-color: var(--ink);
+  --docusaurus-highlighted-code-line-bg: var(--rule-soft);
+}
+
+/* At night the paper is ink and the ink is paper; the rules and the highlighter keep their meaning. */
+[data-theme='dark'] {
+  --paper: #15171c;
+  --ink: #f2f1ec;
+  --ink-2: #b8b9bd;
+  --rule: #34363d;
+  --rule-soft: #24262c;
+  --hover: #1d1f25;
+  --shade: #1b1d22;
+  --shade-2: #24262c;
+  --ifm-color-primary: #f2f1ec;
+  --ifm-color-primary-dark: #f2f1ec;
+  --ifm-color-primary-darker: #f2f1ec;
+  --ifm-color-primary-darkest: #ffffff;
+  --ifm-color-primary-light: #deddd8;
+  --ifm-color-primary-lighter: #c9c7c0;
+  --ifm-color-primary-lightest: #b8b9bd;
+}
+
+html,
+body {
+  background: var(--paper);
+}
+
+/* Links are ink, underlined; thicker on hover rather than another colour. */
+.markdown a,
+.footer__link-item {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.markdown a:hover,
+.footer__link-item:hover {
+  text-decoration-thickness: 2px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/* The highlighter means "look here first", and nothing else. */
+.highlight {
+  padding: 2px 6px;
+  background: var(--highlight);
+  color: #15171c;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* The header: a 2px ink rule, the name, and a text nav; the section you're in is bold with a heavy underline. */
+.navbar {
+  border-bottom: 2px solid var(--ink);
+  background: var(--paper);
+}
+
+.navbar__title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.navbar__logo {
+  height: 1.6rem;
+}
+
+.navbar__link {
+  color: var(--ink-2);
+  font-weight: 400;
+}
+
+.navbar__link:hover {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 8px;
+}
+
+.navbar__link--active,
+.navbar__link--active:hover {
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 8px;
+}
+
+/* Headings: page titles large and heavy; sections sit on a 2px ink rule. */
+.markdown h1,
+h1 {
+  font-size: 44px;
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+}
+
+.markdown h2 {
+  margin-top: 2.5rem;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--ink);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.markdown h3 {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+@media (max-width: 760px) {
+  .markdown h1,
+  h1 {
+    font-size: 30px;
+  }
+}
+
+/* The sidebar: a ruled list of text, sections as small subheadings, the page you're on bold with an ink bar. */
+.theme-doc-sidebar-container {
+  border-right: 1px solid var(--rule) !important; /* Docusaurus sets its own border inline-level; this is the only way to recolour it. */
+}
+
+.menu {
+  padding: 1rem 0.75rem;
+  font-size: 15px;
+}
+
+.menu__link {
+  border-radius: 0;
+  box-shadow: inset 3px 0 0 transparent;
+}
+
+.menu__link--active,
+.menu__link--active:hover {
+  box-shadow: inset 3px 0 0 var(--ink);
+  font-weight: 700;
+}
+
+.menu__list-item-collapsible--active,
+.menu__list-item-collapsible:hover {
+  background: none;
+}
+
+.theme-doc-sidebar-item-category-level-1 > .menu__list-item-collapsible > .menu__link {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* Breadcrumbs and the table of contents: text only. */
+.breadcrumbs__link {
+  border-radius: 0;
+  background: none;
+  font-size: 14px;
+}
+
+.breadcrumbs__item--active .breadcrumbs__link {
+  background: none;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.table-of-contents__link {
+  color: var(--ink-2);
+}
+
+.table-of-contents__link--active,
+.table-of-contents__link:hover {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* Code: ruled blocks on the hover tint, and inline code on the soft rule. */
+code {
+  border: 0;
+  vertical-align: baseline;
+}
+
+.theme-code-block {
+  border: 1px solid var(--rule);
+  box-shadow: none !important; /* The code block sets its own shadow; ink and paper has none. */
+}
+
+/* Tables: rows divided by hairlines, no stripes, and no shaded header. */
+.markdown table thead tr {
+  border-bottom: 2px solid var(--ink);
+  background: none;
+}
+
+.markdown table th {
+  text-align: left;
+}
+
+.markdown table {
+  border-collapse: collapse;
+}
+
+.markdown table tr,
+.markdown table tr:nth-child(2n) {
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  background: none;
+}
+
+.markdown table th,
+.markdown table td {
+  border: 0;
+}
+
+.markdown table th {
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+/* Notes: an ink rule down the side, not a coloured box; a warning's label is highlighted. */
+.theme-admonition {
+  border: 0;
+  border-left: 3px solid var(--ink);
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  color: var(--ink);
+}
+
+.theme-admonition [class*='admonitionHeading'] {
+  color: var(--ink);
+}
+
+.theme-admonition [class*='admonitionIcon'] svg {
+  fill: var(--ink);
+}
+
+.theme-admonition-warning [class*='admonitionHeading'],
+.theme-admonition-danger [class*='admonitionHeading'],
+.theme-admonition-caution [class*='admonitionHeading'] {
+  display: inline-block;
+  padding: 2px 6px;
+  background: var(--highlight);
+  color: #15171c;
+}
+
+/* Buttons: primary solid ink, secondary an ink outline. */
+.button {
+  border-radius: 4px;
+  font-weight: 700;
+  box-shadow: none;
+}
+
+.button--primary {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.button--primary:hover {
+  background: var(--ink);
+  color: var(--paper);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.button--secondary {
+  border: 1.5px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+}
+
+.button--secondary:hover {
+  background: var(--hover);
+  color: var(--ink);
+}
+
+/* The footer: paper, on a 2px ink rule. */
+.footer {
+  border-top: 2px solid var(--ink);
+}
+
+.footer__title {
+  font-weight: 800;
+}
+
+.footer__copyright {
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+/* Pagination at the foot of a page: ruled, not boxed. */
+.pagination-nav__link {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  border-radius: 0;
+}
+
+.pagination-nav__link:hover {
+  border-color: var(--ink);
+  background: var(--hover);
+}
+
+.pagination-nav__label {
+  font-weight: 700;
+}

@@ -1,0 +1,3 @@
+{
+  "description": "Copying a record as it is into a record that declares other fields is allowed, with a warning naming the fields it has no place for. A record that declares no fields takes any."
+}

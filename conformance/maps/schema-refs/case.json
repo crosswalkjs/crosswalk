@@ -1,0 +1,3 @@
+{
+  "description": "A $ref to the root schema's $defs or definitions stands for what it points at. A schema that refers back to one it's inside stops there, as a record with no fields listed, which can be copied whole."
+}

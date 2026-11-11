@@ -1,0 +1,24 @@
+{
+  "billing": {
+    "street": "4 Mill Lane",
+    "city": "Leeds"
+  },
+  "category": {
+    "name": "Tea",
+    "children": [
+      {
+        "name": "Green",
+        "children": [
+          {
+            "name": "Sencha",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "Black",
+        "children": []
+      }
+    ]
+  }
+}

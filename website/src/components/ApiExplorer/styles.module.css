@@ -1,0 +1,82 @@
+/* The API explorer: the editor, what to listen to and call, the log, and the code. */
+.frame {
+  margin: 1.5rem 0 2rem;
+  overflow: hidden;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 12px;
+  background: var(--ifm-background-color);
+}
+
+.editor {
+  height: 400px;
+}
+
+.editor :global(.cw-root) {
+  border: 0;
+  border-radius: 0;
+}
+
+.controls {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--ifm-color-emphasis-300);
+  background: var(--ifm-color-emphasis-100);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  align-items: start;
+  gap: 0.75rem;
+}
+
+.label {
+  padding-top: 0.3rem;
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.methods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.method {
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 6px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.method:hover {
+  background: var(--ifm-color-emphasis-200);
+}
+
+.code {
+  border-top: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.code :global(.theme-code-block) {
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.loading {
+  display: grid;
+  place-items: center;
+  height: 760px;
+  margin: 1.5rem 0 2rem;
+  border: 1px dashed var(--ifm-color-emphasis-300);
+  border-radius: 12px;
+  color: var(--ifm-color-emphasis-600);
+}

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Order xmlns="urn:example:orders" number="SO-1042">
+  <Customer>Ana Silva</Customer>
+  <Line><Sku>TEA-12</Sku><Qty>2</Qty><Price>4.50</Price></Line>
+  <Line><Sku>MUG-01</Sku><Qty>1</Qty><Price>8.00</Price></Line>
+</Order>

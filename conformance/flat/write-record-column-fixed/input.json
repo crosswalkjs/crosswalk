@@ -1,0 +1,16 @@
+{
+  "rows": [
+    {
+      "id": "P-1",
+      "amount": {
+        "pounds": 12,
+        "pence": 99
+      },
+      "ref": "ABCD"
+    },
+    {
+      "id": "P-2",
+      "ref": "EFGH"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "type": "object",
+  "flat": {
+    "format": "fixed"
+  },
+  "properties": {
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "flat": {
+              "width": 3
+            }
+          },
+          "amount": {
+            "type": "object",
+            "properties": {
+              "pounds": {
+                "type": "integer",
+                "flat": {
+                  "width": 4,
+                  "pad": "0"
+                }
+              },
+              "pence": {
+                "type": "integer",
+                "flat": {
+                  "width": 2,
+                  "pad": "0"
+                }
+              }
+            }
+          },
+          "ref": {
+            "type": "string",
+            "flat": {
+              "width": 4
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "Number": "SO-1042",
+  "Status": "S",
+  "Billing": {
+    "Street": "4 Mill Lane",
+    "City": "Leeds",
+    "Postcode": "ls1 4ab"
+  },
+  "Shipping": {
+    "Street": "Unit 9, Canal Wharf",
+    "City": "Leeds",
+    "Postcode": "ls11 5pq"
+  },
+  "Lines": [
+    {
+      "Sku": "MUG-01",
+      "Date": "2026-03-04",
+      "Qty": 2
+    },
+    {
+      "Sku": "TEA-12",
+      "Date": "2026-03-01",
+      "Qty": 1
+    },
+    {
+      "Sku": "MUG-01",
+      "Date": "2026-03-02",
+      "Qty": 4
+    }
+  ]
+}

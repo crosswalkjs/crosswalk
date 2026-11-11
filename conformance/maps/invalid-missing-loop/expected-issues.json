@@ -1,0 +1,12 @@
+[
+  {
+    "severity": "error",
+    "code": "unbound-scope",
+    "path": "Numbers[]"
+  },
+  {
+    "severity": "error",
+    "code": "missing-loop",
+    "path": "Numbers[]"
+  }
+]

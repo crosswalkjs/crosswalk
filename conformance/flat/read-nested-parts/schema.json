@@ -1,0 +1,55 @@
+{
+  "type": "object",
+  "flat": {
+    "format": "csv",
+    "delimiter": "|",
+    "header": false
+  },
+  "properties": {
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "ids": {
+            "type": "array",
+            "flat": {
+              "delimiter": "~"
+            },
+            "items": {
+              "type": "object",
+              "flat": {
+                "delimiter": "^"
+              },
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "authority": {
+                  "type": "object",
+                  "flat": {
+                    "delimiter": "&"
+                  },
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "oid": {
+                      "type": "string"
+                    },
+                    "kind": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

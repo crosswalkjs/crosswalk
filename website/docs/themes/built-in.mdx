@@ -1,0 +1,51 @@
+---
+title: Built-in themes
+description: The fourteen themes Crosswalk ships with.
+---
+
+import LiveMapper from '@site/src/components/LiveMapper';
+import {orderMap, orderInput} from '@site/src/examples/order';
+
+# Built-in themes
+
+Here's the same map in each of them. Pick a theme to switch; the editor stays live, so you can try a theme by using it.
+
+<LiveMapper map={orderMap} input={orderInput} height={460} themeSwitcher open={{options: false, data: false}} />
+
+Pick a theme with the `theme` option, or switch at any time with `mapper.setTheme()`:
+
+```ts
+const mapper = createMapper(element, { document: map, theme: "nord" });
+mapper.setTheme("paper");
+```
+
+## Crosswalk's own
+
+| Theme | Look |
+|---|---|
+| `ink` | The default. Ink on paper, like office paperwork: a plain page, lines in ink, and operators as highlighter-yellow tiles stamped in ink. Follows light or dark mode. These docs use it. |
+| `studio` | Clean and neutral, with curved links and a colour for each kind of operator. Follows the system's light or dark mode. |
+| `classic` | A traditional mapping tool: square tiles, straight lines and a ruled grid. Follows light or dark mode. |
+| `blueprint` | Always dark: a drafting grid, right-angled links and monospace labels. |
+| `paper` | Always light: warm and quiet, with round tiles, no grid and a serif face. |
+
+## Editor colour schemes
+
+These follow well-known code editor schemes, with each scheme's own colours on the operator tiles.
+
+| Theme | Scheme |
+|---|---|
+| `github-light` | GitHub's light colours. |
+| `solarized-light`, `solarized-dark` | Ethan Schoonover's Solarized. |
+| `one-dark` | Atom's One Dark. |
+| `dracula` | Dracula. |
+| `nord` | Nord. |
+| `gruvbox-dark` | Gruvbox, dark, with straight links. |
+| `monokai` | Monokai. |
+| `tokyo-night` | Tokyo Night. |
+
+:::tip Light and dark
+`ink`, `studio` and `classic` follow the operating system's light or dark setting. If your app has its own switch, use a theme with a fixed scheme for each mode, or make your own pair: [Your own themes](./custom-themes.md#fixing-light-or-dark) shows how.
+:::
+
+`themes`, exported from `@crosswalkjs/canvas`, lists these definitions, with a `label`, `description` and `group` for building a picker. `listThemes()` also includes themes you've registered.

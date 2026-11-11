@@ -1,0 +1,25 @@
+{
+  "rows": [
+    {
+      "id": "P-1",
+      "amount": 950.5,
+      "paid": true,
+      "note": "Rent, May"
+    },
+    {
+      "id": "P-2",
+      "amount": 12,
+      "paid": false,
+      "note": "Says \"hi\"\nover two lines"
+    },
+    {
+      "id": "P-3"
+    },
+    {
+      "id": "P-4",
+      "amount": "1.2.3",
+      "paid": "maybe",
+      "note": "  spaced  "
+    }
+  ]
+}

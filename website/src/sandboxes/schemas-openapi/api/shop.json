@@ -1,0 +1,47 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "Shop", "version": "1.0" },
+  "paths": {
+    "/orders": {
+      "post": {
+        "summary": "Place an order",
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/NewOrder" } } } },
+        "responses": { "201": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Order" } } } } }
+      }
+    },
+    "/invoices/{id}": {
+      "get": { "responses": { "200": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Invoice" } } } } } }
+    }
+  },
+  "components": {
+    "schemas": {
+      "NewOrder": {
+        "type": "object",
+        "required": ["customer", "lines"],
+        "properties": {
+          "customer": { "$ref": "#/components/schemas/Customer" },
+          "lines": { "type": "array", "items": { "$ref": "#/components/schemas/Line" } },
+          "payment": {
+            "oneOf": [
+              { "type": "object", "properties": { "method": { "const": "card" }, "last4": { "type": "string" } } },
+              { "type": "object", "properties": { "method": { "const": "invoice" }, "poNumber": { "type": "string" } } }
+            ]
+          },
+          "note": { "type": ["string", "null"] }
+        }
+      },
+      "Order": { "allOf": [{ "$ref": "#/components/schemas/NewOrder" }, { "type": "object", "properties": { "id": { "type": "string" }, "placedAt": { "type": "string", "format": "date-time" } } }] },
+      "Customer": { "type": "object", "properties": { "name": { "type": "string" }, "email": { "type": "string" } } },
+      "Line": { "type": "object", "properties": { "sku": { "type": "string" }, "qty": { "type": "integer" }, "price": { "type": "number" } } },
+      "Invoice": {
+        "type": "object",
+        "properties": {
+          "number": { "type": "string" },
+          "billTo": { "type": "string" },
+          "items": { "type": "array", "items": { "type": "object", "properties": { "code": { "type": "string" }, "quantity": { "type": "integer" }, "amount": { "type": "number" } } } },
+          "total": { "type": "number" }
+        }
+      }
+    }
+  }
+}

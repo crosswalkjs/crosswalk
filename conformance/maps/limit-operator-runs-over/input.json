@@ -1,0 +1,25 @@
+{
+  "FirstName": "Ana",
+  "LastName": "Silva",
+  "DateOfBirth": "1978-04-04",
+  "Address": "Rua das Flores 12, Porto",
+  "ZipCode": "4050",
+  "PhoneCalls": [
+    {
+      "PhoneNumber": "+351917777777",
+      "Cost": 2.5
+    },
+    {
+      "PhoneNumber": "+441234567890",
+      "Cost": 4
+    },
+    {
+      "PhoneNumber": "+351225555555",
+      "Cost": 1.25
+    },
+    {
+      "PhoneNumber": "+15550001111",
+      "Cost": 3.1
+    }
+  ]
+}

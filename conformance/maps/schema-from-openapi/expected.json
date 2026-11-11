@@ -1,0 +1,10 @@
+{
+  "Reference": "SO-7",
+  "Buyer": "Ana",
+  "Skus": [
+    {
+      "Sku": "TEA",
+      "Units": 2
+    }
+  ]
+}

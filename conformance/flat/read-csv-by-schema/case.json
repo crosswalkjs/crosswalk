@@ -1,0 +1,3 @@
+{
+  "description": "Columns found by header name in any order, a renamed column, quoted fields with the delimiter, doubled quotes and a line break, a byte-order mark, CRLF, empty cells left out, and values that don't read as their type kept as written."
+}

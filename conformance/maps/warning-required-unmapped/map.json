@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "source": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "town": {
+        "type": "string"
+      },
+      "billing": {
+        "type": "object",
+        "properties": {
+          "street": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "required": [
+      "name",
+      "email"
+    ],
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "email": {
+        "type": "string"
+      },
+      "address": {
+        "type": "object",
+        "required": [
+          "line1",
+          "town"
+        ],
+        "properties": {
+          "line1": {
+            "type": "string"
+          },
+          "town": {
+            "type": "string"
+          }
+        }
+      },
+      "extra": {
+        "type": "object",
+        "required": [
+          "x"
+        ],
+        "properties": {
+          "x": {
+            "type": "string"
+          }
+        }
+      },
+      "copy": {
+        "type": "object",
+        "required": [
+          "street"
+        ],
+        "properties": {
+          "street": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "nodes": [],
+  "links": [
+    {
+      "from": {
+        "source": "name"
+      },
+      "to": {
+        "target": "name"
+      }
+    },
+    {
+      "from": {
+        "source": "town"
+      },
+      "to": {
+        "target": "address.town"
+      }
+    },
+    {
+      "from": {
+        "source": "billing"
+      },
+      "to": {
+        "target": "copy"
+      }
+    }
+  ]
+}

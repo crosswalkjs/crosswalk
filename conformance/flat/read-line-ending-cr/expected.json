@@ -1,0 +1,16 @@
+{
+  "header": {
+    "encoding": "^~\\&",
+    "app": "LAB"
+  },
+  "results": [
+    {
+      "set": 1,
+      "kind": "NM"
+    },
+    {
+      "set": 2,
+      "kind": "ST"
+    }
+  ]
+}

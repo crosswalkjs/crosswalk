@@ -1,0 +1,195 @@
+---
+title: Flat files
+description: "Map CSV and fixed-width files: read them into the JSON a map takes, and write the output back out."
+---
+
+import Sandbox from '@site/src/components/Sandbox';
+
+# Flat files
+
+CSV and fixed-width files work the way [XML](./xml.mdx) does: read into JSON before a map runs, and written back after, by the schema. The map, the editor and the runtimes don't change.
+
+Here a CSV file of payments becomes a bank's fixed-width file, with amounts in pence and the dates reformatted, between a header line and a trailer that counts and totals the payments. The dots stand for spaces, so the columns show. Change the map and the file underneath follows:
+
+<Sandbox example="flat-files" height={520} />
+
+## The shape of a file
+
+A file is a record with one array field: a record for each line (or, for a file with headers and trailers, [several kinds](#several-kinds-of-line)), and a field for each column, in order. The root schema's `flat` says how the file is laid out, and each column's `flat` where it sits:
+
+```json
+{
+  "type": "object",
+  "flat": { "format": "csv" },
+  "properties": {
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "flat": { "name": "Payment ID" } },
+          "amount": { "type": "number" }
+        }
+      }
+    }
+  }
+}
+```
+
+| On | Setting | What it does |
+|---|---|---|
+| The root | `format` | `"csv"`, the default, or `"fixed"` for fixed-width columns. |
+| The root | `delimiter`, `quote` | For CSV: what separates fields, `,` by default, and what quotes them, `"`. |
+| The root | `header` | Whether the first line names the columns. True for CSV, false for fixed-width. |
+| The root | `skip` | Lines to skip at the start, before any header. |
+| The root | `lineEnding` | For writing: `"\n"`, the default, `"\r\n"`, or `"\r"` as HL7 has. |
+| The root | `terminator`, `release` | What ends each line where it isn't a line break, and what makes the character after it plain text. See [EDI](#edi). |
+| A column | `name` | Its heading, where it isn't the field's name. |
+| A fixed-width column | `width` | How many characters it takes. Every column of a fixed-width file needs one. |
+| A fixed-width column | `align`, `pad` | Where the value sits, and what fills the rest: numbers right and text left by default, padded with spaces. |
+| A fixed-width number | `decimals` | Implied decimal places: `000012345` with 2 is 123.45, as bank and payroll files often have it. |
+| A record or array | `tag` | What its lines start with, for a file with [several kinds of line](#several-kinds-of-line). |
+| A repeating group | `count`, `delimiter` | How many items a line has room for, and in CSV what separates them within one field. See [repeats within a line](#repeats-within-a-line). |
+| A record column | `delimiter` | In CSV, what splits its field into its parts. |
+| A CSV column | `width` | The width it's padded to when writing, as X12's envelope pads its fields. It's trimmed when reading. |
+
+## Reading and writing
+
+```ts
+import { createTransform, readFlatFile, writeFlatFile } from "@crosswalkjs/core";
+
+const transform = createTransform(map);
+const bankFile = writeFlatFile(transform(readFlatFile(paymentsCsv, map.source)), map.target);
+```
+
+Reading CSV follows RFC 4180: a quoted field can hold the delimiter, doubled quotes and line breaks. A byte-order mark is dropped, and `\r\n` and `\n` both end lines. With a header, columns are found by heading, so the file's columns can be in any order; without one, by place. Values take the schema's type, and an empty field is left out, so it reads as missing to the map. A value that doesn't read as its type, such as `1.2.3` for a number, stays text. Without a schema, every column is text.
+
+Writing puts the columns in the schema's order, CSV with a header row, quoting only where a field needs it. A fixed-width value too wide for its column is an error rather than cut short: a truncated amount in a payment file is the worst kind of bug.
+
+## Several kinds of line
+
+Plenty of files mix kinds of line: a header, a line per payment, then a trailer with a count and a total. Each kind starts with a tag, such as `H`, `D` and `T`, and has columns of its own. Give a field a `flat.tag` and it's a kind of line rather than a column: a record where there's one line of it, or an array where there are many.
+
+```json
+{
+  "type": "object",
+  "flat": { "format": "csv", "delimiter": "|" },
+  "properties": {
+    "header": { "type": "object", "flat": { "tag": "H" }, "properties": { "date": { "type": "string" } } },
+    "payments": {
+      "type": "array",
+      "items": { "type": "object", "flat": { "tag": "D" }, "properties": { "id": { "type": "string" }, "amount": { "type": "number" } } }
+    },
+    "trailer": { "type": "object", "flat": { "tag": "T" }, "properties": { "count": { "type": "integer" }, "total": { "type": "number" } } }
+  }
+}
+```
+
+That reads this file, and writes it back the same:
+
+```text
+H|2026-03-02
+D|P-1|100.5
+D|P-2|50
+T|2|150.5
+```
+
+In CSV the tag is a line's first field; in a fixed-width file it's the line's first characters, and the columns start after it. A file with kinds of line has no header row.
+
+Kinds of line nest. A bank file often has batches, each with a header line, entries and a batch trailer: make `batches` an array tagged with the batch header, and give its items `entries` and `control` fields tagged too. Each line belongs to the nearest record above it that has its kind, so entries go into the batch they follow. A line that isn't any kind the file has, or turns up where it can't belong, such as a second file header, refuses the file rather than being skipped.
+
+Writing puts each record's line, then the lines of the kinds it holds, in the schema's order. In a map, `aggregate.count` and `aggregate.sum` over the details fill a trailer, as the example at the top does.
+
+## Repeats within a line
+
+Some lines hold a list of their own: an order line with an item and quantity for each thing ordered, or an HL7 field with several identifiers. A column that's an array is a repeating group, and a column that's a record is made of parts.
+
+In a fixed-width file, a group's items follow one another along the line, each as wide as its parts. Without a `count` it takes the rest of the line, so it has to be the last column; with one, the line has that many slots, blank ones skipped, and the columns after it follow the last slot.
+
+```json
+"lines": {
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "sku": { "type": "string", "flat": { "width": 4 } },
+      "qty": { "type": "integer", "flat": { "width": 3, "pad": "0" } }
+    }
+  }
+}
+```
+
+That reads `ORD001A100003B200001` as an order with two lines. Writing pads the slots a group with a `count` doesn't fill with spaces, and refuses more items than it has room for.
+
+In CSV there are two ways. HL7 and EDI files put the repeats in one field, with a separator for repeats and another for each one's parts, as in `123^^^HOSP~456^^^LAB`. Give the group a `delimiter` for the repeats, and its items one for their parts:
+
+```json
+"identifiers": {
+  "type": "array",
+  "flat": { "delimiter": "~" },
+  "items": {
+    "type": "object",
+    "flat": { "delimiter": "^" },
+    "properties": {
+      "id": { "type": "string" },
+      "check": { "type": "string" },
+      "scheme": { "type": "string" },
+      "authority": { "type": "string" }
+    }
+  }
+}
+```
+
+A field with parts that doesn't repeat, such as a name written `SMITH^JOHN`, is a record column: a record with a `delimiter`. Without a delimiter of its own, a group's items take the fields that follow it, `count` of them or the rest of the line. That only works in a file without a header row, since the headings can't say which field is which.
+
+Parts nest as deep as the schema goes: a part can be a record of its own, as HL7 splits a part into sub-components with `&`, or a group. In fixed-width, a group inside another needs a `count`, since only a column can take the rest of the line. When writing, empty parts at the end are left off, as HL7 and EDI expect, so `SMITH^JOHN^` comes back as `SMITH^JOHN`.
+
+## EDI
+
+X12 and EDIFACT files are CSV with different separators, and lines, called segments, that end with a terminator rather than a line break: `~` in X12 and `'` in EDIFACT. Give the root a `terminator`, and line breaks after it are skipped when reading. When writing, each segment ends with the terminator, then `lineEnding` if you give one, and empty fields at the end of a segment are left off. Nothing in an EDI file is quoted.
+
+EDIFACT has a release character, `?`, which makes the character after it plain text, so `ACME?+CO` is `ACME+CO` rather than two fields. Give the root a `release`, and it's honoured in fields, parts and repeats alike; writing releases every separator the schema uses.
+
+```json
+{
+  "type": "object",
+  "flat": { "format": "csv", "delimiter": "+", "terminator": "'", "release": "?", "lineEnding": "\n" },
+  "properties": {
+    "buyer": {
+      "type": "object",
+      "flat": { "tag": "NAD" },
+      "properties": {
+        "role": { "type": "string" },
+        "id": { "type": "object", "flat": { "delimiter": ":" }, "properties": { "code": { "type": "string" }, "list": { "type": "string" }, "agency": { "type": "string" } } },
+        "name": { "type": "string" }
+      }
+    }
+  }
+}
+```
+
+X12's envelope, the `ISA` segment, pads its fields to set lengths, blank ones too. Give those columns a `width` and they're padded when writing and trimmed when reading.
+
+Each segment's name is its tag, so loops, such as a line item's segments, nest as [kinds of line](#several-kinds-of-line) do. The schema builder below works out an X12 file's separators from its `ISA` segment, and an EDIFACT file's from its `UNA` segment or the standard ones.
+
+## A schema from a sample
+
+Each format has a page that makes a schema from a sample, starting with an example of that format: name its fields on the sample itself, and see what the schema reads as you go. It all runs in the page, so nothing you paste goes anywhere.
+
+- [CSV](./formats/csv.mdx)
+- [Fixed-width](./formats/fixed-width.mdx), with lists within a line, and headers and trailers
+- [HL7](./formats/hl7.mdx)
+- [X12](./formats/x12.mdx)
+- [EDIFACT](./formats/edifact.mdx)
+
+In code, `inferCsvSchema` makes a schema from a few lines of a CSV file with a header: a column for each heading, typed by what every value in it reads as. It works out the delimiter, and keeps numbers with leading zeros, such as postcodes and account numbers, as text. The editor's [schema form](./schemas.mdx#in-the-editor) takes a CSV sample too.
+
+```ts
+import { inferCsvSchema } from "@crosswalkjs/core";
+
+const source = inferCsvSchema(firstFewLines);
+```
+
+## On .NET
+
+`FlatFile.Read` and `FlatFile.Write` in `Crosswalk.Core` read and write exactly as the JavaScript functions do. See [.NET](../dotnet.md#flat-files).

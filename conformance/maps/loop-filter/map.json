@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "source": {
+    "type": "object",
+    "title": "Person",
+    "properties": {
+      "FirstName": {
+        "type": "string"
+      },
+      "LastName": {
+        "type": "string"
+      },
+      "DateOfBirth": {
+        "type": "string",
+        "format": "date"
+      },
+      "Address": {
+        "type": "string"
+      },
+      "ZipCode": {
+        "type": "string"
+      },
+      "PhoneCalls": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "PhoneNumber": {
+              "type": "string"
+            },
+            "Cost": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "properties": {
+      "Calls": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "Number": {
+              "type": "string"
+            },
+            "Cost": {
+              "type": "number"
+            },
+            "Kind": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "loops": [
+    {
+      "source": "PhoneCalls[]",
+      "target": "Calls[]"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "isExpensive",
+      "operator": "logic.greaterThan",
+      "constants": {
+        "1": 3
+      }
+    },
+    {
+      "id": "numberGate",
+      "operator": "flow.onlyIf"
+    },
+    {
+      "id": "costGate",
+      "operator": "flow.onlyIf"
+    }
+  ],
+  "links": [
+    {
+      "from": {
+        "source": "PhoneCalls[].Cost"
+      },
+      "to": {
+        "node": "isExpensive",
+        "input": 0
+      }
+    },
+    {
+      "from": {
+        "node": "isExpensive"
+      },
+      "to": {
+        "node": "numberGate",
+        "input": 0
+      }
+    },
+    {
+      "from": {
+        "source": "PhoneCalls[].PhoneNumber"
+      },
+      "to": {
+        "node": "numberGate",
+        "input": 1
+      }
+    },
+    {
+      "from": {
+        "node": "numberGate"
+      },
+      "to": {
+        "target": "Calls[].Number"
+      }
+    },
+    {
+      "from": {
+        "node": "isExpensive"
+      },
+      "to": {
+        "node": "costGate",
+        "input": 0
+      }
+    },
+    {
+      "from": {
+        "source": "PhoneCalls[].Cost"
+      },
+      "to": {
+        "node": "costGate",
+        "input": 1
+      }
+    },
+    {
+      "from": {
+        "node": "costGate"
+      },
+      "to": {
+        "target": "Calls[].Cost"
+      }
+    }
+  ]
+}

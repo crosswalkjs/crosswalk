@@ -1,0 +1,307 @@
+{
+  "version": 1,
+  "source": {
+    "type": "object",
+    "$defs": {
+      "Address": {
+        "type": "object",
+        "properties": {
+          "Street": {
+            "type": "string"
+          },
+          "City": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "Street"
+        ]
+      }
+    },
+    "properties": {
+      "Customer": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/Address"
+          },
+          {
+            "properties": {
+              "Name": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "Payment": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "Method": {
+                "type": "string"
+              },
+              "Card": {
+                "type": "string"
+              },
+              "Kind": {
+                "const": "card"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "Method": {
+                "type": "string"
+              },
+              "Iban": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "Nickname": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "Discount": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "Lines": {
+        "type": "array",
+        "items": {
+          "allOf": [
+            {
+              "properties": {
+                "Sku": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "properties": {
+                "Qty": {
+                  "type": "integer"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "Priority": {
+        "enum": [
+          1,
+          2,
+          3
+        ]
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "properties": {
+      "Customer": {
+        "allOf": [
+          {
+            "properties": {
+              "Name": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "properties": {
+              "Street": {
+                "type": "string"
+              },
+              "City": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "Payment": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "Method": {
+                "type": "string"
+              },
+              "Card": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "Iban": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "Nickname": {
+        "type": [
+          "null",
+          "string"
+        ]
+      },
+      "Discount": {
+        "type": "number"
+      },
+      "Items": {
+        "type": "array",
+        "items": {
+          "allOf": [
+            {
+              "properties": {
+                "Sku": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "properties": {
+                "Qty": {
+                  "type": "integer"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "Kind": {
+        "enum": [
+          "card",
+          "bank"
+        ]
+      },
+      "Priority": {
+        "type": "integer"
+      }
+    }
+  },
+  "nodes": [],
+  "links": [
+    {
+      "from": {
+        "source": "Customer.Street"
+      },
+      "to": {
+        "target": "Customer.Street"
+      }
+    },
+    {
+      "from": {
+        "source": "Customer.City"
+      },
+      "to": {
+        "target": "Customer.City"
+      }
+    },
+    {
+      "from": {
+        "source": "Customer.Name"
+      },
+      "to": {
+        "target": "Customer.Name"
+      }
+    },
+    {
+      "from": {
+        "source": "Payment.Method"
+      },
+      "to": {
+        "target": "Payment.Method"
+      }
+    },
+    {
+      "from": {
+        "source": "Payment.Card"
+      },
+      "to": {
+        "target": "Payment.Card"
+      }
+    },
+    {
+      "from": {
+        "source": "Payment.Iban"
+      },
+      "to": {
+        "target": "Payment.Iban"
+      }
+    },
+    {
+      "from": {
+        "source": "Nickname"
+      },
+      "to": {
+        "target": "Nickname"
+      }
+    },
+    {
+      "from": {
+        "source": "Discount"
+      },
+      "to": {
+        "target": "Discount"
+      }
+    },
+    {
+      "from": {
+        "source": "Lines[].Sku"
+      },
+      "to": {
+        "target": "Items[].Sku"
+      }
+    },
+    {
+      "from": {
+        "source": "Lines[].Qty"
+      },
+      "to": {
+        "target": "Items[].Qty"
+      }
+    },
+    {
+      "from": {
+        "source": "Payment.Kind"
+      },
+      "to": {
+        "target": "Kind"
+      }
+    },
+    {
+      "from": {
+        "source": "Priority"
+      },
+      "to": {
+        "target": "Priority"
+      }
+    }
+  ],
+  "loops": [
+    {
+      "source": "Lines[]",
+      "target": "Items[]"
+    }
+  ]
+}

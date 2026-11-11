@@ -1,0 +1,3 @@
+{
+  "description": "An operator that feeds nothing is a warning, not an error, so the map still runs."
+}

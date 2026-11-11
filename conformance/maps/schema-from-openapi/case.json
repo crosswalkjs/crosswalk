@@ -1,0 +1,3 @@
+{
+  "description": "A source schema as openApiSchemas gives a component: a root $ref into $defs, the document's other schemas beside it."
+}

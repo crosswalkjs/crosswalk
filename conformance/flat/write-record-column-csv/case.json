@@ -1,0 +1,3 @@
+{
+  "description": "Writing a record column in CSV joins its parts with its delimiter, leaving off empty ones at the end, as HL7 and EDI have it; a record with no parts writes an empty field."
+}

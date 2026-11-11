@@ -1,0 +1,3 @@
+{
+  "description": "Writing a record column in fixed-width writes each part in its width; a missing record writes its parts as missing cells, so zero-padded ones are zeros."
+}

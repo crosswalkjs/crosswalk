@@ -1,0 +1,7 @@
+{
+  "$defs": {
+    "Address": { "type": "object", "properties": { "street": { "type": "string" }, "city": { "type": "string" } } },
+    "Line": { "type": "object", "properties": { "sku": { "type": "string" }, "price": { "$ref": "#/$defs/Money" } } },
+    "Money": { "type": "number" }
+  }
+}

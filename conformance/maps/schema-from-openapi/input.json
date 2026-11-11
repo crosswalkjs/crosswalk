@@ -1,0 +1,12 @@
+{
+  "id": "SO-7",
+  "customer": {
+    "name": "Ana"
+  },
+  "lines": [
+    {
+      "sku": "TEA",
+      "qty": 2
+    }
+  ]
+}

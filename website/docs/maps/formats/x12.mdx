@@ -1,0 +1,28 @@
+---
+title: X12
+description: "Make a schema for X12 EDI from a sample: segments, elements and components."
+---
+
+import FlatFileWizard from '@site/src/components/FlatFileWizard';
+
+# X12
+
+An X12 file is a run of segments, each ending with `~`, named by its first element: `ISA`, `ST`, `BEG`, `PO1`. Elements are split by `*`, and components by `:`:
+
+```text
+PO1*1*10*EA*9.95**VP*A100~
+```
+
+The `ISA` segment that starts every file says which separators it uses, so the builder reads them from there. Its fields are padded to set lengths, blank ones too, and the builder keeps those widths, so the file writes back the same.
+
+## Tell Crosswalk how to read it
+
+To read a file, Crosswalk needs its schema: the name and type of each field, and which ones are lists. The builder below makes one from an example, and shows the JSON it reads as you go. When it reads the example the way you want, the **Schema** tab has the schema to use in a map.
+
+1. **Pick a segment** by clicking its tag at the start of any of its lines.
+2. **Name its elements.** Click one on any of its lines, and name it and set its type in the bar under the lines. A price such as `19.50` stays text, so it's written back with its zero.
+3. Name the segment above the lines. The dropdown beside each tag says whether it reads as one record or a list: one `BEG` is a record, and the `PO1` segments are a list.
+
+<FlatFileWizard example="x12" />
+
+Every setting is in the [EDI section of the flat files reference](../flat-files.mdx#edi).

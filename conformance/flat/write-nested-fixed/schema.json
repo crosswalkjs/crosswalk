@@ -1,0 +1,48 @@
+{
+  "type": "object",
+  "flat": {
+    "format": "fixed"
+  },
+  "properties": {
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "flat": {
+              "width": 2
+            }
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "sku": {
+                  "type": "string",
+                  "flat": {
+                    "width": 2
+                  }
+                },
+                "sizes": {
+                  "type": "array",
+                  "flat": {
+                    "count": 2
+                  },
+                  "items": {
+                    "type": "string",
+                    "flat": {
+                      "width": 1
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

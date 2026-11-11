@@ -1,0 +1,3 @@
+{
+  "description": "A fixed-width repeating group with no count takes the rest of the line: items one after another, each as wide as its parts; a short line has fewer."
+}

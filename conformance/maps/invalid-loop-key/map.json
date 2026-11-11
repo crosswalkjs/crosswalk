@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "source": {
+    "type": "object",
+    "properties": {
+      "Name": {
+        "type": "string"
+      },
+      "Lines": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "Sku": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "properties": {
+      "Rows": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "Sku": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "loops": [
+    {
+      "source": "Lines[]",
+      "target": "Rows[]",
+      "groupBy": "Name",
+      "sortBy": [
+        {
+          "path": "Lines[].Nope"
+        }
+      ]
+    }
+  ],
+  "nodes": [],
+  "links": [
+    {
+      "from": {
+        "source": "Lines[].Sku"
+      },
+      "to": {
+        "target": "Rows[].Sku"
+      }
+    }
+  ]
+}

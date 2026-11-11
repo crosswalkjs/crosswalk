@@ -1,0 +1,3 @@
+{
+  "description": "Fixed-width columns by width, trimmed, with implied decimals and a zero-padded negative; a header line skipped; blank lines and short lines."
+}

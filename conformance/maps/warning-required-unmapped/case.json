@@ -1,0 +1,3 @@
+{
+  "description": "A required target field with nothing mapped to it is a warning, wherever its record is being filled: the root, and records with anything mapped into them. A record nothing fills, or one a record link fills, isn't checked."
+}

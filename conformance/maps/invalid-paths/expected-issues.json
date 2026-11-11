@@ -1,0 +1,17 @@
+[
+  {
+    "severity": "error",
+    "code": "unknown-source",
+    "path": "Nickname"
+  },
+  {
+    "severity": "error",
+    "code": "unknown-target",
+    "path": "Nickname"
+  },
+  {
+    "severity": "error",
+    "code": "unknown-source",
+    "path": "PhoneCalls"
+  }
+]

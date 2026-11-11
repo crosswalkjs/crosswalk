@@ -1,0 +1,3 @@
+{
+  "description": "Sorting happens before grouping, so groups follow the sorted order and each group's first item is its first in that order."
+}

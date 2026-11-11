@@ -1,0 +1,1406 @@
+{
+  "description": "Built-in operator behaviour. See README.md for the format.",
+  "value": [
+    {
+      "operator": "text.concat",
+      "inputs": [
+        "Ana",
+        " ",
+        "Silva"
+      ],
+      "expected": "Ana Silva"
+    },
+    {
+      "operator": "text.concat",
+      "inputs": [
+        "a",
+        1,
+        true,
+        null
+      ],
+      "expected": "a1true",
+      "note": "Numbers and booleans read as text; null reads as empty text."
+    },
+    {
+      "operator": "text.concat",
+      "inputs": [
+        "a",
+        {
+          "$absent": true
+        }
+      ],
+      "expected": {
+        "$absent": true
+      },
+      "note": "A missing input makes the output missing."
+    },
+    {
+      "operator": "text.upper",
+      "inputs": [
+        "Crème"
+      ],
+      "expected": "CRÈME",
+      "note": "Case changes are locale-independent."
+    },
+    {
+      "operator": "text.lower",
+      "inputs": [
+        "ÀBC"
+      ],
+      "expected": "àbc"
+    },
+    {
+      "operator": "text.trim",
+      "inputs": [
+        "  x y  "
+      ],
+      "expected": "x y"
+    },
+    {
+      "operator": "text.length",
+      "inputs": [
+        "héllo"
+      ],
+      "expected": 5
+    },
+    {
+      "operator": "text.length",
+      "inputs": [
+        12.5
+      ],
+      "expected": 4,
+      "note": "A number's length is the length of its text."
+    },
+    {
+      "operator": "text.left",
+      "inputs": [
+        "+351917777777",
+        4
+      ],
+      "expected": "+351"
+    },
+    {
+      "operator": "text.left",
+      "inputs": [
+        "ab",
+        5
+      ],
+      "expected": "ab",
+      "note": "Asking for more characters than there are gives the whole text."
+    },
+    {
+      "operator": "text.left",
+      "inputs": [
+        "abc",
+        -1
+      ],
+      "expected": "",
+      "note": "A negative count gives empty text."
+    },
+    {
+      "operator": "text.right",
+      "inputs": [
+        "abcdef",
+        2
+      ],
+      "expected": "ef"
+    },
+    {
+      "operator": "text.right",
+      "inputs": [
+        "ab",
+        0
+      ],
+      "expected": ""
+    },
+    {
+      "operator": "text.substring",
+      "inputs": [
+        "abcdef",
+        2
+      ],
+      "expected": "cdef",
+      "note": "Start is 0-based; without a length, the rest of the text."
+    },
+    {
+      "operator": "text.substring",
+      "inputs": [
+        "abcdef",
+        1,
+        3
+      ],
+      "expected": "bcd"
+    },
+    {
+      "operator": "text.replace",
+      "inputs": [
+        "a-b-c",
+        "-",
+        "+"
+      ],
+      "expected": "a+b+c",
+      "note": "Every occurrence is replaced, not just the first."
+    },
+    {
+      "operator": "text.left",
+      "inputs": [
+        "abc",
+        "x"
+      ],
+      "expected": {
+        "$error": true
+      },
+      "note": "A count that isn't a number is an error."
+    },
+    {
+      "operator": "math.add",
+      "inputs": [
+        1,
+        "2",
+        3.5
+      ],
+      "expected": 6.5,
+      "note": "Numeric text adds as a number."
+    },
+    {
+      "operator": "math.add",
+      "inputs": [
+        1,
+        "abc"
+      ],
+      "expected": {
+        "$error": true
+      }
+    },
+    {
+      "operator": "math.add",
+      "inputs": [
+        1,
+        true
+      ],
+      "expected": 2,
+      "note": "true reads as 1, false as 0."
+    },
+    {
+      "operator": "math.subtract",
+      "inputs": [
+        10,
+        4
+      ],
+      "expected": 6
+    },
+    {
+      "operator": "math.multiply",
+      "inputs": [
+        2,
+        3,
+        4
+      ],
+      "expected": 24
+    },
+    {
+      "operator": "math.divide",
+      "inputs": [
+        7,
+        2
+      ],
+      "expected": 3.5
+    },
+    {
+      "operator": "math.divide",
+      "inputs": [
+        1,
+        0
+      ],
+      "expected": {
+        "$error": true
+      },
+      "note": "Dividing by zero is an error."
+    },
+    {
+      "operator": "math.modulo",
+      "inputs": [
+        7,
+        3
+      ],
+      "expected": 1
+    },
+    {
+      "operator": "math.round",
+      "inputs": [
+        2.5
+      ],
+      "expected": 3,
+      "note": "Halves round away from zero."
+    },
+    {
+      "operator": "math.round",
+      "inputs": [
+        -2.5
+      ],
+      "expected": -3
+    },
+    {
+      "operator": "math.round",
+      "inputs": [
+        2.345,
+        2
+      ],
+      "expected": 2.35
+    },
+    {
+      "operator": "math.round",
+      "inputs": [
+        1.005,
+        2
+      ],
+      "expected": 1.01,
+      "note": "Rounds the decimal value as written, not its binary approximation."
+    },
+    {
+      "operator": "math.round",
+      "inputs": [
+        1234,
+        -2
+      ],
+      "expected": 1200,
+      "note": "Negative decimals round to tens, hundreds and so on."
+    },
+    {
+      "operator": "math.round",
+      "inputs": [
+        1.5,
+        0.5
+      ],
+      "expected": {
+        "$error": true
+      },
+      "note": "Decimals must be a whole number."
+    },
+    {
+      "operator": "math.abs",
+      "inputs": [
+        -3
+      ],
+      "expected": 3
+    },
+    {
+      "operator": "math.min",
+      "inputs": [
+        3,
+        "1",
+        2
+      ],
+      "expected": 1
+    },
+    {
+      "operator": "math.max",
+      "inputs": [
+        3,
+        "10",
+        2
+      ],
+      "expected": 10
+    },
+    {
+      "operator": "logic.equal",
+      "inputs": [
+        "351",
+        351
+      ],
+      "expected": true,
+      "note": "Compared as numbers when both sides are numeric."
+    },
+    {
+      "operator": "logic.equal",
+      "inputs": [
+        "1.0",
+        "1"
+      ],
+      "expected": true
+    },
+    {
+      "operator": "logic.equal",
+      "inputs": [
+        "a",
+        "A"
+      ],
+      "expected": false,
+      "note": "Text comparison is case-sensitive."
+    },
+    {
+      "operator": "logic.equal",
+      "inputs": [
+        null,
+        ""
+      ],
+      "expected": true,
+      "note": "null reads as empty text."
+    },
+    {
+      "operator": "logic.notEqual",
+      "inputs": [
+        "a",
+        "b"
+      ],
+      "expected": true
+    },
+    {
+      "operator": "logic.greaterThan",
+      "inputs": [
+        "10",
+        "9"
+      ],
+      "expected": true,
+      "note": "Numeric, so 10 > 9."
+    },
+    {
+      "operator": "logic.greaterThan",
+      "inputs": [
+        "10",
+        "9a"
+      ],
+      "expected": false,
+      "note": "Not both numeric, so compared as text: \"10\" < \"9a\"."
+    },
+    {
+      "operator": "logic.greaterThan",
+      "inputs": [
+        "b",
+        "a"
+      ],
+      "expected": true
+    },
+    {
+      "operator": "logic.greaterOrEqual",
+      "inputs": [
+        2,
+        2
+      ],
+      "expected": true
+    },
+    {
+      "operator": "logic.lessThan",
+      "inputs": [
+        "B",
+        "a"
+      ],
+      "expected": true,
+      "note": "Text is compared by character code, so capitals sort before lower case."
+    },
+    {
+      "operator": "logic.lessOrEqual",
+      "inputs": [
+        3,
+        2
+      ],
+      "expected": false
+    },
+    {
+      "operator": "logic.equal",
+      "inputs": [
+        "0x10",
+        16
+      ],
+      "expected": false,
+      "note": "Only plain decimal text is numeric, so \"0x10\" is text."
+    },
+    {
+      "operator": "logic.and",
+      "inputs": [
+        true,
+        "true",
+        1
+      ],
+      "expected": true,
+      "note": "true, \"true\" and non-zero numbers are true."
+    },
+    {
+      "operator": "logic.and",
+      "inputs": [
+        true,
+        false
+      ],
+      "expected": false
+    },
+    {
+      "operator": "logic.or",
+      "inputs": [
+        false,
+        0,
+        "false"
+      ],
+      "expected": false
+    },
+    {
+      "operator": "logic.or",
+      "inputs": [
+        false,
+        2
+      ],
+      "expected": true
+    },
+    {
+      "operator": "logic.not",
+      "inputs": [
+        true
+      ],
+      "expected": false
+    },
+    {
+      "operator": "logic.not",
+      "inputs": [
+        "false"
+      ],
+      "expected": true
+    },
+    {
+      "operator": "logic.not",
+      "inputs": [
+        "yes"
+      ],
+      "expected": {
+        "$error": true
+      },
+      "note": "Only true, false, their text and numbers read as true or false."
+    },
+    {
+      "operator": "logic.isNumber",
+      "inputs": [
+        "4050"
+      ],
+      "expected": true
+    },
+    {
+      "operator": "logic.isNumber",
+      "inputs": [
+        " 12.5 "
+      ],
+      "expected": true,
+      "note": "Surrounding spaces are allowed."
+    },
+    {
+      "operator": "logic.isNumber",
+      "inputs": [
+        "-3.2E-2"
+      ],
+      "expected": true
+    },
+    {
+      "operator": "logic.isNumber",
+      "inputs": [
+        ".5"
+      ],
+      "expected": true
+    },
+    {
+      "operator": "logic.isNumber",
+      "inputs": [
+        "N/A"
+      ],
+      "expected": false
+    },
+    {
+      "operator": "logic.isNumber",
+      "inputs": [
+        ""
+      ],
+      "expected": false
+    },
+    {
+      "operator": "logic.isNumber",
+      "inputs": [
+        "0x10"
+      ],
+      "expected": false
+    },
+    {
+      "operator": "logic.isNumber",
+      "inputs": [
+        "Infinity"
+      ],
+      "expected": false
+    },
+    {
+      "operator": "logic.isNumber",
+      "inputs": [
+        true
+      ],
+      "expected": false,
+      "note": "Booleans aren't numbers, even though they convert to one."
+    },
+    {
+      "operator": "logic.exists",
+      "inputs": [
+        {
+          "$absent": true
+        }
+      ],
+      "expected": false
+    },
+    {
+      "operator": "logic.exists",
+      "inputs": [
+        null
+      ],
+      "expected": true,
+      "note": "null is a value."
+    },
+    {
+      "operator": "logic.exists",
+      "inputs": [
+        0
+      ],
+      "expected": true
+    },
+    {
+      "operator": "convert.toNumber",
+      "inputs": [
+        "12.5"
+      ],
+      "expected": 12.5
+    },
+    {
+      "operator": "convert.toNumber",
+      "inputs": [
+        true
+      ],
+      "expected": 1
+    },
+    {
+      "operator": "convert.toNumber",
+      "inputs": [
+        "12abc"
+      ],
+      "expected": {
+        "$error": true
+      }
+    },
+    {
+      "operator": "convert.toText",
+      "inputs": [
+        12
+      ],
+      "expected": "12"
+    },
+    {
+      "operator": "convert.toText",
+      "inputs": [
+        null
+      ],
+      "expected": ""
+    },
+    {
+      "operator": "convert.toText",
+      "inputs": [
+        false
+      ],
+      "expected": "false"
+    },
+    {
+      "operator": "convert.toBoolean",
+      "inputs": [
+        "true"
+      ],
+      "expected": true
+    },
+    {
+      "operator": "convert.toBoolean",
+      "inputs": [
+        0
+      ],
+      "expected": false
+    },
+    {
+      "operator": "convert.toBoolean",
+      "inputs": [
+        "yes"
+      ],
+      "expected": {
+        "$error": true
+      }
+    },
+    {
+      "operator": "flow.onlyIf",
+      "inputs": [
+        true,
+        "x"
+      ],
+      "expected": "x"
+    },
+    {
+      "operator": "flow.onlyIf",
+      "inputs": [
+        false,
+        "x"
+      ],
+      "expected": {
+        "$absent": true
+      },
+      "note": "A false condition leaves the output missing."
+    },
+    {
+      "operator": "flow.onlyIf",
+      "inputs": [
+        "true",
+        5
+      ],
+      "expected": 5
+    },
+    {
+      "operator": "flow.onlyIf",
+      "inputs": [
+        {
+          "$absent": true
+        },
+        "x"
+      ],
+      "expected": {
+        "$absent": true
+      }
+    },
+    {
+      "operator": "flow.ifElse",
+      "inputs": [
+        true,
+        "a",
+        "b"
+      ],
+      "expected": "a"
+    },
+    {
+      "operator": "flow.ifElse",
+      "inputs": [
+        false,
+        "a",
+        "b"
+      ],
+      "expected": "b"
+    },
+    {
+      "operator": "flow.ifElse",
+      "inputs": [
+        true,
+        "a",
+        {
+          "$absent": true
+        }
+      ],
+      "expected": "a",
+      "note": "The branch not taken may be missing."
+    },
+    {
+      "operator": "flow.ifElse",
+      "inputs": [
+        false,
+        "a",
+        {
+          "$absent": true
+        }
+      ],
+      "expected": {
+        "$absent": true
+      }
+    },
+    {
+      "operator": "flow.ifElse",
+      "inputs": [
+        {
+          "$absent": true
+        },
+        "a",
+        "b"
+      ],
+      "expected": {
+        "$absent": true
+      },
+      "note": "A missing condition gives a missing output."
+    },
+    {
+      "operator": "flow.firstOf",
+      "inputs": [
+        {
+          "$absent": true
+        },
+        null,
+        "x",
+        "y"
+      ],
+      "expected": "x",
+      "note": "Skips missing inputs and null."
+    },
+    {
+      "operator": "flow.firstOf",
+      "inputs": [
+        {
+          "$absent": true
+        },
+        null
+      ],
+      "expected": {
+        "$absent": true
+      }
+    },
+    {
+      "operator": "text.replace",
+      "inputs": [
+        "abc",
+        "",
+        "-"
+      ],
+      "expected": "abc",
+      "note": "An empty find leaves the text as it is."
+    },
+    {
+      "operator": "text.substring",
+      "inputs": [
+        "abcdef",
+        -2
+      ],
+      "expected": "ef",
+      "note": "A negative start counts from the end."
+    },
+    {
+      "operator": "text.left",
+      "inputs": [
+        "abcdef",
+        2.7
+      ],
+      "expected": "ab",
+      "note": "Fractional counts round toward zero."
+    },
+    {
+      "operator": "text.length",
+      "inputs": [
+        null
+      ],
+      "expected": 0,
+      "note": "null reads as empty text."
+    },
+    {
+      "operator": "convert.toText",
+      "inputs": [
+        2.5
+      ],
+      "expected": "2.5",
+      "note": "A number's text is the shortest that reads back as the same number."
+    },
+    {
+      "operator": "convert.toText",
+      "inputs": [
+        0.1
+      ],
+      "expected": "0.1"
+    },
+    {
+      "operator": "logic.equal",
+      "inputs": [
+        true,
+        "true"
+      ],
+      "expected": true,
+      "note": "Not both numeric, so compared as text."
+    },
+    {
+      "operator": "math.add",
+      "inputs": [
+        1,
+        null
+      ],
+      "expected": {
+        "$error": true
+      },
+      "note": "null isn't a number."
+    },
+    {
+      "operator": "logic.isNumber",
+      "inputs": [
+        "١٢"
+      ],
+      "expected": false,
+      "note": "Only ASCII digits count, not other scripts' digits."
+    },
+    {
+      "operator": "convert.toText",
+      "inputs": [
+        1e+20
+      ],
+      "expected": "100000000000000000000",
+      "note": "Plain digits below 1e21."
+    },
+    {
+      "operator": "convert.toText",
+      "inputs": [
+        1e+21
+      ],
+      "expected": "1e+21",
+      "note": "From 1e21 up, an exponent."
+    },
+    {
+      "operator": "convert.toText",
+      "inputs": [
+        1e-06
+      ],
+      "expected": "0.000001",
+      "note": "Plain digits from 1e-6."
+    },
+    {
+      "operator": "convert.toText",
+      "inputs": [
+        1e-07
+      ],
+      "expected": "1e-7",
+      "note": "Below 1e-6, an exponent."
+    },
+    {
+      "operator": "convert.toText",
+      "inputs": [
+        -1.5e-09
+      ],
+      "expected": "-1.5e-9"
+    },
+    {
+      "operator": "convert.toText",
+      "inputs": [
+        123456789012
+      ],
+      "expected": "123456789012"
+    },
+    {
+      "operator": "convert.lookup",
+      "inputs": [
+        "M",
+        {
+          "M": "Male",
+          "F": "Female"
+        }
+      ],
+      "expected": "Male"
+    },
+    {
+      "operator": "convert.lookup",
+      "inputs": [
+        "X",
+        {
+          "M": "Male",
+          "F": "Female"
+        }
+      ],
+      "expected": {
+        "$absent": true
+      },
+      "note": "No match and no fallback leaves the field out."
+    },
+    {
+      "operator": "convert.lookup",
+      "inputs": [
+        "X",
+        {
+          "M": "Male",
+          "F": "Female"
+        },
+        "Unknown"
+      ],
+      "expected": "Unknown"
+    },
+    {
+      "operator": "convert.lookup",
+      "inputs": [
+        "M",
+        {
+          "M": "Male",
+          "F": "Female"
+        },
+        {
+          "$absent": true
+        }
+      ],
+      "expected": "Male",
+      "note": "A missing fallback doesn't matter when there's a match."
+    },
+    {
+      "operator": "convert.lookup",
+      "inputs": [
+        {
+          "$absent": true
+        },
+        {
+          "M": "Male",
+          "F": "Female"
+        },
+        "Unknown"
+      ],
+      "expected": {
+        "$absent": true
+      },
+      "note": "A missing value gives no output, not the fallback."
+    },
+    {
+      "operator": "convert.lookup",
+      "inputs": [
+        1,
+        {
+          "1": "one"
+        }
+      ],
+      "expected": "one",
+      "note": "Keys match as text."
+    },
+    {
+      "operator": "convert.lookup",
+      "inputs": [
+        "toString",
+        {}
+      ],
+      "expected": {
+        "$absent": true
+      },
+      "note": "Only the table's own keys match."
+    },
+    {
+      "operator": "convert.lookup",
+      "inputs": [
+        "F",
+        {
+          "F": {
+            "code": 2
+          }
+        }
+      ],
+      "expected": {
+        "code": 2
+      },
+      "note": "A match can be any JSON."
+    },
+    {
+      "operator": "convert.lookup",
+      "inputs": [
+        "M",
+        "not a table"
+      ],
+      "expected": {
+        "$error": true
+      }
+    },
+    {
+      "operator": "date.parse",
+      "inputs": [
+        "04/03/2026",
+        "dd/MM/yyyy"
+      ],
+      "expected": "2026-03-04"
+    },
+    {
+      "operator": "date.parse",
+      "inputs": [
+        "4 Mar 2026 09:30",
+        "d MMM yyyy HH:mm"
+      ],
+      "expected": "2026-03-04T09:30:00",
+      "note": "A time in the pattern gives a date and time; missing seconds are 00."
+    },
+    {
+      "operator": "date.parse",
+      "inputs": [
+        "3/4/26",
+        "M/d/yy"
+      ],
+      "expected": "2026-03-04",
+      "note": "M and d take one or two digits; yy is in the 2000s."
+    },
+    {
+      "operator": "date.parse",
+      "inputs": [
+        "31/02/2026",
+        "dd/MM/yyyy"
+      ],
+      "expected": {
+        "$error": true
+      },
+      "note": "Not a real date."
+    },
+    {
+      "operator": "date.parse",
+      "inputs": [
+        "2026-3-4",
+        "yyyy-MM-dd"
+      ],
+      "expected": {
+        "$error": true
+      },
+      "note": "MM and dd need two digits."
+    },
+    {
+      "operator": "date.parse",
+      "inputs": [
+        "04/03/2026 extra",
+        "dd/MM/yyyy"
+      ],
+      "expected": {
+        "$error": true
+      },
+      "note": "The whole text must match."
+    },
+    {
+      "operator": "date.parse",
+      "inputs": [
+        "03/2026",
+        "MM/yyyy"
+      ],
+      "expected": {
+        "$error": true
+      },
+      "note": "A year, a month and a day are needed."
+    },
+    {
+      "operator": "date.format",
+      "inputs": [
+        "2026-03-04",
+        "dd MMM yyyy"
+      ],
+      "expected": "04 Mar 2026"
+    },
+    {
+      "operator": "date.format",
+      "inputs": [
+        "2026-03-04T09:05:07Z",
+        "d/M/yy HH:mm:ss"
+      ],
+      "expected": "4/3/26 09:05:07"
+    },
+    {
+      "operator": "date.format",
+      "inputs": [
+        "2026-03-04",
+        "HH:mm"
+      ],
+      "expected": "00:00",
+      "note": "A date with no time is at midnight."
+    },
+    {
+      "operator": "date.format",
+      "inputs": [
+        "not a date",
+        "yyyy"
+      ],
+      "expected": {
+        "$error": true
+      }
+    },
+    {
+      "operator": "date.format",
+      "inputs": [
+        "2026-03-04T09:30+01:00",
+        "yyyy"
+      ],
+      "expected": {
+        "$error": true
+      },
+      "note": "Only Z is accepted for a time zone."
+    },
+    {
+      "operator": "date.format",
+      "inputs": [
+        {
+          "$absent": true
+        },
+        "yyyy"
+      ],
+      "expected": {
+        "$absent": true
+      },
+      "note": "No date, no output."
+    },
+    {
+      "operator": "date.add",
+      "inputs": [
+        "2026-01-31",
+        1,
+        "month"
+      ],
+      "expected": "2026-02-28",
+      "note": "The 31st plus a month stops at the end of February."
+    },
+    {
+      "operator": "date.add",
+      "inputs": [
+        "2024-01-31",
+        1,
+        "months"
+      ],
+      "expected": "2024-02-29",
+      "note": "A leap year."
+    },
+    {
+      "operator": "date.add",
+      "inputs": [
+        "2024-02-29",
+        1,
+        "year"
+      ],
+      "expected": "2025-02-28"
+    },
+    {
+      "operator": "date.add",
+      "inputs": [
+        "2026-03-04",
+        -10,
+        "days"
+      ],
+      "expected": "2026-02-22"
+    },
+    {
+      "operator": "date.add",
+      "inputs": [
+        "2026-12-31T23:00:00Z",
+        1,
+        "day"
+      ],
+      "expected": "2027-01-01T23:00:00Z",
+      "note": "A date and time keeps its time and Z."
+    },
+    {
+      "operator": "date.add",
+      "inputs": [
+        "2026-03-04",
+        1.5,
+        "days"
+      ],
+      "expected": {
+        "$error": true
+      },
+      "note": "Only whole amounts."
+    },
+    {
+      "operator": "date.add",
+      "inputs": [
+        "2026-03-04",
+        1,
+        "weeks"
+      ],
+      "expected": {
+        "$error": true
+      },
+      "note": "Only days, months or years."
+    },
+    {
+      "operator": "date.add",
+      "inputs": [
+        "9999-12-31",
+        1,
+        "day"
+      ],
+      "expected": {
+        "$error": true
+      },
+      "note": "Outside the years 1 to 9999."
+    },
+    {
+      "operator": "date.diff",
+      "inputs": [
+        "1978-04-04",
+        "2026-03-04",
+        "years"
+      ],
+      "expected": 47,
+      "note": "An age: the birthday hasn't come round yet."
+    },
+    {
+      "operator": "date.diff",
+      "inputs": [
+        "1978-03-04",
+        "2026-03-04",
+        "years"
+      ],
+      "expected": 48
+    },
+    {
+      "operator": "date.diff",
+      "inputs": [
+        "2026-03-04",
+        "2026-01-31",
+        "months"
+      ],
+      "expected": -1,
+      "note": "Counts toward zero when going back."
+    },
+    {
+      "operator": "date.diff",
+      "inputs": [
+        "2026-01-01",
+        "2026-03-01",
+        "days"
+      ],
+      "expected": 59
+    },
+    {
+      "operator": "date.diff",
+      "inputs": [
+        "2026-03-04T23:00:00",
+        "2026-03-05T22:00:00",
+        "days"
+      ],
+      "expected": 0,
+      "note": "23 hours is no whole day."
+    },
+    {
+      "operator": "date.part",
+      "inputs": [
+        "2026-03-04",
+        "weekday"
+      ],
+      "expected": 3,
+      "note": "Wednesday; Monday is 1."
+    },
+    {
+      "operator": "date.part",
+      "inputs": [
+        "2026-03-08",
+        "weekday"
+      ],
+      "expected": 7,
+      "note": "Sunday is 7."
+    },
+    {
+      "operator": "date.part",
+      "inputs": [
+        "2026-03-04T09:30",
+        "minute"
+      ],
+      "expected": 30
+    },
+    {
+      "operator": "date.part",
+      "inputs": [
+        "2026-03-04",
+        "year"
+      ],
+      "expected": 2026
+    },
+    {
+      "operator": "date.part",
+      "inputs": [
+        "2026-03-04",
+        "quarter"
+      ],
+      "expected": {
+        "$error": true
+      }
+    }
+  ],
+  "aggregate": [
+    {
+      "operator": "aggregate.sum",
+      "values": [
+        1,
+        "2",
+        3.5
+      ],
+      "expected": 6.5
+    },
+    {
+      "operator": "aggregate.sum",
+      "values": [],
+      "expected": 0,
+      "note": "Summing nothing gives 0."
+    },
+    {
+      "operator": "aggregate.sum",
+      "values": [
+        1,
+        {
+          "$absent": true
+        },
+        2
+      ],
+      "expected": 3,
+      "note": "Items without the value are skipped."
+    },
+    {
+      "operator": "aggregate.sum",
+      "values": [
+        1,
+        "abc"
+      ],
+      "expected": {
+        "$error": true
+      }
+    },
+    {
+      "operator": "aggregate.count",
+      "values": [
+        1,
+        {
+          "$absent": true
+        },
+        null,
+        0
+      ],
+      "expected": 3,
+      "note": "Counts items that have a value; null counts, missing doesn't."
+    },
+    {
+      "operator": "aggregate.count",
+      "values": [],
+      "expected": 0
+    },
+    {
+      "operator": "aggregate.average",
+      "values": [
+        1,
+        2,
+        6
+      ],
+      "expected": 3
+    },
+    {
+      "operator": "aggregate.average",
+      "values": [],
+      "expected": {
+        "$absent": true
+      },
+      "note": "The average of nothing is missing."
+    },
+    {
+      "operator": "aggregate.min",
+      "values": [
+        3,
+        "1",
+        2
+      ],
+      "expected": 1
+    },
+    {
+      "operator": "aggregate.max",
+      "values": [
+        3,
+        "10",
+        2
+      ],
+      "expected": 10
+    },
+    {
+      "operator": "aggregate.min",
+      "values": [],
+      "expected": {
+        "$absent": true
+      }
+    },
+    {
+      "operator": "aggregate.join",
+      "values": [
+        "a",
+        1,
+        null,
+        "b"
+      ],
+      "expected": "a1b",
+      "note": "Values joined as text with nothing between; null reads as empty text."
+    },
+    {
+      "operator": "aggregate.join",
+      "values": [],
+      "expected": ""
+    }
+  ]
+}

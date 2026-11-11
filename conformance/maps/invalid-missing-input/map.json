@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "source": {
+    "type": "object",
+    "title": "Person",
+    "properties": {
+      "FirstName": {
+        "type": "string"
+      },
+      "LastName": {
+        "type": "string"
+      },
+      "DateOfBirth": {
+        "type": "string",
+        "format": "date"
+      },
+      "Address": {
+        "type": "string"
+      },
+      "ZipCode": {
+        "type": "string"
+      },
+      "PhoneCalls": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "PhoneNumber": {
+              "type": "string"
+            },
+            "Cost": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "title": "Profile",
+    "properties": {
+      "Address": {
+        "type": "string"
+      },
+      "ZipCode": {
+        "type": "string"
+      },
+      "CivilStatus": {
+        "type": "string"
+      },
+      "FullName": {
+        "type": "string"
+      },
+      "Age": {
+        "type": "integer"
+      },
+      "PhoneBilling": {
+        "type": "object",
+        "properties": {
+          "TotalInternational": {
+            "type": "number"
+          },
+          "TotalNational": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  },
+  "nodes": [
+    {
+      "id": "join",
+      "operator": "text.concat"
+    }
+  ],
+  "links": [
+    {
+      "from": {
+        "source": "FirstName"
+      },
+      "to": {
+        "node": "join",
+        "input": 0
+      }
+    },
+    {
+      "from": {
+        "source": "LastName"
+      },
+      "to": {
+        "node": "join",
+        "input": 2
+      }
+    },
+    {
+      "from": {
+        "node": "join"
+      },
+      "to": {
+        "target": "FullName"
+      }
+    }
+  ]
+}

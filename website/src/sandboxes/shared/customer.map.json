@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "source": { "type": "object", "title": "Customer", "properties": { "CustomerId": { "type": "string" }, "Name": { "type": "string" } } },
+  "target": { "type": "object", "title": "Account", "properties": { "Name": { "type": "string" }, "Tier": { "type": "string" } } },
+  "nodes": [{ "id": "tier", "operator": "acme.customerTier", "position": { "x": 120, "y": 60 } }],
+  "links": [
+    { "from": { "source": "Name" }, "to": { "target": "Name" } },
+    { "from": { "source": "CustomerId" }, "to": { "node": "tier", "input": 0 } },
+    { "from": { "node": "tier" }, "to": { "target": "Tier" } }
+  ]
+}

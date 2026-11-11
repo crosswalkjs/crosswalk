@@ -1,0 +1,5 @@
+{
+  "id": "customer",
+  "label": "Customer",
+  "colors": { "accent": "red; } body { display: none" }
+}

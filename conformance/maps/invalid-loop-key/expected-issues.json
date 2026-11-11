@@ -1,0 +1,12 @@
+[
+  {
+    "severity": "error",
+    "code": "bad-loop-key",
+    "path": "Name"
+  },
+  {
+    "severity": "error",
+    "code": "bad-loop-key",
+    "path": "Lines[].Nope"
+  }
+]

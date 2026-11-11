@@ -1,0 +1,7 @@
+[
+  {
+    "severity": "error",
+    "code": "conflicting-link",
+    "path": "BillTo.Line"
+  }
+]

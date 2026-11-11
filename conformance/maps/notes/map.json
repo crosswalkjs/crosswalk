@@ -1,0 +1,279 @@
+{
+  "version": 1,
+  "source": {
+    "type": "object",
+    "properties": {
+      "Name": {
+        "type": "string"
+      },
+      "Billing": {
+        "type": "object",
+        "properties": {
+          "Street": {
+            "type": "string"
+          },
+          "City": {
+            "type": "string"
+          },
+          "Postcode": {
+            "type": "string"
+          }
+        }
+      },
+      "Shipping": {
+        "type": "object",
+        "properties": {
+          "Street": {
+            "type": "string"
+          },
+          "City": {
+            "type": "string"
+          },
+          "Postcode": {
+            "type": "string"
+          },
+          "Notes": {
+            "type": "string"
+          }
+        }
+      },
+      "Addresses": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "Street": {
+              "type": "string"
+            },
+            "City": {
+              "type": "string"
+            },
+            "Postcode": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "properties": {
+      "Name": {
+        "type": "string"
+      },
+      "BillTo": {
+        "type": "object",
+        "properties": {
+          "Line": {
+            "type": "string"
+          },
+          "Postcode": {
+            "type": "string"
+          }
+        }
+      },
+      "ShipTo": {
+        "type": "object",
+        "properties": {
+          "Line": {
+            "type": "string"
+          },
+          "Postcode": {
+            "type": "string"
+          }
+        }
+      },
+      "Labels": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "Line": {
+              "type": "string"
+            },
+            "Postcode": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Raw": {
+        "type": "object"
+      }
+    }
+  },
+  "nodes": [],
+  "links": [
+    {
+      "from": {
+        "source": "Name"
+      },
+      "to": {
+        "target": "Name"
+      },
+      "page": "records"
+    },
+    {
+      "from": {
+        "source": "Billing"
+      },
+      "to": {
+        "target": "BillTo"
+      },
+      "submap": "address"
+    },
+    {
+      "from": {
+        "source": "Shipping"
+      },
+      "to": {
+        "target": "ShipTo"
+      },
+      "submap": "address"
+    }
+  ],
+  "submaps": {
+    "address": {
+      "title": "Address",
+      "source": {
+        "type": "object",
+        "properties": {
+          "Street": {
+            "type": "string"
+          },
+          "City": {
+            "type": "string"
+          },
+          "Postcode": {
+            "type": "string"
+          }
+        }
+      },
+      "target": {
+        "type": "object",
+        "properties": {
+          "Line": {
+            "type": "string"
+          },
+          "Postcode": {
+            "type": "string"
+          }
+        }
+      },
+      "nodes": [
+        {
+          "id": "line",
+          "operator": "text.concat",
+          "constants": {
+            "1": ", "
+          }
+        },
+        {
+          "id": "postcode",
+          "operator": "text.upper",
+          "page": "postcode"
+        }
+      ],
+      "links": [
+        {
+          "from": {
+            "source": "Street"
+          },
+          "to": {
+            "node": "line",
+            "input": 0
+          }
+        },
+        {
+          "from": {
+            "source": "City"
+          },
+          "to": {
+            "node": "line",
+            "input": 2
+          }
+        },
+        {
+          "from": {
+            "node": "line"
+          },
+          "to": {
+            "target": "Line"
+          }
+        },
+        {
+          "from": {
+            "source": "Postcode"
+          },
+          "to": {
+            "node": "postcode",
+            "input": 0
+          }
+        },
+        {
+          "from": {
+            "node": "postcode"
+          },
+          "to": {
+            "target": "Postcode"
+          }
+        }
+      ],
+      "notes": [
+        {
+          "id": "n1",
+          "text": "Postcode goes upper case.",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "page": "postcode"
+        }
+      ],
+      "pages": [
+        {
+          "id": "street",
+          "name": "Street"
+        },
+        {
+          "id": "postcode",
+          "name": "Postcode"
+        }
+      ]
+    }
+  },
+  "notes": [
+    {
+      "id": "n1",
+      "text": "Billing and shipping share one sub-map.",
+      "position": {
+        "x": 40,
+        "y": 20
+      }
+    },
+    {
+      "id": "n2",
+      "text": "Same sub-map as billing.",
+      "position": {
+        "x": -40,
+        "y": 24
+      },
+      "on": {
+        "target": "ShipTo"
+      },
+      "page": "main"
+    }
+  ],
+  "pages": [
+    {
+      "id": "main",
+      "name": "Main"
+    },
+    {
+      "id": "records",
+      "name": "Records"
+    }
+  ],
+  "loops": null
+}

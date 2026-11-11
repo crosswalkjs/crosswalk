@@ -1,0 +1,3 @@
+{
+  "description": "Writing X12: each segment ends with ~ then the lineEnding given; empty fields at the end are left off."
+}

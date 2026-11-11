@@ -1,0 +1,15 @@
+{
+  "entries": [
+    {
+      "code": "AB12",
+      "amount": 950.5,
+      "memo": "Rent May",
+      "count": 3
+    },
+    {
+      "code": "ZZ9",
+      "amount": -1.2,
+      "memo": "Refund"
+    }
+  ]
+}

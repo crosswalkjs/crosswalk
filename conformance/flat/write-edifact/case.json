@@ -1,0 +1,3 @@
+{
+  "description": "Writing EDIFACT: each segment ends with ', no line break unless lineEnding gives one; separators in values are released with ?; empty fields and parts at the end are left off."
+}

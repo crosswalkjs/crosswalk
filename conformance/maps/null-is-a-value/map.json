@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "source": {
+    "type": "object",
+    "properties": {
+      "FirstName": {
+        "type": "string"
+      },
+      "LastName": {
+        "type": "string"
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "properties": {
+      "GivenName": {
+        "type": "string"
+      },
+      "FullName": {
+        "type": "string"
+      },
+      "Billing": {
+        "type": "object",
+        "properties": {
+          "Total": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  },
+  "nodes": [],
+  "links": [
+    {
+      "from": {
+        "source": "FirstName"
+      },
+      "to": {
+        "target": "GivenName"
+      }
+    }
+  ]
+}

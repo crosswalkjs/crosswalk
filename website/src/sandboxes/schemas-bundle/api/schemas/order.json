@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "customer": { "$ref": "customer.json" },
+    "lines": { "type": "array", "items": { "$ref": "common/types.json#/$defs/Line" } },
+    "total": { "$ref": "common/types.json#/$defs/Money" }
+  }
+}

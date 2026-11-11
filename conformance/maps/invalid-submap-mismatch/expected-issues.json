@@ -1,0 +1,12 @@
+[
+  {
+    "severity": "error",
+    "code": "submap-mismatch",
+    "path": "BillTo"
+  },
+  {
+    "severity": "error",
+    "code": "unknown-source",
+    "submap": "address"
+  }
+]

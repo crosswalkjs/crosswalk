@@ -1,0 +1,3 @@
+{
+  "description": "A $ref to something the root schema doesn't define is an error."
+}

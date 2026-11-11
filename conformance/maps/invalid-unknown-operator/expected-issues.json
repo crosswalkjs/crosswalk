@@ -1,0 +1,7 @@
+[
+  {
+    "severity": "error",
+    "code": "unknown-operator",
+    "node": "x"
+  }
+]

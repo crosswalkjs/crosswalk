@@ -1,0 +1,336 @@
+{
+  "version": 1,
+  "source": {
+    "type": "object",
+    "title": "Order",
+    "properties": {
+      "Number": {
+        "type": "string"
+      },
+      "Status": {
+        "type": "string"
+      },
+      "Billing": {
+        "type": "object",
+        "properties": {
+          "Street": {
+            "type": "string"
+          },
+          "City": {
+            "type": "string"
+          },
+          "Postcode": {
+            "type": "string"
+          }
+        }
+      },
+      "Shipping": {
+        "type": "object",
+        "properties": {
+          "Street": {
+            "type": "string"
+          },
+          "City": {
+            "type": "string"
+          },
+          "Postcode": {
+            "type": "string"
+          }
+        }
+      },
+      "Lines": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "Sku": {
+              "type": "string"
+            },
+            "Date": {
+              "type": "string"
+            },
+            "Qty": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "title": "Invoice",
+    "properties": {
+      "Reference": {
+        "type": "string"
+      },
+      "Status": {
+        "type": "string"
+      },
+      "BillTo": {
+        "type": "object",
+        "properties": {
+          "Line1": {
+            "type": "string"
+          },
+          "Town": {
+            "type": "string"
+          },
+          "Postcode": {
+            "type": "string"
+          }
+        }
+      },
+      "ShipTo": {
+        "type": "object",
+        "properties": {
+          "Line1": {
+            "type": "string"
+          },
+          "Town": {
+            "type": "string"
+          },
+          "Postcode": {
+            "type": "string"
+          }
+        }
+      },
+      "Products": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "Sku": {
+              "type": "string"
+            },
+            "Units": {
+              "type": "number"
+            },
+            "FirstOrdered": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "loops": [
+    {
+      "source": "Lines[]",
+      "target": "Products[]",
+      "sortBy": [
+        {
+          "path": "Lines[].Date"
+        }
+      ],
+      "groupBy": "Lines[].Sku"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "status",
+      "operator": "convert.lookup",
+      "constants": {
+        "1": {
+          "P": "Paid",
+          "S": "Shipped",
+          "C": "Cancelled"
+        },
+        "2": "Unknown"
+      },
+      "position": {
+        "x": 150,
+        "y": 50
+      }
+    },
+    {
+      "id": "units",
+      "operator": "aggregate.sum",
+      "scope": "Lines[]",
+      "position": {
+        "x": 150,
+        "y": 290
+      }
+    }
+  ],
+  "links": [
+    {
+      "from": {
+        "source": "Number"
+      },
+      "to": {
+        "target": "Reference"
+      }
+    },
+    {
+      "from": {
+        "source": "Status"
+      },
+      "to": {
+        "node": "status",
+        "input": 0
+      }
+    },
+    {
+      "from": {
+        "node": "status"
+      },
+      "to": {
+        "target": "Status"
+      }
+    },
+    {
+      "from": {
+        "source": "Billing"
+      },
+      "to": {
+        "target": "BillTo"
+      },
+      "submap": "Address"
+    },
+    {
+      "from": {
+        "source": "Shipping"
+      },
+      "to": {
+        "target": "ShipTo"
+      },
+      "submap": "Address"
+    },
+    {
+      "from": {
+        "source": "Lines[].Sku"
+      },
+      "to": {
+        "target": "Products[].Sku"
+      }
+    },
+    {
+      "from": {
+        "source": "Lines[].Qty"
+      },
+      "to": {
+        "node": "units",
+        "input": 0
+      }
+    },
+    {
+      "from": {
+        "node": "units"
+      },
+      "to": {
+        "target": "Products[].Units"
+      }
+    },
+    {
+      "from": {
+        "source": "Lines[].Date"
+      },
+      "to": {
+        "target": "Products[].FirstOrdered"
+      }
+    }
+  ],
+  "notes": [
+    {
+      "id": "note1",
+      "text": "One product per SKU, earliest order first. Units add up across the SKU's lines.",
+      "position": {
+        "x": 24,
+        "y": 22
+      },
+      "on": {
+        "node": "units"
+      }
+    }
+  ],
+  "submaps": {
+    "Address": {
+      "source": {
+        "type": "object",
+        "properties": {
+          "Street": {
+            "type": "string"
+          },
+          "City": {
+            "type": "string"
+          },
+          "Postcode": {
+            "type": "string"
+          }
+        },
+        "title": "Address"
+      },
+      "target": {
+        "type": "object",
+        "properties": {
+          "Line1": {
+            "type": "string"
+          },
+          "Town": {
+            "type": "string"
+          },
+          "Postcode": {
+            "type": "string"
+          }
+        },
+        "title": "Address"
+      },
+      "nodes": [
+        {
+          "id": "postcode",
+          "operator": "text.upper",
+          "position": {
+            "x": 160,
+            "y": 90
+          }
+        }
+      ],
+      "links": [
+        {
+          "from": {
+            "source": "Street"
+          },
+          "to": {
+            "target": "Line1"
+          }
+        },
+        {
+          "from": {
+            "source": "City"
+          },
+          "to": {
+            "target": "Town"
+          }
+        },
+        {
+          "from": {
+            "source": "Postcode"
+          },
+          "to": {
+            "node": "postcode",
+            "input": 0
+          }
+        },
+        {
+          "from": {
+            "node": "postcode"
+          },
+          "to": {
+            "target": "Postcode"
+          }
+        }
+      ],
+      "notes": [
+        {
+          "id": "note1",
+          "text": "Both addresses on the order use this.",
+          "position": {
+            "x": 120,
+            "y": 190
+          }
+        }
+      ]
+    }
+  }
+}

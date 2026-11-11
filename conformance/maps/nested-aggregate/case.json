@@ -1,0 +1,3 @@
+{
+  "description": "Inside a loop over orders, a sum scoped to each order's lines totals that order's own lines."
+}

@@ -1,0 +1,100 @@
+/* The home page, ink on paper: the name and what it does, the editor itself, then ruled rows of what it is. */
+
+.hero {
+  padding: 4rem 0 2.5rem;
+}
+
+.title {
+  margin-bottom: 0.75rem;
+  font-size: clamp(2.6rem, 6vw, 4rem);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+
+.tagline {
+  max-width: 40rem;
+  margin: 0 0 1.75rem;
+  color: var(--ink-2);
+  font-size: 1.3rem;
+  line-height: 1.45;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.buttons :global(.button) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+}
+
+.install {
+  max-width: 32rem;
+  margin: 1.75rem 0 0;
+}
+
+.sectionTitle {
+  margin: 0 0 0.75rem;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--ink);
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.hint {
+  margin: 0 0 1rem;
+  max-width: 44rem;
+  color: var(--ink-2);
+}
+
+.features {
+  margin: 3.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.features > li {
+  display: grid;
+  grid-template-columns: minmax(10rem, 16rem) minmax(0, 1fr);
+  gap: 1.5rem;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.features h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.features p {
+  margin: 0;
+  color: var(--ink-2);
+}
+
+@media (max-width: 760px) {
+  .features > li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.25rem;
+  }
+}
+
+.status {
+  max-width: 44rem;
+  padding: 2rem 0 4rem;
+}
+
+/* The section title over the rows sits in the list, so the rows hang from its rule. */
+.features > li.featuresHead {
+  display: block;
+  padding: 0;
+  border-bottom: 0;
+}
+
+.featuresHead .sectionTitle {
+  margin: 0;
+}

@@ -1,0 +1,41 @@
+{
+  "type": "object",
+  "flat": {
+    "format": "csv",
+    "delimiter": "*",
+    "terminator": "~",
+    "lineEnding": "\n"
+  },
+  "properties": {
+    "envelope": {
+      "type": "object",
+      "flat": {
+        "tag": "ISA"
+      },
+      "properties": {
+        "qualifier": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string",
+          "flat": {
+            "width": 10
+          }
+        },
+        "sender": {
+          "type": "string",
+          "flat": {
+            "width": 15
+          }
+        },
+        "control": {
+          "type": "integer",
+          "flat": {
+            "width": 9,
+            "pad": "0"
+          }
+        }
+      }
+    }
+  }
+}

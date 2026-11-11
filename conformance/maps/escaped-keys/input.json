@@ -1,0 +1,5 @@
+{
+  "first.name": "Ana",
+  "tags[]": "vip",
+  "order.lines": [{ "unit.price": 2.5, "qty": 4 }, { "unit.price": 10, "qty": 1 }]
+}

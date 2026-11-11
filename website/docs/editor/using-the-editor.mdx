@@ -1,0 +1,113 @@
+---
+title: Using the editor
+description: What you can do in the editor with the mouse and keyboard.
+---
+
+import LiveMapper from '@site/src/components/LiveMapper';
+import {blankPersonMap, personInput} from '@site/src/examples/person';
+import {orderMap, orderInput} from '@site/src/examples/order';
+
+# Using the editor
+
+The editor has four parts. From the left: the **toolbox** of operators, the **source** tree, the **grid** where operators sit, and the **target** tree.
+
+Try it here, starting from nothing. Building the full name is a good first step: drag **Concatenate** (`ab+`) onto the grid, drag FirstName and then LastName onto it, then drag its dot onto FullName.
+
+<LiveMapper map={blankPersonMap} input={personInput} height={460} />
+
+## Mapping
+
+| To | Do this |
+|---|---|
+| Copy a field across | Drag the source field onto the target field. |
+| Add an operator | Drag it from the toolbox onto the grid, or click it to drop it in the middle. |
+| Feed an operator | Drag a source field, or another operator's dot, onto it. Each drop fills its next free input. |
+| Use an operator's result | Drag its dot onto a target field, or onto another operator. |
+| Repeat a target array | Drag the repeating source record onto the repeating target record. That makes a loop, drawn as a dashed line. |
+| Set what an aggregate runs over | Drag the repeating source record onto the aggregate operator. |
+| Fill a record whole | Drag the source record onto the target record. That makes a record link, drawn heavier, which copies the record as it is until you give it a sub-map. |
+| Leave a note | Drag the note (`✎`) from the bottom of the toolbox onto the grid, or click it, and type. |
+| Pin a note to something | Drop the note on an operator, a line or a field. It then moves with it, with a dotted line back to it. Drag it by its top edge to move it beside the same thing, or onto something else to re-pin it. **⊘** unpins it. Deleting an operator leaves its notes where it was, unpinned. |
+
+Dropping on a target field that already has a link replaces it. A drop that doesn't make sense, such as a single value onto a record, does nothing; the target fades while you hover to show it won't take it.
+
+## Editing
+
+Click an operator to open the **inspector**. There you can:
+
+- link an input by typing a source field's path, such as `FirstName`, or another operator's id. Suggestions appear as you type.
+- type a constant into any input that isn't linked. Numbers, `true`, `false` and `null` are read as JSON; anything else is text. Put text in quotes to keep it as text, such as `"4"`, `" "` or `"FirstName"`.
+- move an input up with **↑**, to change the order Concatenate joins things in, say.
+- remove an input with **✕**. The inputs after it move up.
+- choose what an aggregate runs over.
+- see any issues with that operator, and any notes pinned to it.
+
+For an input that takes a table, such as **Look up**'s, click **⊞** next to it, then type one `key = value` per line:
+
+```text
+P = Paid
+S = Shipped
+```
+
+Click a line to select it, and Delete removes it; click empty grid to clear the selection. Two kinds of line have settings, and open the inspector:
+
+- a **loop** can sort by one or more fields of the item, group by one, and leave out repeated items. When both ends are records, **Map each item** maps every item whole, the same way as a record link.
+- a **record link** chooses how the record is filled: copied as it is, with one of the map's sub-maps, or with a new one.
+
+## Sub-maps
+
+Choosing **New sub-map…** makes an empty sub-map between the two records and opens it. It's drawn like any other map, with the two records as its source and target, and the editor gains a **Showing** bar at the top for switching between the main map and its sub-maps. Undo takes you back to wherever the change was made.
+
+A record link, or a loop that maps its items whole, is labelled on its line with the sub-map it uses, or "copy". Finely dotted lines show what it maps inside the records, field to field, so you can see a sub-map's work without opening it. Double-click the label to open the sub-map.
+
+Any record link can use a sub-map once it exists, so the same address mapping can fill a billing address and a shipping address. Deleting a sub-map from the bar leaves the links that used it copying their records instead.
+
+The live preview shows values on the main map only. A sub-map runs once for every record it fills, so it has no single value to show.
+
+Here's an order mapped to an invoice. The loop groups lines by SKU, **Look up** turns the status code into words, and both addresses go through one sub-map. Click the dashed loop line or the `tbl` operator to see their settings, or pick the sub-map in the bar at the top.
+
+<LiveMapper map={orderMap} input={orderInput} height={480} open={{options: false}} />
+
+## Keys
+
+| Key | Does |
+|---|---|
+| Delete or Backspace | Removes the selected operators, line or loop. A note has its own **✕**. |
+| Cmd/Ctrl+Z | Undo. |
+| Cmd/Ctrl+Shift+Z, Cmd/Ctrl+Y | Redo. |
+| Cmd/Ctrl+A | Selects every operator. |
+| Cmd/Ctrl+C, X, V | Copies, cuts and pastes the selected operators. |
+| Cmd/Ctrl+scroll | Zooms the grid around the pointer. A trackpad pinch does the same. |
+| Escape | Clears the selection. |
+
+## Several operators at once
+
+Shift-click (or Cmd/Ctrl-click) operators to add them to the selection or take them out, or drag on empty grid to draw a box round them; hold Shift to add to what's already selected. Drag any of them to move them together, and Delete removes them all.
+
+Copy and paste use the system clipboard, so they work between editors and between browser tabs. A paste gets new ids, sits a little along from the original, and keeps the lines between the copied operators and from source fields into them, where those fields exist. Lines out to target fields aren't copied, since each target field takes only one.
+
+## Reading a busy map
+
+Hover over a field or an operator to pick out its lines; everything else fades.
+
+To follow a value all the way, click a target field: everything it's made from is picked out, back through every operator to the source fields, including the record link or loop it sits inside. Click a source field to see everywhere it ends up, or select an operator to see both sides of it. The trace stays as you move between pages, and each page's tab shows how many of the trace's operators it holds. Escape, clicking empty grid, or clicking the field again lets go.
+
+The toolbox's search box narrows it to the operators you're after, and its **«** button collapses it to a narrow rail to give the grid more room. In a narrow editor it starts collapsed.
+
+The arrow beside a record or list in either tree folds its fields away. Lines into folded fields end on the folded record, so you can still see that something maps there. A line to a field scrolled out of its tree still runs to the tree's edge, faded. When you scroll the grid to other operators, the trees follow once it stops, to the fields most of those operators use.
+
+To find a field, click the magnifier in a tree's heading and type part of its name or path. The tree narrows to the fields that match, with the records they sit in, and opens any folded record that holds one. While you search, the whole map narrows to the paths from the fields found: only their operators and lines are shown, the other tree keeps only the fields they reach, and the operators are laid out between them so there's nothing to scroll. Searching the target tree works the other way, showing only what feeds the fields found. The operators' own positions aren't changed, and notes are put away until the search is cleared. Escape, or clearing the box, brings everything back.
+
+The buttons in the grid's corner zoom it from 40% to 200%; click the percentage to go back to 100%, or **⤢** to fit every operator in view. Only the grid zooms, so the trees stay readable.
+
+## Pages
+
+A map with a lot going on can be split across pages, like the sheets of a spreadsheet. The tabs sit along the bottom of the grid; when there are more than fit, the bar scrolls and a button at its end lists every page: **+** adds a page, double-click a tab to rename it, and the **✕** that shows on the open tab deletes it, moving what was on it to the page beside it.
+
+Opening a page scrolls both trees to the first fields it uses, and fades the fields it doesn't, so you can see what the page is about. To move operators to another page, drag them onto its tab, or pick the page in an operator's inspector. Dropping them on **+** puts them on a new page. New operators, notes and pastes go on the page you're looking at.
+
+Lines straight from a source field to a target field, record links and loops have pages too: drag the line, or its label, onto a tab, or, for a record link or loop, pick the page in its inspector. A line into or out of an operator goes where the operator goes. The trees show on every page. A line between operators on different pages shows as a short stub labelled **to** or **from** the other page; click the label to go there. A target field mapped on another page still shows as mapped in its tree. Pages are only for people: the map runs the same however it's split.
+
+## Checking as you go
+
+The editor checks the map after every change. Operators with an error get a red badge, and target fields with an error are underlined; hover or click for the message. `mapper.getIssues()` gives the full list, the same as [`analyseMap`](../maps/how-maps-run.md#validation).

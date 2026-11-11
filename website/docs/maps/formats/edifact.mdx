@@ -1,0 +1,28 @@
+---
+title: EDIFACT
+description: "Make a schema for EDIFACT from a sample: segments, elements, components and the release character."
+---
+
+import FlatFileWizard from '@site/src/components/FlatFileWizard';
+
+# EDIFACT
+
+An EDIFACT message is a run of segments, each ending with `'`, named by its first element: `UNB`, `UNH`, `NAD`, `LIN`. Elements are split by `+` and components by `:`, and `?` makes the character after it plain text:
+
+```text
+NAD+BY+5412345000013::9++ACME?+CO'
+```
+
+There, the buyer's name is `ACME+CO`: the `?` keeps the `+` from splitting it. A `UNA` segment at the start can change the separators, and the builder reads them from there.
+
+## Tell Crosswalk how to read it
+
+To read a file, Crosswalk needs its schema: the name and type of each field, and which ones are lists. The builder below makes one from an example, and shows the JSON it reads as you go. When it reads the example the way you want, the **Schema** tab has the schema to use in a map.
+
+1. **Pick a segment** by clicking its tag at the start of any of its lines.
+2. **Name its elements.** Click one on any of its lines and name it in the bar under the lines. An element with components, such as `260302:1200`, shows each component on its own: click one to name it.
+3. Name the segment above the lines, and say what it goes inside: each `QTY` belongs to the `LIN` above it. The dropdown beside each tag says whether it reads as one record or a list.
+
+<FlatFileWizard example="edifact" />
+
+Every setting is in the [EDI section of the flat files reference](../flat-files.mdx#edi).

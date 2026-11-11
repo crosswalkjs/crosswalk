@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Basket owner-id="u7">
+  <items>
+    <item>tea</item>
+    <item>mug</item>
+  </items>
+  <total>12.5</total>
+</Basket>

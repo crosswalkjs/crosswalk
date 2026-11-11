@@ -1,0 +1,16 @@
+[
+  {
+    "severity": "error",
+    "code": "submap-cycle"
+  },
+  {
+    "severity": "error",
+    "code": "submap-mismatch",
+    "submap": "a"
+  },
+  {
+    "severity": "error",
+    "code": "submap-mismatch",
+    "submap": "a"
+  }
+]

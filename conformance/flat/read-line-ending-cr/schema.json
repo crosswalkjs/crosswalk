@@ -1,0 +1,41 @@
+{
+  "type": "object",
+  "flat": {
+    "format": "csv",
+    "delimiter": "|",
+    "lineEnding": "\r"
+  },
+  "properties": {
+    "header": {
+      "type": "object",
+      "flat": {
+        "tag": "MSH"
+      },
+      "properties": {
+        "encoding": {
+          "type": "string"
+        },
+        "app": {
+          "type": "string"
+        }
+      }
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "flat": {
+          "tag": "OBX"
+        },
+        "properties": {
+          "set": {
+            "type": "integer"
+          },
+          "kind": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

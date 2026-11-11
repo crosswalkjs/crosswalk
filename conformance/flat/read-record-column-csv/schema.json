@@ -1,0 +1,41 @@
+{
+  "type": "object",
+  "flat": {
+    "format": "csv",
+    "delimiter": "|",
+    "header": false
+  },
+  "properties": {
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "object",
+            "flat": {
+              "delimiter": "^"
+            },
+            "properties": {
+              "family": {
+                "type": "string"
+              },
+              "given": {
+                "type": "string"
+              },
+              "middle": {
+                "type": "string"
+              }
+            }
+          },
+          "born": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,3 @@
+{
+  "description": "A header from the schema's names, columns in its order, quoted where they hold the delimiter, a quote, a line break or space at either end, missing and null cells empty, numbers as JavaScript writes them."
+}

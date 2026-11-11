@@ -1,0 +1,209 @@
+.sandbox {
+  /* Code in ink on paper, like the rest of the site: keywords bold, comments and punctuation the second ink. */
+  --sb-background: var(--ifm-background-color);
+  --sb-text: #15171c;
+  --sb-gutter: #94928b;
+  --sb-active-line: rgba(21, 23, 28, 0.035);
+  --sb-selection: rgba(21, 23, 28, 0.12);
+  --sb-keyword: #15171c;
+  --sb-string: #5a5c63;
+  --sb-number: #15171c;
+  --sb-comment: #4a4d55;
+  --sb-function: #15171c;
+  --sb-property: #15171c;
+  --sb-type: #15171c;
+  --sb-definition: #15171c;
+  --sb-punctuation: #4a4d55;
+
+  margin: 1.25rem 0 2rem;
+  overflow: hidden;
+  container-type: inline-size;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 10px;
+  background: var(--ifm-background-color);
+}
+
+:global([data-theme='dark']) .sandbox {
+  --sb-text: #f2f1ec;
+  --sb-gutter: #7d7f86;
+  --sb-active-line: rgba(242, 241, 236, 0.04);
+  --sb-selection: rgba(242, 241, 236, 0.16);
+  --sb-keyword: #f2f1ec;
+  --sb-string: #c9c7c0;
+  --sb-number: #f2f1ec;
+  --sb-comment: #b8b9bd;
+  --sb-function: #f2f1ec;
+  --sb-property: #f2f1ec;
+  --sb-type: #f2f1ec;
+  --sb-definition: #f2f1ec;
+  --sb-punctuation: #b8b9bd;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0 0.5rem 0 0;
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+  background: var(--ifm-color-emphasis-100);
+}
+
+.tabs {
+  display: flex;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.tab,
+.activeTab {
+  padding: 0.5rem 0.85rem;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--ifm-color-emphasis-700);
+  font: 500 0.8rem var(--ifm-font-family-monospace);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.tab:hover {
+  color: var(--ifm-font-color-base);
+}
+
+.activeTab {
+  border-bottom-color: var(--ifm-color-primary);
+  color: var(--ifm-font-color-base);
+}
+
+.run,
+.button {
+  flex: none;
+  padding: 0.2rem 0.65rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 6px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.run {
+  margin-left: auto;
+}
+
+.run:disabled,
+.button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* Code above the preview, unless the sandbox is wide enough for both side by side. */
+.panes {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* The code pane fits the file, up to the editor's own maximum height. */
+.code {
+  position: relative;
+  min-width: 0;
+  min-height: 120px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+  background: var(--sb-background);
+}
+
+@container (min-width: 1000px) {
+  .panes {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .code {
+    border-right: 1px solid var(--ifm-color-emphasis-300);
+    border-bottom: 0;
+  }
+}
+
+.loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.85rem;
+}
+
+.output {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.preview {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: var(--ifm-background-color);
+}
+
+.console {
+  flex: 1;
+  min-height: 64px;
+  max-height: 220px;
+  overflow: auto;
+  border-top: 1px solid var(--ifm-color-emphasis-300);
+  background: var(--ifm-color-emphasis-100);
+  font: 0.78rem/1.5 var(--ifm-font-family-monospace);
+}
+
+.consoleTitle {
+  position: sticky;
+  top: 0;
+  padding: 0.3rem 0.75rem;
+  background: var(--ifm-color-emphasis-100);
+  color: var(--ifm-color-emphasis-600);
+  font: 600 0.68rem var(--ifm-font-family-base);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.empty {
+  padding: 0 0.75rem;
+  color: var(--ifm-color-emphasis-500);
+}
+
+.entry {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.15rem 0.75rem;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.text {
+  flex: 1;
+  min-width: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.where {
+  flex: none;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.info .text {
+  color: var(--ifm-color-emphasis-700);
+}
+
+.warn {
+  background: color-mix(in srgb, var(--ifm-color-warning) 10%, transparent);
+}
+
+.error {
+  background: color-mix(in srgb, var(--ifm-color-danger) 10%, transparent);
+  color: var(--ifm-color-danger-darker);
+}
+
+:global([data-theme='dark']) .error {
+  color: var(--ifm-color-danger-lighter);
+}

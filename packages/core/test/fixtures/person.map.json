@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "source": {
+    "type": "object",
+    "title": "Person",
+    "properties": {
+      "FirstName": { "type": "string" },
+      "LastName": { "type": "string" },
+      "DateOfBirth": { "type": "string", "format": "date" },
+      "Address": { "type": "string" },
+      "ZipCode": { "type": "string" },
+      "PhoneCalls": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "PhoneNumber": { "type": "string" },
+            "Cost": { "type": "number" }
+          }
+        }
+      }
+    }
+  },
+  "target": {
+    "type": "object",
+    "title": "Profile",
+    "properties": {
+      "Address": { "type": "string" },
+      "ZipCode": { "type": "string" },
+      "CivilStatus": { "type": "string" },
+      "FullName": { "type": "string" },
+      "Age": { "type": "integer" },
+      "PhoneBilling": {
+        "type": "object",
+        "properties": {
+          "TotalInternational": { "type": "number" },
+          "TotalNational": { "type": "number" }
+        }
+      }
+    }
+  },
+  "nodes": [
+    { "id": "fullName", "operator": "text.concat", "constants": { "1": " " }, "position": { "x": 315, "y": 58 } },
+    { "id": "age", "operator": "example.age", "position": { "x": 315, "y": 167 } },
+    { "id": "zipIsNumeric", "operator": "logic.isNumber", "position": { "x": 202, "y": 196 } },
+    { "id": "zipGate", "operator": "flow.onlyIf", "position": { "x": 270, "y": 232 } },
+    { "id": "prefix", "operator": "text.left", "constants": { "1": 4 }, "position": { "x": 90, "y": 297 } },
+    { "id": "isNational", "operator": "logic.equal", "constants": { "1": "+351" }, "position": { "x": 202, "y": 297 } },
+    { "id": "isInternational", "operator": "logic.not", "position": { "x": 225, "y": 406 } },
+    { "id": "nationalCost", "operator": "flow.onlyIf", "position": { "x": 315, "y": 370 } },
+    { "id": "internationalCost", "operator": "flow.onlyIf", "position": { "x": 315, "y": 478 } },
+    { "id": "totalNational", "operator": "aggregate.sum", "scope": "PhoneCalls[]", "position": { "x": 458, "y": 370 } },
+    { "id": "totalInternational", "operator": "aggregate.sum", "scope": "PhoneCalls[]", "position": { "x": 458, "y": 478 } }
+  ],
+  "links": [
+    { "from": { "source": "FirstName" }, "to": { "node": "fullName", "input": 0 } },
+    { "from": { "source": "LastName" }, "to": { "node": "fullName", "input": 2 } },
+    { "from": { "node": "fullName" }, "to": { "target": "FullName" } },
+
+    { "from": { "source": "DateOfBirth" }, "to": { "node": "age", "input": 0 } },
+    { "from": { "node": "age" }, "to": { "target": "Age" } },
+
+    { "from": { "source": "Address" }, "to": { "target": "Address" } },
+
+    { "from": { "source": "ZipCode" }, "to": { "node": "zipIsNumeric", "input": 0 } },
+    { "from": { "node": "zipIsNumeric" }, "to": { "node": "zipGate", "input": 0 } },
+    { "from": { "source": "ZipCode" }, "to": { "node": "zipGate", "input": 1 } },
+    { "from": { "node": "zipGate" }, "to": { "target": "ZipCode" } },
+
+    { "from": { "source": "PhoneCalls[].PhoneNumber" }, "to": { "node": "prefix", "input": 0 } },
+    { "from": { "node": "prefix" }, "to": { "node": "isNational", "input": 0 } },
+    { "from": { "node": "isNational" }, "to": { "node": "nationalCost", "input": 0 } },
+    { "from": { "source": "PhoneCalls[].Cost" }, "to": { "node": "nationalCost", "input": 1 } },
+    { "from": { "node": "nationalCost" }, "to": { "node": "totalNational", "input": 0 } },
+    { "from": { "node": "totalNational" }, "to": { "target": "PhoneBilling.TotalNational" } },
+
+    { "from": { "node": "isNational" }, "to": { "node": "isInternational", "input": 0 } },
+    { "from": { "node": "isInternational" }, "to": { "node": "internationalCost", "input": 0 } },
+    { "from": { "source": "PhoneCalls[].Cost" }, "to": { "node": "internationalCost", "input": 1 } },
+    { "from": { "node": "internationalCost" }, "to": { "node": "totalInternational", "input": 0 } },
+    { "from": { "node": "totalInternational" }, "to": { "target": "PhoneBilling.TotalInternational" } }
+  ]
+}

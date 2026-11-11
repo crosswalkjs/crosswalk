@@ -1,0 +1,16 @@
+{
+  "Products": [
+    {
+      "Sku": "A",
+      "FirstDate": "2026-01-15"
+    },
+    {
+      "Sku": "B",
+      "FirstDate": "2026-02-01"
+    },
+    {
+      "Sku": "C",
+      "FirstDate": "2026-02-20"
+    }
+  ]
+}
