@@ -2,7 +2,11 @@ name: Release
 
 # Publishing a GitHub release publishes the npm packages, at the versions in their
 # package.json files, and Crosswalk.Core to NuGet, at the version in
-# dotnet/Directory.Build.props. Keep the three versions the same.
+# dotnet/Directory.Build.props. The three versions must be the same.
+#
+# npm and NuGet publish independently, and each skips a version it already has, so
+# a release that only one of them is missing publishes there and leaves the other
+# alone, and a release can be run again after either fails.
 #
 # npm uses trusted publishing, so no npm token is stored here: each package needs
 # this repo and workflow added as a trusted publisher on npmjs.com, which can only
@@ -18,7 +22,23 @@ permissions:
   id-token: write
 
 jobs:
-  publish:
+  versions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Check the packages share a version
+        run: |
+          core=$(node -p "require('./packages/core/package.json').version")
+          canvas=$(node -p "require('./packages/canvas/package.json').version")
+          dotnet=$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' dotnet/Directory.Build.props)
+          echo "@crosswalkjs/core $core, @crosswalkjs/canvas $canvas, Crosswalk.Core $dotnet"
+          if [ "$core" != "$canvas" ] || [ "$core" != "$dotnet" ]; then
+            echo "::error::The versions differ. Set the same version in both package.json files and dotnet/Directory.Build.props."
+            exit 1
+          fi
+
+  npm:
+    needs: versions
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -31,11 +51,20 @@ jobs:
       - run: npm ci
       - run: npm test
       # Core first: the canvas depends on it.
-      - run: npm publish --workspace @crosswalkjs/core --provenance --access public
-      - run: npm publish --workspace @crosswalkjs/canvas --provenance --access public
+      - name: Publish what npm doesn't have yet
+        run: |
+          for package in core canvas; do
+            name="@crosswalkjs/$package"
+            version=$(node -p "require('./packages/$package/package.json').version")
+            if npm view "$name@$version" version > /dev/null 2>&1; then
+              echo "$name@$version is already on npm, so it's left as it is."
+            else
+              npm publish --workspace "$name" --provenance --access public
+            fi
+          done
 
   nuget:
-    needs: publish
+    needs: versions
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -47,6 +76,15 @@ jobs:
           dotnet-version: |
             8.0.x
             10.0.x
+      - name: Check there's a NuGet key
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          if [ -z "$NUGET_API_KEY" ]; then
+            echo "::error::There's no NUGET_API_KEY secret. Add an API key from nuget.org, limited to Crosswalk.Core, in the repo's Actions secrets."
+            exit 1
+          fi
       - run: dotnet test
       - run: dotnet pack src/Crosswalk.Core -c Release -o ../artifacts
+      # A version NuGet already has is skipped rather than failing.
       - run: dotnet nuget push ../artifacts/*.nupkg --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
