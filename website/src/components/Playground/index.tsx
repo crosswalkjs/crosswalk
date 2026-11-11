@@ -100,7 +100,8 @@ function Workbench({examples, help}: PlaygroundProps) {
   const [viewing, setViewing] = useState(false);
   const switches = switchesFor(viewing);
   const [on, setOn] = useState<Record<string, boolean>>(() =>
-    Object.fromEntries([...switchesFor(false), ...switchesFor(true)].map((s) => [s.key, s.onByDefault])),
+    // On a phone the editor is a list of fields with their values, so the sample values start on there.
+    Object.fromEntries([...switchesFor(false), ...switchesFor(true)].map((s) => [s.key, s.key === 'samples' ? s.onByDefault || window.innerWidth < 560 : s.onByDefault])),
   );
   // The toolbox starts folded. Whether it's open is kept apart from the
   // options, so folding it in the editor doesn't remake the editor.

@@ -136,6 +136,57 @@ export interface Labels {
   previewNeedsRunner: (operators: string[]) => string;
   previewFailed: (message: string) => string;
   serverCantRun: (message: string) => string;
+  // On a phone: the map as a list of target fields, each opening a sheet with how it's made
+  fieldsMapped: (mapped: number, total: number) => string;
+  notMapped: string;
+  mapIt: string;
+  copiedFrom: string;
+  from: string;
+  /** A total, or a repeating record, and the list it goes through, such as "of each PhoneCalls". */
+  ofEach: (list: string) => string;
+  /** A field inside a list, such as "each PhoneCalls". */
+  each: (list: string) => string;
+  copiedWhole: (from: string) => string;
+  notRepeated: string;
+  done: string;
+  back: string;
+  valueForSample: string;
+  howItsMade: string;
+  into: string;
+  inRecord: (record: string) => string;
+  stopMapping: (field: string) => string;
+  stoppedMapping: (field: string) => string;
+  undo: string;
+  whereFrom: (field: string) => string;
+  copyField: string;
+  copyFieldHint: string;
+  useOperator: string;
+  useOperatorHint: string;
+  changeStep: string;
+  chooseInput: string;
+  aSourceField: string;
+  anOperator: string;
+  aDifferentOperator: string;
+  inputsCarryOver: string;
+  aTypedValue: string;
+  wrapStep: string;
+  wrapStepHint: string;
+  takeOut: string;
+  chooseSourceField: string;
+  chooseSourceFieldHint: (source: string) => string;
+  chooseOperator: string;
+  noMatch: (query: string) => string;
+  listOf: (list: string, count: number | undefined) => string;
+  listNeedsTotal: string;
+  addInput: string;
+  choose: string;
+  /** An input of an operator that takes any number, which has no name of its own. */
+  part: (index: number) => string;
+  alsoUsedBy: (fields: string[]) => string;
+  typedValue: string;
+  moreForStep: string;
+  cantDoThat: string;
+  andMore: (count: number) => string;
   /** An issue's message. The default is the analyser's own, in English; switch on `issue.code` to word them yourself. */
   issue: (issue: MapIssue) => string;
   /** An operator's name, description and input labels, by its id. The default is the operator's own. */
@@ -270,6 +321,53 @@ export const englishLabels: Labels = {
     `No preview: ${operators.join(", ")} only run${operators.length === 1 ? "s" : ""} on the server, so the editor needs a preview runner.`,
   previewFailed: (message) => `The preview couldn't run: ${message}`,
   serverCantRun: (message) => `The server can't run this map: ${message}`,
+  fieldsMapped: (mapped, total) => `${mapped} of ${total} fields mapped`,
+  notMapped: "Not mapped.",
+  mapIt: "Map it",
+  copiedFrom: "Copied from",
+  from: "from",
+  ofEach: (list) => `of each ${list}`,
+  each: (list) => `each ${list}`,
+  copiedWhole: (from) => `Copied whole from ${from}`,
+  notRepeated: "Not repeated yet. Open the map on a bigger screen to say what it repeats for.",
+  done: "Done",
+  back: "Back",
+  valueForSample: "Value for the sample",
+  howItsMade: "How it's made",
+  into: "into",
+  inRecord: (record) => `in ${record}`,
+  stopMapping: (field) => `Stop mapping ${field}`,
+  stoppedMapping: (field) => `${field} isn't mapped any more.`,
+  undo: "Undo",
+  whereFrom: (field) => `Nothing goes into ${field} yet. Where should its value come from?`,
+  copyField: "Copy a source field",
+  copyFieldHint: "The value as it is.",
+  useOperator: "Work it out with an operator",
+  useOperatorHint: "Join, convert, calculate or check values first.",
+  changeStep: "Change this step",
+  chooseInput: "Choose an input",
+  aSourceField: "A source field",
+  anOperator: "An operator",
+  aDifferentOperator: "A different operator",
+  inputsCarryOver: "Its inputs carry over where they fit.",
+  aTypedValue: "A typed value",
+  wrapStep: "Put another operator round it",
+  wrapStepHint: "Uppercase it, round it, total it, and so on.",
+  takeOut: "Take this input out",
+  chooseSourceField: "Choose a source field",
+  chooseSourceFieldHint: (source) => `From ${source}, with the sample's values`,
+  chooseOperator: "Choose an operator",
+  noMatch: (query) => `Nothing matches "${query}".`,
+  listOf: (list, count) => (count === undefined ? `${list}, a list` : `${list}, a list of ${count}`),
+  listNeedsTotal: "Fields in a list go inside a total, such as Sum or Count, to make one value from every item.",
+  addInput: "Add another input",
+  choose: "Choose…",
+  part: (index) => `part ${index + 1}`,
+  alsoUsedBy: (fields) => `Also used by ${fields.join(", ")}`,
+  typedValue: "Typed value",
+  moreForStep: "Change this step",
+  cantDoThat: "That would make operators feed each other, so it wasn't changed.",
+  andMore: (count) => `and ${count} more`,
   issue: (issue) => issue.message,
   operator: (definition) => ({ label: definition.label, ...(definition.description ? { description: definition.description } : {}), ...(definition.inputs.labels ? { inputs: definition.inputs.labels } : {}) }),
 };

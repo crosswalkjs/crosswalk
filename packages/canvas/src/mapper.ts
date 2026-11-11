@@ -27,6 +27,8 @@ import {
   type Schema,
 } from "@crosswalkjs/core";
 import * as edits from "./edits.js";
+import { formatConstant, parseConstant } from "./recipes.js";
+import { createPhoneView } from "./phone.js";
 import { recordEnds, recordMappings, sourcesOf as sourcesIn } from "./records.js";
 import { traceChain, traceFields, type Chain } from "./trace.js";
 import type { DragOrigin, DropTarget, Position } from "./edits.js";
@@ -63,6 +65,12 @@ export interface MapperOptions {
   autoLayout?: boolean;
   /** Sizes the editor to its content, rather than filling its container. */
   fitContent?: boolean;
+  /**
+   * On a phone-sized screen, shows the map as a list of target fields, each
+   * opening a sheet with how it's made, rather than the canvas. On by default;
+   * false keeps the canvas at every size.
+   */
+  phoneView?: boolean;
   /** Shows each target field's value for a sample input, updated as the map changes. */
   preview?: PreviewOptions;
   /** How far the grid starts zoomed, from 0.4 to 2. 1, full size, by default. */
@@ -255,29 +263,6 @@ const typeBadge = (schema: Schema, repeating: boolean) => (repeating ? "[ ]" : T
 
 const glyphOf = (definition: OperatorDefinition | undefined) => definition?.glyph ?? definition?.label.slice(0, 2) ?? "?";
 
-/** Shows a constant as typed: plain text for strings, JSON for anything else. */
-function formatConstant(value: JsonValue): string {
-  if (typeof value !== "string") return JSON.stringify(value);
-  // Quote a string whose edges are spaces, such as " ", so it doesn't look empty.
-  if (value === "" || value.trim() !== value) return JSON.stringify(value);
-  try {
-    // A string such as "4" would read back as a number, so it keeps its quotes.
-    return typeof JSON.parse(value) === "string" ? value : JSON.stringify(value);
-  } catch {
-    return value;
-  }
-}
-
-/** Reads a typed constant: numbers, booleans, null and quoted strings as JSON, anything else as text. */
-function parseConstant(text: string): JsonValue {
-  try {
-    const value = JSON.parse(text) as JsonValue;
-    return typeof value === "object" && value !== null ? text : value;
-  } catch {
-    return text;
-  }
-}
-
 /**
  * Mounts the mapping editor in `element`: the source tree, the grid of
  * operators and the target tree, with the links between them.
@@ -355,7 +340,7 @@ export function createMapper(element: HTMLElement, options: MapperOptions): Mapp
   const root = h(
     "div",
     {
-      class: ["cw-root", readOnly && "cw-readonly", hideGrid && "cw-no-grid", options.hideTypes && "cw-no-types"].filter(Boolean).join(" "),
+      class: ["cw-root", readOnly && "cw-readonly", hideGrid && "cw-no-grid", options.hideTypes && "cw-no-types", options.fitContent && "cw-fit"].filter(Boolean).join(" "),
       tabindex: "0",
     },
     bar,
@@ -427,6 +412,11 @@ export function createMapper(element: HTMLElement, options: MapperOptions): Mapp
   // Left to itself, the toolbox folds to its rail in a narrow editor, until someone opens or closes it.
   let toolboxChosen = options.toolboxCollapsed !== undefined;
   const NARROW = 720;
+  /** How far a finger can move, in pixels, and still be a tap or a press, and how long it's held for a press. */
+  const TOUCH_SLOP = 8;
+  /** Narrower than this, in pixels, and the editor lays itself out for a phone. */
+  const COMPACT = 560;
+  const TOUCH_HOLD_MS = 350;
   setToolboxCollapsed(options.toolboxCollapsed ?? false);
   toggle.addEventListener("click", () => {
     const collapsed = !toolbox.classList.contains("cw-collapsed");
@@ -993,6 +983,12 @@ export function createMapper(element: HTMLElement, options: MapperOptions): Mapp
   /** Sets the editor's height to fit the trees and operators. */
   const fitHeight = () => {
     if (!options.fitContent) return;
+    // On a phone the list is shown instead, and it's as tall as it needs to be.
+    if (root.classList.contains("cw-phone")) {
+      root.style.minHeight = "0";
+      root.style.height = "auto";
+      return;
+    }
     const nodesBottom = Math.max(0, ...[...nodeElements.values(), ...noteElements.values()].map((element) => (element.offsetTop + element.offsetHeight) * zoom + 36));
     // The trees' own contents, not their scroll height, which never drops below the current height.
     const treeHeight = (pane: HTMLElement) => [...pane.children].reduce((sum, child) => sum + (child as HTMLElement).offsetHeight, 0);
@@ -1252,6 +1248,13 @@ export function createMapper(element: HTMLElement, options: MapperOptions): Mapp
       pane.scrollTop = Math.max(0, pane.scrollTop + first.getBoundingClientRect().top - pane.getBoundingClientRect().top - title - 8);
     }
     scheduleDraw();
+  };
+
+  /** In a phone-sized grid the operators can start out of sight, so it scrolls across to the first of them. */
+  const revealOperators = () => {
+    if (viewport.scrollLeft > 0) return;
+    const lefts = [...nodeElements.values()].filter((element) => !element.hidden).map((element) => element.offsetLeft);
+    if (lefts.length > 0) viewport.scrollLeft = Math.max(0, Math.min(...lefts) * zoom - 16);
   };
 
   // ---- links ----
@@ -2193,6 +2196,7 @@ export function createMapper(element: HTMLElement, options: MapperOptions): Mapp
     tell("issues", issues, (value) => options.onIssuesChange?.(structuredClone(value)));
     tell("page", [activePage(), level], () => options.onPageChange?.(activePage(), level));
     schedulePreview();
+    if (phoneShown()) phone?.render();
     if (options.onPerformance) {
       // Lays it out now, as the browser would a moment later anyway, so the time includes it.
       void root.offsetHeight;
@@ -2457,6 +2461,9 @@ export function createMapper(element: HTMLElement, options: MapperOptions): Mapp
         dragLine = undefined;
         if (result) commit(edits.newLinesOnPage(map, result, activePage()));
         else if (!moved && origin.kind === "source") traceField({ kind: "source", path: origin.path });
+        // A click on an operator's output dot selects the operator, as a click anywhere else on it does.
+        // On a phone, a tap meant for a small tile often lands on its dot.
+        else if (!moved && origin.kind === "node") select({ kind: "node", id: origin.id });
         else scheduleDraw();
       },
     );
@@ -2506,9 +2513,85 @@ export function createMapper(element: HTMLElement, options: MapperOptions): Mapp
     );
   };
 
+  /**
+   * On a touch screen a finger scrolls as well as drags, so a touch waits to
+   * see which it is. Lifted where it landed, it's a click; held still for a
+   * moment, it's a press that drags; moved first, it scrolls and nothing else
+   * happens. That goes for an operator's output dot too, since a finger meant
+   * for its tile often lands on it. Form controls work as usual.
+   *
+   * On the grid the editor scrolls it itself, under the finger. The lines are
+   * drawn in a layer over the grid rather than in it, so a finger on a line
+   * wouldn't scroll the grid otherwise, and on a phone lines cover most of it.
+   */
   const onPointerDown = (event: PointerEvent) => {
     if (event.button !== 0) return;
-    const target = event.target as Element;
+    if (event.pointerType !== "touch") return pointerDown(event, event.target as Element);
+    // A second finger while the first is still deciding is a pinch: neither finger does anything in the editor.
+    if (endTouch) return endTouch();
+    if (tracking) return;
+    // A phone moves a touch onto the nearest thing it thinks is clickable, which on an operator is its output
+    // dot, so a finger anywhere on a tile would only ever draw a line. What's under the finger is what it touched.
+    const under = document.elementFromPoint(event.clientX, event.clientY);
+    const target = under && root.contains(under) ? under : (event.target as Element);
+    if (target.closest(".cw-inspector, input, select, textarea, button")) return pointerDown(event, event.target as Element);
+    waitForTouch(event, target);
+  };
+
+  const waitForTouch = (down: PointerEvent, target: Element) => {
+    const onGrid =
+      grid.contains(target) &&
+      !target.closest(".cw-zoom, .cw-pages") &&
+      (viewport.scrollWidth > viewport.clientWidth || viewport.scrollHeight > viewport.clientHeight);
+    const from = { left: viewport.scrollLeft, top: viewport.scrollTop };
+    let panning = false;
+    touchPanning = onGrid;
+    const done = () => {
+      touchPanning = false;
+      endTouch = undefined;
+      clearTimeout(timer);
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+      window.removeEventListener("pointercancel", done);
+    };
+    const move = (event: PointerEvent) => {
+      const dx = event.clientX - down.clientX;
+      const dy = event.clientY - down.clientY;
+      if (!panning && Math.hypot(dx, dy) <= TOUCH_SLOP) return;
+      // Still for long enough, it's a press, even if a busy page hasn't run the timer yet.
+      if (!panning && event.timeStamp - down.timeStamp >= TOUCH_HOLD_MS) {
+        done();
+        return pointerDown(down, target);
+      }
+      if (!onGrid) return done();
+      panning = true;
+      clearTimeout(timer);
+      viewport.scrollLeft = from.left - dx;
+      viewport.scrollTop = from.top - dy;
+    };
+    // A tap is a press and a release in one: the press starts whatever it would, and a release where it began ends it.
+    const up = (event: PointerEvent) => {
+      done();
+      if (panning) return;
+      pointerDown(down, target);
+      window.dispatchEvent(new PointerEvent("pointerup", { clientX: event.clientX, clientY: event.clientY, pointerId: event.pointerId, pointerType: "touch" }));
+    };
+    const timer = setTimeout(() => {
+      done();
+      navigator.vibrate?.(10);
+      pointerDown(down, target);
+    }, TOUCH_HOLD_MS);
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+    window.addEventListener("pointercancel", done);
+    endTouch = done;
+  };
+
+  let touchPanning = false;
+  /** Ends the touch being waited on, when a second finger makes it a pinch. */
+  let endTouch: (() => void) | undefined;
+
+  const pointerDown = (event: PointerEvent, target: Element) => {
     if (readOnly) {
       // Clicking an operator keeps its lines picked out; nothing can be changed.
       const stub = target.closest<SVGElement>("[data-hit^='page:']")?.dataset.hit;
@@ -2726,6 +2809,16 @@ export function createMapper(element: HTMLElement, options: MapperOptions): Mapp
 
   // Lines are drawn over the trees' and grid's own scrolling, so they're redrawn whenever any of it moves.
   root.addEventListener("pointerdown", onPointerDown);
+  // While something's dragged by touch, or the grid is panned, the finger moves it rather than scrolling the page.
+  root.addEventListener(
+    "touchmove",
+    (event) => {
+      // Two fingers are a pinch, which the page zooms, so the editor lets it be.
+      if (event.touches.length > 1) return endTouch?.();
+      if (tracking || touchPanning) event.preventDefault();
+    },
+    { passive: false },
+  );
   root.addEventListener("dblclick", (event) => {
     const name = (event.target as Element).closest<SVGElement>("[data-submap]")?.dataset.submap;
     if (name !== undefined && doc.submaps?.[name]) showLevel(name);
@@ -2759,8 +2852,42 @@ export function createMapper(element: HTMLElement, options: MapperOptions): Mapp
     },
     { passive: false },
   );
+  // The list a phone shows in place of the canvas, unless the host keeps the canvas.
+  const phone =
+    options.phoneView === false
+      ? undefined
+      : createPhoneView({
+          root,
+          t,
+          registry,
+          readOnly,
+          map: () => map,
+          commit: (next) => commit(next),
+          undo,
+          input: () => previewInput,
+          run: (next, signal) =>
+            options.preview?.run
+              ? options.preview.run({ map: next, input: previewInput ?? null }, { signal })
+              : handlePreview({ map: next, input: previewInput ?? null }, { registry, signal }),
+          operatorText,
+          glyph: glyphOf,
+          typeBadge,
+        });
+  if (phone) root.append(phone.element);
+  const phoneShown = () => root.classList.contains("cw-phone");
+
   // An automatic layout centres its columns in the grid, so it follows the grid's width.
   const resizes = new ResizeObserver(() => {
+    const onPhone = phone !== undefined && root.clientWidth < COMPACT;
+    if (onPhone !== phoneShown()) {
+      root.classList.toggle("cw-phone", onPhone);
+      if (onPhone) phone!.render();
+      fitHeight();
+    }
+    // A phone-sized editor gives the trees more of its width, and drops the type badges so names have the room.
+    const compact = root.clientWidth < COMPACT;
+    if (compact && !root.classList.contains("cw-compact")) revealOperators();
+    root.classList.toggle("cw-compact", compact);
     fitPages();
     const narrow = root.clientWidth < NARROW;
     if (!toolboxChosen && !readOnly && narrow !== toolbox.classList.contains("cw-collapsed")) {
@@ -2801,6 +2928,7 @@ export function createMapper(element: HTMLElement, options: MapperOptions): Mapp
     setPreviewInput(input) {
       previewInput = input;
       schedulePreview();
+      if (phoneShown()) phone?.render();
     },
     setTheme(next) {
       theme = resolveTheme(next);
@@ -2816,6 +2944,7 @@ export function createMapper(element: HTMLElement, options: MapperOptions): Mapp
       previewRun?.abort();
       cancelAnimationFrame(frameRequest);
       resizes.disconnect();
+      phone?.destroy();
       root.remove();
     },
   };

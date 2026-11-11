@@ -1,6 +1,6 @@
 import { createRegistry, type MapDocument } from "@crosswalkjs/core";
-import { createMapper, type Labels, type Mapper } from "@crosswalkjs/canvas";
-import { blankPersonMap, personMap } from "../../website/src/examples/person";
+import { createMapper, createMapView, type Labels, type Mapper } from "@crosswalkjs/canvas";
+import { blankPersonMap, personInput, personMap } from "../../website/src/examples/person";
 import { orderMap } from "../../website/src/examples/order";
 import { categories, operators } from "../../website/src/examples/operators";
 import { buildMap as buildOrderToErp } from "../../website/src/examples/bigmap";
@@ -59,7 +59,19 @@ const french: Partial<Labels> = {
 const events: [string, unknown][] = [];
 
 const started = performance.now();
-const mapper = createMapper(document.getElementById("editor")!, {
+// ?phone gives the editor a phone's width; ?noPhone keeps the canvas there anyway.
+if (params.has("phone")) document.getElementById("editor")!.style.width = "390px";
+
+// ?view shows the read-only view, sized to its content, in place of the editor.
+const host = document.getElementById("editor")!;
+if (params.has("view")) host.style.height = "auto";
+const mapper = params.has("view")
+  ? (createMapView(host, {
+      document: maps[params.get("map") ?? "person"]!,
+      registry: createRegistry({ categories, operators }),
+      ...(params.has("preview") ? { preview: { input: personInput } } : {}),
+    }) as unknown as Mapper)
+  : createMapper(host, {
   document: maps[params.get("map") ?? "person"]!,
   registry: createRegistry({ categories, operators }),
   readOnly: params.has("readOnly"),
@@ -70,6 +82,8 @@ const mapper = createMapper(document.getElementById("editor")!, {
   onPageChange: (page, submap) => events.push(["page", { page, submap }]),
   onIssuesChange: (issues) => events.push(["issues", issues.length]),
   ...(params.get("labels") === "fr" ? { labels: french } : {}),
+  ...(params.has("preview") ? { preview: { input: personInput } } : {}),
+  ...(params.has("noPhone") ? { phoneView: false } : {}),
 });
 
 declare global {

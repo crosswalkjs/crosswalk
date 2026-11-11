@@ -51,6 +51,145 @@ test.describe("look", () => {
   });
 });
 
+test.describe("touch", () => {
+  test.use({ viewport: { width: 390, height: 700 }, hasTouch: true, isMobile: true });
+
+  /** A finger: down at `from`, held for `holdMs`, moved in steps to `to`, and lifted. */
+  async function finger(page: Page, from: { x: number; y: number }, to: { x: number; y: number }, holdMs = 0) {
+    const cdp = await page.context().newCDPSession(page);
+    const touch = (type: string, points: { x: number; y: number }[]) => cdp.send("Input.dispatchTouchEvent", { type: type as "touchStart", touchPoints: points });
+    await touch("touchStart", [from]);
+    if (holdMs) await page.waitForTimeout(holdMs);
+    for (let i = 1; i <= 12; i++) await touch("touchMove", [{ x: from.x + ((to.x - from.x) * i) / 12, y: from.y + ((to.y - from.y) * i) / 12 }]);
+    await touch("touchEnd", []);
+  }
+
+  /** The fixture's editor is desktop-sized, so it's narrowed to a phone's. */
+  async function onAPhone(page: Page) {
+    // The canvas on a phone, as an app that turns the phone view off has it.
+    await page.goto("/?noPhone");
+    await page.addStyleTag({ content: "#editor { width: 390px !important; height: 640px !important; }" });
+    await expect(page.locator(".cw-root")).toHaveClass(/cw-compact/);
+  }
+
+  test("lays itself out for a phone, and a swipe that starts on a line pans the grid", async ({ page }) => {
+    await onAPhone(page);
+    // Lines are drawn over the grid, outside the part that scrolls, so this is the case the browser can't handle alone.
+    const line = await page.evaluate(() => {
+      const area = document.querySelector(".cw-viewport")!.getBoundingClientRect();
+      for (let y = area.top + 10; y < area.bottom - 60; y += 3)
+        for (let x = area.left + 6; x < area.right - 6; x += 3) if (document.elementFromPoint(x, y)?.classList.contains("cw-hit")) return { x, y };
+    });
+    expect(line).toBeDefined();
+    const before = await page.evaluate(() => document.querySelector(".cw-viewport")!.scrollTop);
+    await finger(page, line!, { x: line!.x, y: line!.y - 60 });
+    await expect.poll(() => page.evaluate(() => document.querySelector(".cw-viewport")!.scrollTop)).toBeGreaterThan(before + 30);
+  });
+
+  test("a press and hold drags an operator, and a tap selects it", async ({ page }) => {
+    await onAPhone(page);
+    const id = await page.evaluate(() => {
+      const area = document.querySelector(".cw-viewport")!.getBoundingClientRect();
+      const tile = [...document.querySelectorAll<HTMLElement>(".cw-node")].find((n) => {
+        const r = n.getBoundingClientRect();
+        return r.left > area.left && r.right < area.right && r.top > area.top && r.bottom < area.bottom - 120;
+      });
+      return tile?.dataset.id;
+    });
+    expect(id).toBeDefined();
+    // Held on the tile, and dragged down.
+    const box = (await node(page, id!).boundingBox())!;
+    const edge = { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+    const y = (await documentOf(page)).nodes.find((n) => n.id === id)!.position!.y;
+    await finger(page, edge, { x: edge.x, y: edge.y + 60 }, 500);
+    await expect.poll(async () => (await documentOf(page)).nodes.find((n) => n.id === id)!.position!.y).toBeGreaterThan(y + 40);
+    // A finger that lands and lifts. The browser moves it onto the output dot, as a phone does, but the tile is what's under it.
+    const at = await centre(node(page, id!));
+    await finger(page, at, at);
+    await expect(node(page, id!)).toHaveClass(/cw-selected/);
+  });
+});
+
+test.describe("on a phone", () => {
+  test.use({ viewport: { width: 390, height: 760 }, hasTouch: true, isMobile: true });
+  const card = (page: Page, path: string) => page.locator(`.cw-phone-card[data-field="${path}"]`);
+  const sheet = (page: Page) => page.locator(".cw-phone-sheet");
+
+  test("shows the map as a list of fields, each with where it comes from and its value", async ({ page }) => {
+    await page.goto("/?phone&preview");
+    await expect(page.locator(".cw-root")).toHaveClass(/cw-phone/);
+    await expect(page.locator(".cw-grid")).toBeHidden();
+    await expect(card(page, "FullName")).toContainText("Concatenate");
+    await expect(card(page, "FullName")).toContainText('"Ana Silva"');
+    await expect(card(page, "PhoneBilling.TotalNational")).toContainText("3.75");
+    await expect(card(page, "CivilStatus")).toContainText("Not mapped");
+  });
+
+  test("opens a field to show each step with its value, one for each item inside a total", async ({ page }) => {
+    await page.goto("/?phone&preview");
+    await card(page, "PhoneBilling.TotalNational").tap();
+    await expect(sheet(page)).toContainText("How it's made");
+    await expect(sheet(page)).toContainText("2.5, –, 1.25, –");
+    await expect(sheet(page)).toContainText("Also used by TotalInternational");
+  });
+
+  test("maps a field through an operator, changes a typed value, and stops mapping one with an undo", async ({ page }) => {
+    await page.goto("/?phone&preview");
+    await card(page, "CivilStatus").tap();
+    await page.locator('[data-act="root-op"]').tap();
+    await page.locator(".cw-phone-search").fill("upper");
+    await page.locator('.cw-phone-pick[data-op="text.upper"]').tap();
+    await page.locator('[data-act="choose"]').tap();
+    await page.locator('[data-act="pick-field"]').tap();
+    await page.locator('.cw-phone-pick[data-path="LastName"]').tap();
+    await expect(page.locator(".cw-phone-result")).toContainText('"SILVA"');
+    await page.locator('[data-act="done"]').tap();
+    expect((await documentOf(page)).links).toContainEqual({ from: expect.objectContaining({ node: expect.any(String) }), to: { target: "CivilStatus" } });
+
+    await card(page, "FullName").tap();
+    await page.locator("input.cw-phone-typed").fill("-");
+    await page.locator("input.cw-phone-typed").press("Enter");
+    await expect(page.locator(".cw-phone-result")).toContainText('"Ana-Silva"');
+    await page.locator('[data-act="unmap"]').tap();
+    await expect(card(page, "FullName")).toContainText("Not mapped");
+    await page.locator(".cw-phone-toast button").tap();
+    await expect(card(page, "FullName")).toContainText('"Ana-Silva"');
+  });
+
+  test("only lets a field inside a list go where a total can add it up", async ({ page }) => {
+    await page.goto("/?phone&preview");
+    await card(page, "CivilStatus").tap();
+    await page.locator('[data-act="root-field"]').tap();
+    await expect(page.locator('.cw-phone-pick[data-path="PhoneCalls[].Cost"]')).toBeDisabled();
+    await expect(page.locator('.cw-phone-pick[data-path="LastName"]')).toBeEnabled();
+  });
+
+  test("shows the read-only view as the same list, without changes", async ({ page }) => {
+    await page.goto("/?phone&preview&readOnly");
+    await card(page, "FullName").tap();
+    await expect(sheet(page)).toContainText("Concatenate");
+    await expect(page.locator(".cw-phone-more")).toHaveCount(0);
+    await expect(page.locator('[data-act="unmap"]')).toHaveCount(0);
+  });
+
+  test("shows the read-only view, sized to its content, as the whole list", async ({ page }) => {
+    await page.goto("/?phone&preview&view");
+    await expect(card(page, "PhoneBilling.TotalNational")).toBeVisible();
+    // Every card has its own height: none is squashed into a view sized to the hidden canvas.
+    const heights = await page.locator(".cw-phone-card").evaluateAll((cards) => cards.map((c) => c.getBoundingClientRect().height));
+    expect(heights.length).toBe(7);
+    for (const height of heights) expect(height).toBeGreaterThan(40);
+    await card(page, "FullName").tap();
+    await expect(sheet(page)).toContainText('"Ana Silva"');
+  });
+
+  test("keeps the canvas when the phone view is turned off", async ({ page }) => {
+    await page.goto("/?phone&noPhone");
+    await expect(page.locator(".cw-grid")).toBeVisible();
+    await expect(page.locator(".cw-phone-card")).toHaveCount(0);
+  });
+});
+
 test.describe("mapping", () => {
   test("drags a source field onto a target field to link them, and undoes it", async ({ page }) => {
     await page.goto("/?map=blank");

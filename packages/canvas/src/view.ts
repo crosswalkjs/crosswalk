@@ -31,6 +31,8 @@ export interface MapViewOptions {
   hideSearch?: boolean;
   /** As for the editor: its wording, in your words. */
   labels?: Partial<Labels>;
+  /** On a phone-sized screen, shows the map as a list of target fields and where each comes from, rather than the canvas. On by default; false keeps the canvas at every size. */
+  phoneView?: boolean;
   /** As for the editor: how long it took to draw. */
   onPerformance?: (timing: { kind: "render" | "redraw"; ms: number }) => void;
 }
@@ -60,6 +62,7 @@ export function createMapView(element: HTMLElement, options: MapViewOptions): Ma
     hideSearch: options.hideSearch ?? false,
     ...(options.onPerformance ? { onPerformance: options.onPerformance } : {}),
     ...(options.labels ? { labels: options.labels } : {}),
+    ...(options.phoneView === false ? { phoneView: false } : {}),
   });
   return { getDocument, setDocument, setTheme, getIssues, setPreviewInput, destroy };
 }

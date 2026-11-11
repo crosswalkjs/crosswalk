@@ -29,6 +29,7 @@ const mapper = createMapper(element, options);
 | `mappedOnly` | Hide fields nothing maps to or from. |
 | `autoLayout` | Place operators between the fields they connect, ignoring saved positions. |
 | `fitContent` | Size the editor to its content rather than its container. |
+| `phoneView` | `false` keeps the canvas on a phone-sized screen, rather than the list of fields. See [On a phone](#on-a-phone). |
 | `zoom` | How far the grid starts zoomed, from `0.4` to `2`. Full size, `1`, by default. The **⤢** button by the zoom fits every operator in view. |
 | `hidePages` | Hide the page tabs and show the whole map on one grid. The pages are kept in the document. |
 | `hideSearch` | Hide the magnifier in each tree's heading that finds a field. |
@@ -62,6 +63,14 @@ Try some, and watch the console as you edit:
 Each button calls one:
 
 <Sandbox example="editor-methods" height={460} />
+
+## On a phone
+
+Three columns side by side don't fit a phone, so below 560px wide the editor shows the map as a list instead. Each target field says where its value comes from and, with a `preview` input, what it is for the sample. Tapping a field opens a sheet with how it's made, step by step, each with its value, and there you can link a source field, add an operator, type a value or stop mapping it. A step inside a total shows a value for each item, so you can see what a filter keeps.
+
+It's the same map: changes go through the same `onChange` and undo as the canvas, and open unchanged on a bigger screen. Sub-maps, pages, notes and what a repeating record repeats over are set on a bigger screen.
+
+Pass `phoneView: false` to keep the canvas at every size.
 
 ## In your own words
 

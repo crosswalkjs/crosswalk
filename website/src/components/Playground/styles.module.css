@@ -249,7 +249,7 @@
 
   .editor {
     flex: none;
-    height: 70vh;
+    height: calc(100dvh - var(--ifm-navbar-height) - 3.25rem);
   }
 
   .side {
@@ -262,7 +262,35 @@
     height: 60vh;
   }
 
+  /* One row that scrolls sideways, kept under the navbar, rather than three. */
+  .bar {
+    position: sticky;
+    top: var(--ifm-navbar-height);
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    background: var(--ifm-background-color);
+    white-space: nowrap;
+    scrollbar-width: none;
+  }
+
+  .bar > * {
+    flex: none;
+  }
+
   .bar > :last-child {
     margin-left: 0;
+  }
+
+  /* The bar scrolls, which would clip a box hung from it, so the boxes sit across the screen under it. */
+  .popoverBody {
+    position: fixed;
+    top: calc(var(--ifm-navbar-height) + 3.25rem);
+    right: 1rem;
+    left: 1rem;
+    width: auto;
+    max-width: none;
+    max-height: 60dvh;
+    overflow: auto;
+    white-space: normal;
   }
 }
